@@ -9,6 +9,10 @@ RUN jupyter nbextension install --sys-prefix --py nbgrader --overwrite
 RUN jupyter nbextension enable --sys-prefix --py nbgrader
 RUN jupyter serverextension enable --sys-prefix --py nbgrader
 
+# Debian package
+RUN apt install \
+           less
+
 # Custom installations
 # nose: mlbp2018
 # scikit-learn: mlbp2018
