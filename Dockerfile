@@ -2,7 +2,7 @@ FROM jupyter/scipy-notebook
 
 # JupyterHub says we can use any exsting jupyter image, as long as we properly pin the JupyterHub version
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
-RUN pip3 install jupyterhub==0.9.1
+RUN pip install jupyterhub==0.9.1
 
 RUN pip install git+https://github.com/rkdarst/nbgrader@live
 RUN jupyter nbextension install --sys-prefix --py nbgrader --overwrite
@@ -12,17 +12,17 @@ RUN jupyter serverextension enable --sys-prefix --py nbgrader
 # Custom installations
 # nose: mlbp2018
 # scikit-learn: mlbp2018
-conda install \
+RUN conda install \
            nose \
-           scikit-earn
+           scikit-learn
 
 # plotchecker: for nbgrader, mlbp2018
-pip install \
+RUN pip install \
            plotchecker
 
 # Fixing permissions must be the last thing we do, or else user's own
 # installations won't work.
-RUN fix-permissions $CONDA_DIR &&
+RUN fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
 # In the Jupyter image, the default start command is
