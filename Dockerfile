@@ -2,7 +2,7 @@ FROM jupyter/scipy-notebook
 
 # JupyterHub says we can use any exsting jupyter image, as long as we properly pin the JupyterHub version
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
-RUN pip3 install jupyterhub==0.9.0
+RUN pip3 install jupyterhub==0.9.1
 
 RUN pip install nbgrader
 RUN jupyter nbextension install --sys-prefix --py nbgrader --overwrite
