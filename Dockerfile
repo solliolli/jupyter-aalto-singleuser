@@ -10,7 +10,15 @@ RUN jupyter nbextension enable --sys-prefix --py nbgrader
 RUN jupyter serverextension enable --sys-prefix --py nbgrader
 
 # Custom installations
-#conda install igraph
+# nose: mlbp2018
+# scikit-learn: mlbp2018
+conda install \
+           nose \
+           scikit-earn
+
+# plotchecker: for nbgrader, mlbp2018
+pip install \
+           plotchecker
 
 # Fixing permissions must be the last thing we do, or else user's own
 # installations won't work.
