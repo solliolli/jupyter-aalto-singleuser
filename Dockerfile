@@ -4,7 +4,7 @@ FROM jupyter/scipy-notebook
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
 RUN pip3 install jupyterhub==0.9.1
 
-RUN pip install nbgrader
+RUN pip install git+https://github.com/rkdarst/nbgrader@live
 RUN jupyter nbextension install --sys-prefix --py nbgrader --overwrite
 RUN jupyter nbextension enable --sys-prefix --py nbgrader
 RUN jupyter serverextension enable --sys-prefix --py nbgrader
