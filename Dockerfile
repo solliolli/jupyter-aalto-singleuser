@@ -10,7 +10,10 @@ RUN jupyter nbextension enable --sys-prefix --py nbgrader
 RUN jupyter serverextension enable --sys-prefix --py nbgrader
 
 
-
+# Fixing permissions must be the last thing we do, or else user's own
+# installations won't work.
+RUN fix-permissions $CONDA_DIR &&
+    fix-permissions /home/$NB_USER
 
 # In the Jupyter image, the default start command is
 # start-notebook.sh.  If the env var JPY_API_TOKEN is defined, it will
