@@ -18,16 +18,13 @@ RUN apt install \
 # scikit-learn: mlbp2018
 RUN conda install \
            nose \
-           scikit-learn
+           scikit-learn && \
+           fix-permissions $CONDA_DIR /home/$NB_USER
 
 # plotchecker: for nbgrader, mlbp2018
 RUN pip install \
-           plotchecker
-
-# Fixing permissions must be the last thing we do, or else user's own
-# installations won't work.
-RUN fix-permissions $CONDA_DIR && \
-    fix-permissions /home/$NB_USER
+           plotchecker && \
+           fix-permissions $CONDA_DIR /home/$NB_USER
 
 # In the Jupyter image, the default start command is
 # start-notebook.sh.  If the env var JPY_API_TOKEN is defined, it will
