@@ -27,6 +27,9 @@ RUN pip install git+https://github.com/rkdarst/nbgrader@live && \
     jupyter serverextension enable --sys-prefix --py nbgrader && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
+COPY start.sh /usr/local/bin/
+
+
 # In the Jupyter image, the default start command is
 # start-notebook.sh.  If the env var JPY_API_TOKEN is defined, it will
 # thun run start-singleuser.sh which then starts the single-user
