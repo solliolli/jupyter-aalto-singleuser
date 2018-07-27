@@ -1,4 +1,4 @@
-FROM jupyter/scipy-notebook
+FROM jupyter/scipy-notebook:8d22c86ed4d7
 
 # JupyterHub says we can use any exsting jupyter image, as long as we properly pin the JupyterHub version
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
