@@ -4,11 +4,6 @@ FROM jupyter/scipy-notebook:8d22c86ed4d7
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
 RUN pip install jupyterhub==0.9.1
 
-RUN pip install git+https://github.com/rkdarst/nbgrader@live
-RUN jupyter nbextension install --sys-prefix --py nbgrader --overwrite
-RUN jupyter nbextension enable --sys-prefix --py nbgrader
-RUN jupyter serverextension enable --sys-prefix --py nbgrader
-
 # Debian package
 RUN apt install \
            less
@@ -25,6 +20,12 @@ RUN conda install \
 RUN pip install \
            plotchecker && \
            fix-permissions $CONDA_DIR /home/$NB_USER
+
+RUN pip install git+https://github.com/rkdarst/nbgrader@live && \
+    jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
+    jupyter nbextension enable --sys-prefix --py nbgrader && \
+    jupyter serverextension enable --sys-prefix --py nbgrader && \
+    fix-permissions $CONDA_DIR /home/$NB_USER
 
 # In the Jupyter image, the default start command is
 # start-notebook.sh.  If the env var JPY_API_TOKEN is defined, it will
