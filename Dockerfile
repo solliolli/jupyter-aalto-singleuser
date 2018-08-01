@@ -1,12 +1,30 @@
 FROM jupyter/scipy-notebook:8d22c86ed4d7
 
-# JupyterHub says we can use any exsting jupyter image, as long as we properly pin the JupyterHub version
-# https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
-RUN pip install jupyterhub==0.9.1
+
+USER root
 
 # Debian package
-RUN apt install \
-           less
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+           less \
+           && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+
+RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
+
+COPY start.sh /usr/local/bin/
+COPY disable_formgrader.sh /usr/local/bin/
+RUN chmod a+x /usr/local/bin/disable_formgrader.sh
+
+
+USER $NB_UID
+
+# JupyterHub says we can use any exsting jupyter image, as long as we properly pin the JupyterHub version
+# https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
+RUN pip install jupyterhub==0.9.1 && \
+           fix-permissions $CONDA_DIR /home/$NB_USER
 
 # Custom installations
 # nose: mlbp2018
@@ -27,7 +45,6 @@ RUN pip install git+https://github.com/rkdarst/nbgrader@live && \
     jupyter serverextension enable --sys-prefix --py nbgrader && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
-COPY start.sh /usr/local/bin/
 
 
 # In the Jupyter image, the default start command is
