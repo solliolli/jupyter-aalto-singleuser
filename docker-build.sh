@@ -1,1 +1,2 @@
-docker build -t aaltoscienceit/notebook-server:0.2.6 .
+docker build -t aaltoscienceit/notebook-server:0.3.0 .
+
