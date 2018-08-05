@@ -89,7 +89,7 @@ if [ $(id -u) == 0 ] ; then
 
     # Exec the command as NB_USER with the PATH and the rest of
     # the environment preserved
-    $NB_PRE_START_HOOK
+    eval "$NB_PRE_START_HOOK"
     echo "Executing the command: $cmd"
     exec sudo -E -H -u $NB_USER PATH=$PATH XDG_CACHE_HOME=/home/$NB_USER/.cache PYTHONPATH=$PYTHONPATH $cmd
 else
@@ -133,7 +133,7 @@ else
     fi
 
     # Execute the command
-    $NB_PRE_START_HOOK
+    eval "$NB_PRE_START_HOOK"
     echo "Executing the command: $cmd"
     exec $cmd
 fi
