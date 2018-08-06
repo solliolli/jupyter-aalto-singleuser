@@ -39,7 +39,7 @@ RUN pip install \
            plotchecker && \
            fix-permissions $CONDA_DIR /home/$NB_USER
 
-RUN pip install git+https://github.com/rkdarst/nbgrader@a5afa48 && \
+RUN pip install git+https://github.com/rkdarst/nbgrader@185a6cb && \
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
     jupyter nbextension enable --sys-prefix --py nbgrader && \
     jupyter serverextension enable --sys-prefix --py nbgrader && \
