@@ -11,15 +11,13 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-
 RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
+# sed -r -i 's/^(UMASK.*)022/\1002/' /etc/login.defs
 
 COPY start.sh /usr/local/bin/
 COPY disable_formgrader.sh /usr/local/bin/
 RUN chmod a+x /usr/local/bin/disable_formgrader.sh
 
-
-USER $NB_UID
 
 # JupyterHub says we can use any exsting jupyter image, as long as we properly pin the JupyterHub version
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
@@ -29,22 +27,33 @@ RUN pip install jupyterhub==0.9.1 && \
 # Custom installations
 # nose: mlbp2018
 # scikit-learn: mlbp2018
+# plotchecker: for nbgrader, mlbp2018
 RUN conda install \
            nose \
            scikit-learn && \
-           fix-permissions $CONDA_DIR /home/$NB_USER
+    pip install \
+           plotchecker && \	   
+    fix-permissions $CONDA_DIR /home/$NB_USER
 
-# plotchecker: for nbgrader, mlbp2018
-RUN pip install \
-           plotchecker && \
-           fix-permissions $CONDA_DIR /home/$NB_USER
+# Custom extension installations
+RUN conda install -c conda-forge \
+           ipywidgets \
+	   jupyter_contrib_nbextensions && \
+    jupyter contrib nbextension install --sys-prefix && \
+    pip install \
+           nbdime && \
+    jupyter labextension install @jupyterlab/hub-extension && \
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
+    fix-permissions $CONDA_DIR /home/$NB_USER
+#    jupyter labextension install @jupyterlab/git &&
 
-RUN pip install git+https://github.com/rkdarst/nbgrader@185a6cb && \
+RUN pip install git+https://github.com/rkdarst/nbgrader@bd9c4fa && \
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
     jupyter nbextension enable --sys-prefix --py nbgrader && \
     jupyter serverextension enable --sys-prefix --py nbgrader && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
+USER $NB_UID
 
 
 # In the Jupyter image, the default start command is
