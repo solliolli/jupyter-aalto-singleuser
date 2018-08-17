@@ -32,7 +32,8 @@ RUN conda install \
            nose \
            scikit-learn && \
     pip install \
-           plotchecker && \	   
+           plotchecker && \
+    conda clean -tipsy && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
 # Custom extension installations
@@ -44,6 +45,14 @@ RUN conda install -c conda-forge \
            nbdime && \
     jupyter labextension install @jupyterlab/hub-extension && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
+    jupyter serverextension enable --py nbdime --sys-prefix && \
+    jupyter nbextension install --py nbdime --sys-prefix && \
+    jupyter nbextension enable --py nbdime --sys-prefix && \
+    jupyter labextension install nbdime-jupyterlab && \
+    nbdime config-git --enable --system && \
+    rm -rf /home/$NB_USER/.cache/yarn && \
+    conda clean -tipsy && \
+    npm cache clean --force && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 #    jupyter labextension install @jupyterlab/git &&
 
@@ -51,6 +60,7 @@ RUN pip install git+https://github.com/rkdarst/nbgrader@bd9c4fa && \
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
     jupyter nbextension enable --sys-prefix --py nbgrader && \
     jupyter serverextension enable --sys-prefix --py nbgrader && \
+    rm -rf /home/$NB_USER/.cache/yarn && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
 USER $NB_UID
