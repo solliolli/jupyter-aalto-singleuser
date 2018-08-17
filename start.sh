@@ -3,6 +3,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 set -e
+set -x
 
 # Exec the specified command or fall back on bash
 if [ $# -eq 0 ]; then
