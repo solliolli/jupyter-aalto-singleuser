@@ -53,7 +53,8 @@ RUN conda install -c conda-forge \
     rm -rf /home/$NB_USER/.cache/yarn && \
     conda clean -tipsy && \
     npm cache clean --force && \
-    fix-permissions $CONDA_DIR /home/$NB_USER
+    fix-permissions $CONDA_DIR /home/$NB_USER && \
+    rm -rf /opt/conda/pkgs/cache/
 #    jupyter labextension install @jupyterlab/git &&
 
 RUN pip install git+https://github.com/rkdarst/nbgrader@bd9c4fa && \
