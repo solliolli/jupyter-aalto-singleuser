@@ -25,12 +25,18 @@ RUN pip install jupyterhub==0.9.1 && \
            fix-permissions $CONDA_DIR /home/$NB_USER
 
 # Custom installations
+# igraph: complex networks (general)
+# librarosa: datasci2018
+# networkx: complex networks (general)
 # nose: mlbp2018
 # scikit-learn: mlbp2018
 # plotchecker: for nbgrader, mlbp2018
 RUN conda install \
-           nose \
+           networkx \
+	   nose \
            scikit-learn && \
+    conda install -c conda-forge \
+           igraph && \
     pip install \
            plotchecker && \
     conda clean -tipsy && \
@@ -57,7 +63,7 @@ RUN conda install -c conda-forge \
     rm -rf /opt/conda/pkgs/cache/
 #    jupyter labextension install @jupyterlab/git &&
 
-RUN pip install git+https://github.com/rkdarst/nbgrader@bd9c4fa && \
+RUN pip install git+https://github.com/rkdarst/nbgrader@2d562bd && \
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
     jupyter nbextension enable --sys-prefix --py nbgrader && \
     jupyter serverextension enable --sys-prefix --py nbgrader && \
