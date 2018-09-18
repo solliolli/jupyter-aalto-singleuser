@@ -33,10 +33,11 @@ RUN pip install jupyterhub==0.9.1 && \
 # plotchecker: for nbgrader, mlbp2018
 RUN conda install \
            networkx \
-	   nose \
+           nose \
            scikit-learn && \
     conda install -c conda-forge \
-           igraph && \
+           igraph \
+           librosa && \
     pip install \
            plotchecker && \
     conda clean -tipsy && \
@@ -45,7 +46,7 @@ RUN conda install \
 # Custom extension installations
 RUN conda install -c conda-forge \
            ipywidgets \
-	   jupyter_contrib_nbextensions && \
+           jupyter_contrib_nbextensions && \
     jupyter contrib nbextension install --sys-prefix && \
     pip install \
            nbdime && \
