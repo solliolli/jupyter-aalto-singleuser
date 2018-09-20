@@ -11,6 +11,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# add tzdata
+
 RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
 # sed -r -i 's/^(UMASK.*)022/\1002/' /etc/login.defs
 
@@ -48,21 +50,42 @@ RUN conda install -c conda-forge \
            ipywidgets \
            jupyter_contrib_nbextensions && \
     jupyter contrib nbextension install --sys-prefix && \
+    conda upgrade jupyterlab && \
     pip install \
+           jupyterlab-git \
            nbdime && \
-    jupyter labextension install @jupyterlab/hub-extension && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
     jupyter serverextension enable --py nbdime --sys-prefix && \
     jupyter nbextension install --py nbdime --sys-prefix && \
     jupyter nbextension enable --py nbdime --sys-prefix && \
-    jupyter labextension install nbdime-jupyterlab && \
+    jupyter serverextension enable --py jupyterlab_git && \
+    jupyter labextension install @jupyterlab/hub-extension \
+                                 @jupyter-widgets/jupyterlab-manager \
+                                 @jupyterlab/google-drive \
+                                 @jupyterlab/git \
+                                 nbdime-jupyterlab && \
+    jupyter labextension disable @jupyterlab/google-drive && \
     nbdime config-git --enable --system && \
     rm -rf /home/$NB_USER/.cache/yarn && \
     conda clean -tipsy && \
     npm cache clean --force && \
     fix-permissions $CONDA_DIR /home/$NB_USER && \
-    rm -rf /opt/conda/pkgs/cache/
-#    jupyter labextension install @jupyterlab/git &&
+    rm -rf /opt/conda/pkgs/cache/ && \
+    ln -s /notebooks /home/jovyan/notebooks && \
+    rm --dir /home/jovyan/work
+#                                jupyterlab_voyager \
+
+# @jupyterlab/google-drive disabled by default until the app can be
+# verified.  To enable, use "jupyter labextension enable
+# @jupyterlab/google-drive". or remove the line above.
+
+
+#COPY drive.jupyterlab-settings /opt/conda/share/jupyter/lab/settings/@jupyterlab/google-drive/drive.jupyterlab-settings
+#COPY drive.jupyterlab-settings /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/google-drive/drive.jupyterlab-settings
+RUN sed -i s/625147942732-t30t8vnn43fl5mvg1qde5pl84603dr6s.apps.googleusercontent.com/939684114235-busmrp8omdh9f0jdkrer6o4r85mare4f.apps.googleusercontent.com/ \
+     /opt/conda/share/jupyter/lab/static/vendors~main.31dfb7671a395e03169c.js* \
+     /opt/conda/share/jupyter/lab/staging/build/vendors~main.31dfb7671a395e03169c.js* \
+     /opt/conda/share/jupyter/lab/staging/node_modules/@jupyterlab/google-drive/lib/gapi*
+
 
 RUN pip install git+https://github.com/rkdarst/nbgrader@2d562bd && \
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
