@@ -82,8 +82,8 @@ RUN conda install -c conda-forge \
 #COPY drive.jupyterlab-settings /opt/conda/share/jupyter/lab/settings/@jupyterlab/google-drive/drive.jupyterlab-settings
 #COPY drive.jupyterlab-settings /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/google-drive/drive.jupyterlab-settings
 RUN sed -i s/625147942732-t30t8vnn43fl5mvg1qde5pl84603dr6s.apps.googleusercontent.com/939684114235-busmrp8omdh9f0jdkrer6o4r85mare4f.apps.googleusercontent.com/ \
-     /opt/conda/share/jupyter/lab/static/vendors~main.31dfb7671a395e03169c.js* \
-     /opt/conda/share/jupyter/lab/staging/build/vendors~main.31dfb7671a395e03169c.js* \
+     /opt/conda/share/jupyter/lab/static/vendors~main.*.js* \
+     /opt/conda/share/jupyter/lab/staging/build/vendors~main.*.js* \
      /opt/conda/share/jupyter/lab/staging/node_modules/@jupyterlab/google-drive/lib/gapi*
 
 
@@ -118,42 +118,23 @@ RUN conda install --quiet --yes \
     'r-sparklyr=0.7*' \
     'r-htmlwidgets=1.0*' \
     'r-hexbin=1.27*' && \
-    conda clean -tipsy && \
-    fix-permissions $CONDA_DIR && \
     conda install -c conda-forge \
-r-bayesplot \
-r-rstan \
-r-rstanarm \
-r-shinystan \
-r-loo \
-r-brms \
-r-GGally \
-r-MASS \
-r-coda \
-r-gridbase \
-r-gridgraphics \
-r-gridExtra \
-r-here && \
+        'r-bayesplot=1.6*' \
+        'r-rstan=2.17*' \
+        'r-rstanarm=2.17*' \
+        'r-shinystan=2.5*' \
+        'r-loo=2.0*' \
+        'r-brms=2.3*' \
+        'r-ggally=1.4*' \
+        'r-mass=7.3*' \
+        'r-coda=0.19*' \
+        'r-gridbase=0.4*' \
+        'r-gridextra=2.3*' \
+        'r-here=0.1*' && \
+    Rscript -e 'install.packages("projpred", repos="https://ftp.acc.umu.se/mirror/CRAN/")' \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
-
-#r-projpred \
-#
-#bayesplot \
-#rstan \
-#rstanarm \
-#shinystan \
-#loo \
-#projpred \
-#brms \
-#GGally \
-#MASS \
-#coda \
-#grid \
-#gridExtra \
-#here
-
-
+#        'r-gridgraphics=0.3*'  ??
 
 
 RUN pip install git+https://github.com/rkdarst/nbgrader@2d562bd && \
