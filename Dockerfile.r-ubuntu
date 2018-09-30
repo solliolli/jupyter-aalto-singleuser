@@ -1,0 +1,135 @@
+FROM aaltoscienceit/notebook-server-base
+
+## R support
+
+USER root
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        ed \
+        fonts-dejavu \
+        tzdata \
+	gfortran \
+        gzip \
+	libblas-dev \
+	libgit2-dev \
+	libssl-dev \
+	libopenblas-dev \
+	liblapack-dev \
+	r-base && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+#libnlopt-dev --> NO, not compatible
+
+#libprce2-dev
+#libbz2-dev
+#liblzma-dev
+
+
+RUN \
+    Rscript -e "install.packages(c('repr','IRdisplay','evaluate','crayon','pbdZMQ','devtools','uuid','digest'), clean=TRUE)" && \
+    Rscript -e "devtools::install_github('IRkernel/IRkernel')" && \
+    Rscript -e 'IRkernel::installspec(user = FALSE)'
+RUN jupyter kernelspec remove -f python3
+
+RUN \
+    Rscript -e 'install.packages(c("plyr", "devtools", "tidyverse", "shiny", "markdown", "forecast", "RSQLite", "reshape2", "nycflights13", "caret", "RCurl", "crayon", "randomForest", "htmltools", "sparklyr", "htmlwidgets", "hexbin"), repos="https://ftp.acc.umu.se/mirror/CRAN/", clean=TRUE)' && \
+    fix-permissions /usr/local/lib/R/site-library
+
+RUN \
+    Rscript -e 'install.packages(c("nloptr", "bayesplot", "rstan", "rstanarm", "shinystan", "loo", "brms", "GGally", "MASS", "coda", "gridBase", "gridExtra", "here", "projpred"), repos="https://ftp.acc.umu.se/mirror/CRAN/", clean=TRUE)' && \
+    fix-permissions /usr/local/lib/R/site-library
+
+RUN rm -r /home/$NB_USER/.local/ && \
+    echo 'c.NotebookApp.iopub_data_rate_limit = .8*2**20' >> /etc/jupyter/jupyter_notebook_config.py && \
+    echo 'c.LabApp.iopub_data_rate_limit = .8*2**20' >> /etc/jupyter/jupyter_notebook_config.py && \
+
+
+#RUN \
+#    for package in \
+#        nlopt bayesplot rstan rstanarm shinystan loo brms ggally mass \
+#	coda gridbase gridextra here ; do \
+#        Rscript -e "install.packages('$package', repos='https://ftp.acc.umu.se/mirror/CRAN/')" ; \
+#	done
+
+#    Rscript -e 'install.packages("nlopt", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("bayesplot", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("rstan", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("rstanarm", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("shinystan", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("loo", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("brms", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("ggally", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("mass", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("coda", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("gridbase", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("gridextra", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("here", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    true
+
+#  conda update --all && \
+
+
+#RUN conda config --system --remove channels conda-forge && \
+#    conda config --system --append channels conda-forge && \
+#    conda install -c conda -v --quiet --yes \
+#    'gcc-ng' \
+#    'binutils' \
+#    'nlopt' && \
+#    conda install --quiet --yes \
+#    'r-base' \
+#    'r-irkernel' \
+#    'r-plyr' \
+#    'r-devtools' \
+#    'r-tidyverse' \
+#    'r-shiny' \
+#    'r-rmarkdown' \
+#    'r-forecast' \
+#    'r-rsqlite' \
+#    'r-reshape2' \
+#    'r-nycflights13' \
+#    'r-caret' \
+#    'r-rcurl' \
+#    'r-crayon' \
+#    'r-randomforest' \
+#    'r-htmltools' \
+#    'r-sparklyr' \
+#    'r-htmlwidgets' \
+#    'r-hexbin' && \
+#     conda install -c conda-forge --quiet --yes \
+#         'r-bayesplot' \
+#         'r-rstan' \
+#         'r-rstanarm' \
+#         'r-shinystan' \
+#         'r-loo' \
+#         'r-brms' \
+#         'r-ggally' \
+#         'r-mass' \
+#         'r-coda' \
+#         'r-gridbase' \
+#         'r-gridextra' \
+#         'r-here' && \
+#    Rscript -e 'install.packages("projpred", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    conda clean -tipsy && \
+#    fix-permissions $CONDA_DIR
+##        'r-gridgraphics'  ??
+
+
+#    Rscript -e 'install.packages("nlopt", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("bayesplot", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("rstan", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("rstanarm", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("shinystan", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("loo", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("brms", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("ggally", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("mass", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("coda", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("gridbase", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("gridextra", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+#    Rscript -e 'install.packages("here", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
+
+
+
+USER $NB_UID
