@@ -6,6 +6,7 @@ USER root
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        clang \
         ed \
         fonts-dejavu \
         tzdata \
@@ -26,24 +27,63 @@ RUN apt-get update && \
 #libbz2-dev
 #liblzma-dev
 
+ARG CRAN_URL=https://cran.microsoft.com/snapshot/2018-10-02/
 
 RUN \
-    Rscript -e "install.packages(c('repr','IRdisplay','evaluate','crayon','pbdZMQ','devtools','uuid','digest'), clean=TRUE)" && \
+    Rscript -e "install.packages(c('repr','IRdisplay','evaluate','crayon','pbdZMQ','devtools','uuid','digest'), repos='${CRAN_URL}', clean=TRUE)" && \
     Rscript -e "devtools::install_github('IRkernel/IRkernel')" && \
     Rscript -e 'IRkernel::installspec(user = FALSE)'
 RUN jupyter kernelspec remove -f python3
 
+# Packages from jupyter r-notebook
 RUN \
-    Rscript -e 'install.packages(c("plyr", "devtools", "tidyverse", "shiny", "markdown", "forecast", "RSQLite", "reshape2", "nycflights13", "caret", "RCurl", "crayon", "randomForest", "htmltools", "sparklyr", "htmlwidgets", "hexbin"), repos="https://ftp.acc.umu.se/mirror/CRAN/", clean=TRUE)' && \
+    Rscript -e "install.packages(c('plyr', 'devtools', 'tidyverse', 'shiny', 'markdown', 'forecast', 'RSQLite', 'reshape2', 'nycflights13', 'caret', 'RCurl', 'crayon', 'randomForest', 'htmltools', 'sparklyr', 'htmlwidgets', 'hexbin'), repos='${CRAN_URL}', clean=TRUE)" && \
     fix-permissions /usr/local/lib/R/site-library
 
+#
+# Course setup
+#
+
+# Packages needed for bayesian macheine learning course
 RUN \
-    Rscript -e 'install.packages(c("nloptr", "bayesplot", "rstan", "rstanarm", "shinystan", "loo", "brms", "GGally", "MASS", "coda", "gridBase", "gridExtra", "here", "projpred"), repos="https://ftp.acc.umu.se/mirror/CRAN/", clean=TRUE)' && \
+    Rscript -e "install.packages(c('nloptr', 'bayesplot', 'rstan', 'rstanarm', 'shinystan', 'loo', 'brms', 'GGally', 'MASS', 'coda', 'gridBase', 'gridExtra', 'here', 'projpred'), repos='${CRAN_URL}', clean=TRUE)" && \
     fix-permissions /usr/local/lib/R/site-library
 
+# Try to disable Python kernel
 RUN rm -r /home/$NB_USER/.local/ && \
     echo 'c.NotebookApp.iopub_data_rate_limit = .8*2**20' >> /etc/jupyter/jupyter_notebook_config.py && \
     echo 'c.LabApp.iopub_data_rate_limit = .8*2**20' >> /etc/jupyter/jupyter_notebook_config.py && \
+    echo "c.KernelSpecManager.whitelist={'ir'}" >> /etc/jupyter/jupyter_notebook_config.py
+
+# Set default R compiler to clang to save memory.
+RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
+    echo "CXX=clang++"  >> /usr/lib/R/etc/Makevars
+ENV R_MAKEVARS_SITE /usr/lib/R/etc/Makevars
+
+#
+# Rstudio
+#
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+  	libapparmor1 \
+	libedit2 \
+	lsb-release \
+	psmisc \
+	libssl1.0.0 \
+	&& \
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/*
+
+ENV RSTUDIO_PKG=rstudio-server-1.0.136-amd64.deb
+RUN wget -q http://download2.rstudio.org/${RSTUDIO_PKG} && \
+    dpkg -i ${RSTUDIO_PKG} && \
+    rm ${RSTUDIO_PKG} && \
+    pip install git+https://github.com/jupyterhub/nbrsessionproxy.git && \
+    jupyter serverextension enable --sys-prefix --py nbrsessionproxy && \
+    jupyter nbextension install    --sys-prefix --py nbrsessionproxy && \
+    jupyter nbextension enable     --sys-prefix --py nbrsessionproxy
+
+
 
 
 #RUN \
