@@ -1,4 +1,4 @@
-FROM aaltoscienceit/notebook-server-base
+FROM aaltoscienceit/notebook-server-base:0.4.0
 
 ## R support
 
