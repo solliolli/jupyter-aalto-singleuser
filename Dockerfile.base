@@ -28,14 +28,21 @@ RUN pip install jupyterhub==0.9.1 && \
 
 
 # Custom extension installations
-RUN pip install \
+RUN conda install \
+         pytest \
+	 nbval \
+	 && \
+    pip install \
            ipywidgets \
-           jupyter_contrib_nbextensions && \
+           jupyter_contrib_nbextensions \
+	   pytest-ipynb \
+	   && \
     jupyter contrib nbextension install --sys-prefix && \
-    conda upgrade jupyterlab && \
+    conda install jupyterlab==0.34.* && \
     pip install \
            jupyterlab-git \
-           nbdime && \
+           nbdime \
+	   && \
     jupyter serverextension enable --py nbdime --sys-prefix && \
     jupyter nbextension install --py nbdime --sys-prefix && \
     jupyter nbextension enable --py nbdime --sys-prefix && \

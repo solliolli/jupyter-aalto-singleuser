@@ -1,4 +1,5 @@
-FROM aaltoscienceit/notebook-server-base:0.4.0
+ARG VER_BASE
+FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 
 ## R support
 
@@ -74,7 +75,7 @@ RUN apt-get update && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
-ENV RSTUDIO_PKG=rstudio-server-1.0.136-amd64.deb
+ENV RSTUDIO_PKG=rstudio-server-1.1.456-amd64.deb
 # https://github.com/jupyterhub/nbrsessionproxy
 RUN wget -q http://download2.rstudio.org/${RSTUDIO_PKG} && \
     dpkg -i ${RSTUDIO_PKG} && \
@@ -94,6 +95,7 @@ RUN git clone https://github.com/Viasat/nbrsessionproxy /usr/local/nbrsessionpro
     fix-permissions /usr/local/nbrsessionproxy/jupyterlab-rsessionproxy/ && \
     ln -s /usr/lib/rstudio-server/bin/rserver /usr/local/bin/
 
+RUN sed -i -e "s/= gcc/= clang/" -e "s/= g++ /= clang++/" /usr/lib/R/etc/Makeconf
 
 
 USER $NB_UID
