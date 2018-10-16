@@ -1,0 +1,52 @@
+ARG VER_BASE
+FROM aaltoscienceit/notebook-server-base:${VER_BASE}
+
+USER root
+
+# Custom installations
+# folium: BE remote sensing course
+# geopandas: BE remote sensing course
+# igraph: complex networks (general)
+# keras: general use (for gpu, keras-gpu)
+# librarosa: datasci2018
+# networkx: complex networks (general)
+# nose: mlbp2018
+# plotchecker: for nbgrader, mlbp2018
+# plotly: student request
+# pytorch: general use
+# pystan: general use, bayes course (updated prompt_toolkit needed as dependency)
+# rasterio: BE remote sensing course
+# scikit-learn: mlbp2018
+# tensorflow, tensorflow-tensorboard (general use)
+RUN conda install \
+           networkx \
+           nose \
+	   keras \
+	   pandas-datareader \
+	   plotly \
+	   pystan prompt_toolkit \
+	   pytorch torchvision \
+	   tensorflow tensorflow-tensorboard \
+           scikit-learn && \
+    conda install -c conda-forge \
+           folium \
+           geopandas \
+           igraph \
+	   feather-format \
+           librosa \
+	   rasterio \
+	   && \
+    pip install \
+           plotchecker && \
+    conda clean -tipsy && \
+    rm -rf /opt/conda/pkgs/cache/ && \
+    fix-permissions $CONDA_DIR /home/$NB_USER
+
+
+
+#tensorflow
+#pytorch
+#keras
+#pystan
+
+USER $NB_UID
