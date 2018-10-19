@@ -2,6 +2,8 @@ VER_BASE=0.4.3
 VER_STD=0.4.3
 VER_R=0.4.3
 
+TEST_MEM_LIMIT="--memory=2G"
+
 .PHONY: default
 
 default:
@@ -22,13 +24,15 @@ r:
 
 test-standard:
 	mkdir -p /tmp/tests
-	cp -r tests/* /tmp/tests/
-	docker run --volume=/tmp/tests:/tests:ro aaltoscienceit/notebook-server:$(VER_STD) pytest /tests/python/
+	rsync -a tests/ /tmp/tests/
+	docker run --volume=/tmp/tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) pytest /tests/python/
+#	CC="clang" CXX="clang++" jupyter nbconvert --exec --ExecutePreprocessor.timeout=300 pystan_demo.ipynb --stdout
 
 test-r:
 	mkdir -p /tmp/tests
-	cp tests/* /tmp/tests/
-	docker run --volume=/tmp/tests:/tests:ro -it aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) Rscript /tests/r/test-bayes.r
+	rsync -a tests/ /tmp/tests/
+	docker run --volume=/tmp/tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) Rscript /tests/r/test_bayes.r
+
 
 
 push-standard:
