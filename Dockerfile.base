@@ -6,7 +6,9 @@ USER root
 # Debian package
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+           clang \
            less \
+	   man-db \
 	   tzdata \
 	   vim \
            && \
@@ -33,24 +35,35 @@ RUN conda install \
 	 nbval \
 	 && \
     pip install \
+           ipymd \
            ipywidgets \
            jupyter_contrib_nbextensions \
 	   pytest-ipynb \
 	   && \
     jupyter contrib nbextension install --sys-prefix && \
+    ln -s /notebooks /home/jovyan/notebooks && \
+    rm --dir /home/jovyan/work && \
+    rm -rf /home/$NB_USER/.cache/yarn && \
+    conda clean -tipsy && \
+    npm cache clean --force && \
+    fix-permissions $CONDA_DIR /home/$NB_USER && \
+    rm -rf /opt/conda/pkgs/cache/
+
+
+RUN \
     conda install jupyterlab==0.34.* && \
     pip install \
            jupyterlab-git \
-           nbdime \
+           nbdime==1.0.2 \
 	   && \
     jupyter serverextension enable --py nbdime --sys-prefix && \
     jupyter nbextension install --py nbdime --sys-prefix && \
     jupyter nbextension enable --py nbdime --sys-prefix && \
-    jupyter serverextension enable --py jupyterlab_git && \
-    jupyter labextension install @jupyterlab/hub-extension \
-                                 @jupyter-widgets/jupyterlab-manager \
-                                 @jupyterlab/google-drive \
-                                 @jupyterlab/git \
+    jupyter serverextension enable --py --sys-prefix jupyterlab_git && \
+    jupyter labextension install @jupyterlab/hub-extension@0.11.0 \
+                                 @jupyter-widgets/jupyterlab-manager@0.37.4 \
+                                 @jupyterlab/google-drive@0.14 \
+                                 @jupyterlab/git@0.2.2 \
                                  nbdime-jupyterlab && \
     jupyter labextension disable @jupyterlab/google-drive && \
     nbdime config-git --enable --system && \
@@ -58,9 +71,8 @@ RUN conda install \
     conda clean -tipsy && \
     npm cache clean --force && \
     fix-permissions $CONDA_DIR /home/$NB_USER && \
-    rm -rf /opt/conda/pkgs/cache/ && \
-    ln -s /notebooks /home/jovyan/notebooks && \
-    rm --dir /home/jovyan/work
+    rm -rf /opt/conda/pkgs/cache/
+
 #                                jupyterlab_voyager \
 
 # @jupyterlab/google-drive disabled by default until the app can be

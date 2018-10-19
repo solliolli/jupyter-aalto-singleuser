@@ -18,16 +18,14 @@ USER root
 # rasterio: BE remote sensing course
 # scikit-learn: mlbp2018
 # tensorflow, tensorflow-tensorboard (general use)
-RUN conda install \
+RUN \
+    conda install \
            networkx \
            nose \
-	   keras \
 	   pandas-datareader \
 	   plotly \
-	   pystan prompt_toolkit \
-	   pytorch torchvision \
-	   tensorflow tensorflow-tensorboard \
-           scikit-learn && \
+           scikit-learn \
+	   && \
     conda install -c conda-forge \
            folium \
            geopandas \
@@ -37,7 +35,20 @@ RUN conda install \
 	   rasterio \
 	   && \
     pip install \
-           plotchecker && \
+           plotchecker \
+	   && \
+    conda clean -tipsy && \
+    rm -rf /opt/conda/pkgs/cache/ && \
+    fix-permissions $CONDA_DIR /home/$NB_USER
+
+
+RUN \
+    conda install \
+	   keras \
+	   pystan prompt_toolkit \
+	   pytorch torchvision \
+	   tensorflow tensorflow-tensorboard \
+	   && \
     conda clean -tipsy && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER

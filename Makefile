@@ -1,6 +1,11 @@
-VER_BASE=0.4.1
-VER_STD=0.4.1
-VER_R=0.4.1
+VER_BASE=0.4.3
+VER_STD=0.4.3
+VER_R=0.4.3
+
+.PHONY: default
+
+default:
+	echo "Please specifiy a command to run"
 
 full-rebuild: base standard test-standard
 

@@ -95,7 +95,7 @@ RUN git clone https://github.com/Viasat/nbrsessionproxy /usr/local/nbrsessionpro
     fix-permissions /usr/local/nbrsessionproxy/jupyterlab-rsessionproxy/ && \
     ln -s /usr/lib/rstudio-server/bin/rserver /usr/local/bin/
 
-RUN sed -i -e "s/= gcc/= clang/" -e "s/= g++ /= clang++/" /usr/lib/R/etc/Makeconf
+RUN sed -i -e "s/= gcc/= clang -flto=thin/" -e "s/= g++ /= clang++/" /usr/lib/R/etc/Makeconf
 
 
 USER $NB_UID
