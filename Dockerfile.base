@@ -28,19 +28,20 @@ RUN chmod a+x /usr/local/bin/disable_formgrader.sh
 RUN pip install jupyterhub==0.9.1 && \
            fix-permissions $CONDA_DIR /home/$NB_USER
 
-
 # Custom extension installations
 RUN conda install \
          pytest \
 	 nbval \
 	 && \
     pip install \
+           bash_kernel \
            ipymd \
            ipywidgets \
            jupyter_contrib_nbextensions \
 	   pytest-ipynb \
 	   && \
     jupyter contrib nbextension install --sys-prefix && \
+    python -m bash_kernel.install --sys-prefix && \
     ln -s /notebooks /home/jovyan/notebooks && \
     rm --dir /home/jovyan/work && \
     rm -rf /home/$NB_USER/.cache/yarn && \
