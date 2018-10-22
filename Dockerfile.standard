@@ -42,12 +42,16 @@ RUN \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
 
+# imbalanced-learn (student request)
 RUN \
     conda install \
 	   keras \
 	   pystan prompt_toolkit \
 	   pytorch torchvision \
 	   tensorflow tensorflow-tensorboard \
+	   && \
+    conda install -c conda-forge \
+           imbalanced-learn \
 	   && \
     conda clean -tipsy && \
     rm -rf /opt/conda/pkgs/cache/ && \
