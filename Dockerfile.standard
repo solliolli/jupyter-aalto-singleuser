@@ -57,6 +57,16 @@ RUN \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
+# Last added packages - move to somewhere above when it makes sense
+# pydotplus - dsfb2018 instructor request
+RUN \
+    conda install \
+	   pydotplus \
+	   && \
+    conda clean -tipsy && \
+    rm -rf /opt/conda/pkgs/cache/ && \
+    fix-permissions $CONDA_DIR /home/$NB_USER
+
 
 
 #tensorflow
