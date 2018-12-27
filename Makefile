@@ -1,5 +1,5 @@
 VER_BASE=0.4.4
-VER_STD=0.4.5        # Python one
+VER_STD=0.4.6        # Python
 VER_R=0.4.3
 
 TEST_MEM_LIMIT="--memory=2G"
