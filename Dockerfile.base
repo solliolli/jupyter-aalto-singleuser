@@ -1,4 +1,5 @@
-FROM jupyter/scipy-notebook:8d22c86ed4d7
+ARG UPSTREAM_SCIPY_NOTEBOOK_VER
+FROM jupyter/scipy-notebook:${UPSTREAM_SCIPY_NOTEBOOK_VER}
 
 
 USER root
@@ -7,8 +8,13 @@ USER root
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
            clang \
+           git-annex \
+	   git-lfs \
+	   git-svn \
+           graphviz \
            less \
 	   man-db \
+	   openssh-client \
 	   tzdata \
 	   vim \
            && \
@@ -25,20 +31,21 @@ RUN chmod a+x /usr/local/bin/disable_formgrader.sh
 
 # JupyterHub says we can use any exsting jupyter image, as long as we properly pin the JupyterHub version
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
-RUN pip install jupyterhub==0.9.1 && \
+RUN pip install --no-cache-dir jupyterhub==0.9.4 && \
            fix-permissions $CONDA_DIR /home/$NB_USER
 
 # Custom extension installations
+#   importnb allows pytest to test ipynb
 RUN conda install \
          pytest \
 	 nbval \
 	 && \
-    pip install \
+    pip install --no-cache-dir \
            bash_kernel \
+	   importnb \
            ipymd \
            ipywidgets \
            jupyter_contrib_nbextensions \
-	   pytest-ipynb \
 	   && \
     jupyter contrib nbextension install --sys-prefix && \
     python -m bash_kernel.install --sys-prefix && \
@@ -52,19 +59,19 @@ RUN conda install \
 
 
 RUN \
-    conda install jupyterlab==0.34.* && \
-    pip install \
+    conda install jupyterlab==0.35.* && \
+    pip install --no-cache-dir \
            jupyterlab-git \
-           nbdime==1.0.2 \
+           nbdime \
 	   && \
     jupyter serverextension enable --py nbdime --sys-prefix && \
     jupyter nbextension install --py nbdime --sys-prefix && \
     jupyter nbextension enable --py nbdime --sys-prefix && \
     jupyter serverextension enable --py --sys-prefix jupyterlab_git && \
-    jupyter labextension install @jupyterlab/hub-extension@0.11.0 \
-                                 @jupyter-widgets/jupyterlab-manager@0.37.4 \
-                                 @jupyterlab/google-drive@0.14 \
-                                 @jupyterlab/git@0.2.2 \
+    jupyter labextension install @jupyterlab/hub-extension \
+                                 @jupyter-widgets/jupyterlab-manager \
+                                 @jupyterlab/google-drive \
+                                 @jupyterlab/git \
                                  nbdime-jupyterlab && \
     jupyter labextension disable @jupyterlab/google-drive && \
     nbdime config-git --enable --system && \
@@ -88,7 +95,7 @@ RUN sed -i s/625147942732-t30t8vnn43fl5mvg1qde5pl84603dr6s.apps.googleuserconten
      /opt/conda/share/jupyter/lab/staging/build/vendors~main.*.js* \
      /opt/conda/share/jupyter/lab/staging/node_modules/@jupyterlab/google-drive/lib/gapi*
 
-RUN pip install git+https://github.com/rkdarst/nbgrader@2d562bd && \
+RUN pip install --no-cache-dir git+https://github.com/rkdarst/nbgrader@2d562bd && \
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
     jupyter nbextension enable --sys-prefix --py nbgrader && \
     jupyter serverextension enable --sys-prefix --py nbgrader && \

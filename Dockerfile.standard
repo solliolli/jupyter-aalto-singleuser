@@ -4,6 +4,15 @@ FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 USER root
 
 # Custom installations
+#RUN apt-get update && \
+#    apt-get install -y --no-install-recommends \
+#           ... \
+#           && \
+#    apt-get clean && \
+#    rm -rf /var/lib/apt/lists/*
+
+
+# Custom installations
 # folium: BE remote sensing course
 # geopandas: BE remote sensing course
 # igraph: complex networks (general)
@@ -13,28 +22,30 @@ USER root
 # nose: mlbp2018
 # plotchecker: for nbgrader, mlbp2018
 # plotly: student request
+# pydotplus - dsfb2018 instructor request
 # pytorch: general use
 # pystan: general use, bayes course (updated prompt_toolkit needed as dependency)
 # rasterio: BE remote sensing course
 # scikit-learn: mlbp2018
 # tensorflow, tensorflow-tensorboard (general use)
+#           geopandas      # does not currently work
+#	   rasterio 
 RUN \
     conda install \
            networkx \
            nose \
 	   pandas-datareader \
 	   plotly \
+	   pydotplus \
            scikit-learn \
 	   && \
     conda install -c conda-forge \
            folium \
-           geopandas \
-           igraph \
+           python-igraph \
 	   feather-format \
            librosa \
-	   rasterio \
 	   && \
-    pip install \
+    pip install --no-cache-dir \
            plotchecker \
 	   && \
     conda clean -tipsy && \
@@ -57,31 +68,23 @@ RUN \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
+
+
 # Last added packages - move to somewhere above when it makes sense
-# pydotplus - dsfb2018 instructor request
-RUN \
-    conda install \
-	   pydotplus \
-	   && \
-    conda clean -tipsy && \
-    rm -rf /opt/conda/pkgs/cache/ && \
-    fix-permissions $CONDA_DIR /home/$NB_USER
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-           git-annex \
-	   git-lfs \
-	   git-svn \
-           graphviz \
-	   openssh-client \
-           && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+#RUN \
+#    conda install \
+#           ... \
+#	   && \
+#    conda clean -tipsy && \
+#    rm -rf /opt/conda/pkgs/cache/ && \
+#    fix-permissions $CONDA_DIR /home/$NB_USER
+#RUN apt-get update && \
+#    apt-get install -y --no-install-recommends \
+#           ... \
+#           && \
+#    apt-get clean && \
+#    rm -rf /var/lib/apt/lists/*
 
 
-
-#tensorflow
-#pytorch
-#keras
-#pystan
 
 USER $NB_UID
