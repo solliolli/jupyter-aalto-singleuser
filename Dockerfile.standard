@@ -85,6 +85,8 @@ RUN \
 #    apt-get clean && \
 #    rm -rf /var/lib/apt/lists/*
 
-
+# Duplicate of base, but hooks can update frequently and are small so
+# put them last.
+COPY scripts/ /usr/local/bin/
 
 USER $NB_UID

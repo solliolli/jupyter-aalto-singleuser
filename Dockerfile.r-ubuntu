@@ -97,5 +97,8 @@ RUN git clone https://github.com/Viasat/nbrsessionproxy /usr/local/nbrsessionpro
 
 RUN sed -i -e "s/= gcc/= clang -flto=thin/" -e "s/= g++ /= clang++/" /usr/lib/R/etc/Makeconf
 
+# Duplicate of base, but hooks can update frequently and are small so
+# put them last.
+COPY scripts/ /usr/local/bin/
 
 USER $NB_UID
