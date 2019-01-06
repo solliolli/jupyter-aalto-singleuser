@@ -5,7 +5,7 @@ AALTO_NEWHOME="${AALTO_NEWHOME:-/notebooks/.home/}"
 mkdir -p "$AALTO_NEWHOME"
 
 # If a directory, it must end it slash or else the dir won't be created.
-for path in $AALTO_EXTRA_HOME_LINKS .gitconfig .local/share/jupyter/nbgrader_cache/ ; do
+for path in $AALTO_EXTRA_HOME_LINKS .gitconfig .local/share/jupyter/nbgrader_cache/ .ssh/ ; do
     dirname=$(dirname "$path")
     basename=$(basename "$path")
     mkdir -p $HOME/"$dirname"
@@ -18,7 +18,7 @@ for path in $AALTO_EXTRA_HOME_LINKS .gitconfig .local/share/jupyter/nbgrader_cac
 	*)
 	    # Regular file
 	    touch "$AALTO_NEWHOME/$path"
-	    ln -sT "AALTO_NEWHOME/$path" $HOME/"$path"
+	    ln -sT "$AALTO_NEWHOME/$path" $HOME/"$path"
 	    ;;
 	esac
 done

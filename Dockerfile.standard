@@ -71,13 +71,14 @@ RUN \
 
 
 # Last added packages - move to somewhere above when it makes sense
-#RUN \
-#    conda install \
-#           ... \
-#	   && \
-#    conda clean -tipsy && \
-#    rm -rf /opt/conda/pkgs/cache/ && \
-#    fix-permissions $CONDA_DIR /home/$NB_USER
+RUN \
+    conda install -c conda-forge \
+           mlxtend \
+	   scikit-plot \
+	   && \
+    conda clean -tipsy && \
+    rm -rf /opt/conda/pkgs/cache/ && \
+    fix-permissions $CONDA_DIR /home/$NB_USER
 #RUN apt-get update && \
 #    apt-get install -y --no-install-recommends \
 #           ... \

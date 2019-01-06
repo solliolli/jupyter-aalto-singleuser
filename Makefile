@@ -1,8 +1,8 @@
 UPSTREAM_SCIPY_NOTEBOOK_VER=7254cdcfa22b
 CRAN_URL=https://cran.microsoft.com/snapshot/2018-12-31/
 VER_BASE=0.5.1
-VER_STD=0.5.1        # Python
-VER_R=0.5.1
+VER_STD=0.5.3        # Python
+VER_R=0.5.3
 
 TEST_MEM_LIMIT="--memory=2G"
 
