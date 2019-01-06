@@ -13,12 +13,12 @@ for path in $AALTO_EXTRA_HOME_LINKS .gitconfig .local/share/jupyter/nbgrader_cac
 	*/)
 	    # This is a directory link
 	    mkdir -p "$AALTO_NEWHOME/$path"
-	    ln -sT "$AALTO_NEWHOME/$path" $HOME/"${path%/}"
+	    ln -sTf "$AALTO_NEWHOME/$path" $HOME/"${path%/}"
 	    ;;
 	*)
 	    # Regular file
 	    touch "$AALTO_NEWHOME/$path"
-	    ln -sT "$AALTO_NEWHOME/$path" $HOME/"$path"
+	    ln -sTf "$AALTO_NEWHOME/$path" $HOME/"$path"
 	    ;;
 	esac
 done
