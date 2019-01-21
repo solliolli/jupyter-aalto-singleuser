@@ -71,8 +71,10 @@ RUN \
 
 
 # Last added packages - move to somewhere above when it makes sense
+#  nbstripout   - generic package
 RUN \
     conda install -c conda-forge \
+           nbstripout \
            mlxtend \
 	   scikit-plot \
 	   && \
