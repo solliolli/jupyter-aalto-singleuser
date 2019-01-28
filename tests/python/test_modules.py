@@ -3,6 +3,8 @@
 import pystan
 import tensorflow
 import torch
+assert torch.__version__ >= '1.0.0'
+import torchvision
 import keras
 import imblearn
 import networkx

@@ -78,6 +78,7 @@ RUN \
            mlxtend \
 	   scikit-plot \
 	   && \
+    conda upgrade -c pytorch pytorch && \
     conda clean -tipsy && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER

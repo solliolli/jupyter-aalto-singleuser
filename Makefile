@@ -1,7 +1,7 @@
 UPSTREAM_SCIPY_NOTEBOOK_VER=7254cdcfa22b
 CRAN_URL=https://cran.microsoft.com/snapshot/2018-12-31/
 VER_BASE=0.5.1
-VER_STD=0.5.4        # Python
+VER_STD=0.5.5        # Python
 VER_R=0.5.3
 
 TEST_MEM_LIMIT="--memory=2G"
@@ -25,11 +25,11 @@ r:
 
 
 test-standard:
-	mkdir -p /tmp/tests
-	rsync -a tests/ /tmp/tests/
-	docker run --volume=/tmp/tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) pytest -o cache_dir=/tmp/pytestcache /tests/python/
+	mkdir -p /tmp/nbs-tests
+	rsync -a --delete tests/ /tmp/nbs-tests/
+	docker run --volume=/tmp/nbs-tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) pytest -o cache_dir=/tmp/pytestcache /tests/python/
 #	CC="clang" CXX="clang++" jupyter nbconvert --exec --ExecutePreprocessor.timeout=300 pystan_demo.ipynb --stdout
-	docker run --volume=/tmp/tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_R) bash -c 'cd /tmp ; git clone https://github.com/avehtari/BDA_py_demos ; cd BDA_py_demos/demos_pystan/ ; CC=clang CXX=clang++ jupyter nbconvert --exec --ExecutePreprocessor.timeout=300 pystan_demo.ipynb --stdout > /dev/null'
+	docker run --volume=/tmp/nbs-tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_R) bash -c 'cd /tmp ; git clone https://github.com/avehtari/BDA_py_demos ; cd BDA_py_demos/demos_pystan/ ; CC=clang CXX=clang++ jupyter nbconvert --exec --ExecutePreprocessor.timeout=300 pystan_demo.ipynb --stdout > /dev/null'
 
 test-r:
 	mkdir -p /tmp/tests
