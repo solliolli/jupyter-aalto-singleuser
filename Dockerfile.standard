@@ -79,6 +79,7 @@ RUN \
 	   scikit-plot \
 	   && \
     conda upgrade -c pytorch pytorch && \
+    pip install --upgrade --no-deps https://github.com/rkdarst/nbgrader/archive/a16f915.zip && \
     conda clean -tipsy && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
