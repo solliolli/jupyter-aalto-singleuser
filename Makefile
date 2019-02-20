@@ -1,7 +1,7 @@
 UPSTREAM_SCIPY_NOTEBOOK_VER=7254cdcfa22b
 CRAN_URL=https://cran.microsoft.com/snapshot/2018-12-31/
 VER_BASE=0.5.1       # base image - jupyter stuff only, not much software
-VER_STD=0.5.6        # Python
+VER_STD=0.5.7        # Python
 VER_R=0.5.3          # R
 
 TEST_MEM_LIMIT="--memory=2G"

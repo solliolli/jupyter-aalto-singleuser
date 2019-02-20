@@ -71,13 +71,22 @@ RUN \
 
 
 # Last added packages - move to somewhere above when it makes sense
+#  cvxopt       - mlkern2019
 #  nbstripout   - generic package
+#  lapack       - dependency for cvxpy
+#  cvxpy        - mlkern2019
 RUN \
     conda install -c conda-forge \
+           cvxopt \
+	   lapack \
            nbstripout \
            mlxtend \
 	   scikit-plot \
+	   lapack \
 	   && \
+    conda install -c cvxgrp \
+          cvxpy \
+	  && \
     conda upgrade -c pytorch pytorch && \
     pip install --upgrade --no-deps https://github.com/rkdarst/nbgrader/archive/a16f915.zip && \
     conda clean -tipsy && \
