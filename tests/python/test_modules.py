@@ -10,6 +10,7 @@ def test_modules():
     #import pandas_datareader # currently broken
     import plotly
     import pystan
+    import tables
     import sklearn
     import tensorflow
     import torch ; assert torch.__version__ >= '1.0.0'
@@ -34,4 +35,8 @@ def test_modules():
 
     # mlkern2019
     import cvxopt
-    import cvxpy
+    #import cvxpy
+
+    # Intro to AI
+    import bcolz
+    import tqdm

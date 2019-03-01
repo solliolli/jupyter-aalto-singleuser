@@ -1,7 +1,7 @@
 UPSTREAM_SCIPY_NOTEBOOK_VER=7254cdcfa22b
 CRAN_URL=https://cran.microsoft.com/snapshot/2018-12-31/
 VER_BASE=0.5.1       # base image - jupyter stuff only, not much software
-VER_STD=0.5.8        # Python
+VER_STD=0.5.9        # Python
 VER_R=0.5.3          # R
 
 TEST_MEM_LIMIT="--memory=2G"
@@ -29,6 +29,7 @@ test-standard:
 	rsync -a --delete tests/ /tmp/nbs-tests/
 	docker run --volume=/tmp/nbs-tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) pytest -o cache_dir=/tmp/pytestcache /tests/python/${TESTFILE} ${TESTARGS}
 #	CC="clang" CXX="clang++" jupyter nbconvert --exec --ExecutePreprocessor.timeout=300 pystan_demo.ipynb --stdout
+test-standard-full: test-standand
 	docker run --volume=/tmp/nbs-tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) bash -c 'cd /tmp ; git clone https://github.com/avehtari/BDA_py_demos ; cd BDA_py_demos/demos_pystan/ ; CC=clang CXX=clang++ jupyter nbconvert --exec --ExecutePreprocessor.timeout=300 pystan_demo.ipynb --stdout > /dev/null'
 	@echo
 	@echo
