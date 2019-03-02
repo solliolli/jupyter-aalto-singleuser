@@ -2,6 +2,7 @@ UPSTREAM_SCIPY_NOTEBOOK_VER=7254cdcfa22b
 CRAN_URL=https://cran.microsoft.com/snapshot/2018-12-31/
 VER_BASE=0.5.1       # base image - jupyter stuff only, not much software
 VER_STD=0.5.9        # Python
+VER_JULIA=0.5.9      # Julia
 VER_R=0.5.3          # R
 
 TEST_MEM_LIMIT="--memory=2G"
@@ -22,6 +23,9 @@ standard:
 #	docker build -t aaltoscienceit/notebook-server-r:0.4.0 --pull=false . -f Dockerfile.r
 r:
 	docker build -t aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) --pull=false . -f Dockerfile.r-ubuntu --build-arg=VER_BASE=$(VER_BASE) --build-arg=CRAN_URL=$(CRAN_URL)
+julia:
+	docker build -t aaltoscienceit/notebook-server-julia:$(VER_JULIA) --pull=false . -f Dockerfile.julia --build-arg=VER_BASE=$(VER_BASE)
+
 
 
 test-standard:
