@@ -52,5 +52,17 @@ push-standard:
 	docker push aaltoscienceit/notebook-server:$(VER_STD)
 push-r:
 	docker push aaltoscienceit/notebook-server-r-ubuntu:$(VER_R)
+push-julia:
+#	time docker save aaltoscienceit/notebook-server-julia:${VER_JULIA} | ssh manager ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
+	docker push aaltoscienceit/notebook-server-julia:$(VER_JULIA)
 push-dev:
-	time docker save aaltoscienceit/notebook-server-r-ubuntu:${VER_STD} | ssh manager ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
+	time docker save aaltoscienceit/notebook-server-r-ubuntu:${VER_STD} | ssh ${KHOST} ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
+
+
+
+pull:
+	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server:${VER_STD}"
+pull-r:
+	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-r-ubuntu:${VER_R}"
+pull-julia:
+	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-julia:${VER_JULIA}"
