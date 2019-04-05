@@ -1,7 +1,7 @@
 UPSTREAM_SCIPY_NOTEBOOK_VER=7254cdcfa22b
 CRAN_URL=https://cran.microsoft.com/snapshot/2018-12-31/
 VER_BASE=0.5.1       # base image - jupyter stuff only, not much software
-VER_STD=0.5.9        # Python
+VER_STD=0.5.10       # Python
 VER_JULIA=0.5.9      # Julia
 VER_R=0.5.3          # R
 
@@ -60,7 +60,7 @@ push-dev:
 
 
 
-pull:
+pull-standard:
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server:${VER_STD}"
 pull-r:
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-r-ubuntu:${VER_R}"

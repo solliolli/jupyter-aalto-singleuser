@@ -35,7 +35,7 @@ def test_modules():
 
     # mlkern2019
     import cvxopt
-    #import cvxpy
+    import cvxpy
 
     # Intro to AI
     import bcolz

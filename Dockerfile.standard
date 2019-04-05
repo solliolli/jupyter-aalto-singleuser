@@ -34,20 +34,20 @@ RUN \
     conda install \
            networkx \
            nose \
-           pandas-datareader \
-           plotly \
-           pydotplus \
+	   pandas-datareader \
+	   plotly \
+	   pydotplus \
            scikit-learn \
-           && \
+	   && \
     conda install -c conda-forge \
            folium \
            python-igraph \
-           feather-format \
+	   feather-format \
            librosa \
-           && \
+	   && \
     pip install --no-cache-dir \
            plotchecker \
-           && \
+	   && \
     conda clean -tipsy && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
@@ -56,14 +56,14 @@ RUN \
 # imbalanced-learn (student request)
 RUN \
     conda install \
-           keras \
-           pystan prompt_toolkit \
-           pytorch torchvision \
-           tensorflow tensorflow-tensorboard \
-           && \
+	   keras \
+	   pystan prompt_toolkit \
+	   pytorch torchvision \
+	   tensorflow tensorflow-tensorboard \
+	   && \
     conda install -c conda-forge \
            imbalanced-learn \
-           && \
+	   && \
     conda clean -tipsy && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
@@ -79,17 +79,14 @@ RUN \
 #  bcolz        - introai2019
 #  tqdm         - introai2019
 RUN \
-    conda install -c conda-forge \
-           cvxopt \
+    conda install -c conda-forge --only-deps --no-update-dependencies  \
            lapack \
            nbstripout \
            mlxtend \
            scikit-plot \
            lapack \
+	   python \
            && \
-    conda install -c cvxgrp \
-          cvxpy \
-          && \
     conda upgrade -c pytorch pytorch && \
     pip install --upgrade --no-deps https://github.com/rkdarst/nbgrader/archive/a16f915.zip && \
     conda clean -tipsy && \
@@ -101,6 +98,10 @@ RUN \
            gpflow \
            tqdm \
            && \
+    pip install \
+        cvxopt \
+        cvxpy==1.0.4 \
+        && \
     conda clean -tipsy && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
