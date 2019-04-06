@@ -12,7 +12,8 @@ def test_modules():
     import pystan
     import tables
     import sklearn
-    import tensorflow
+    import tensorflow ; assert tensorflow.__version__ >= '1.13'
+    import tensorflow_hub
     import torch ; assert torch.__version__ >= '1.0.0'
     import torchvision ; assert torchvision.__version__ >= '0.2.1'
 

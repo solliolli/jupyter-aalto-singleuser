@@ -105,6 +105,11 @@ RUN \
     conda clean -tipsy && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
+RUN \
+    conda install -c anaconda \
+           tensorflow && \
+    conda install \
+           tensorflow-hub
 #RUN apt-get update && \
 #    apt-get install -y --no-install-recommends \
 #           ... \
