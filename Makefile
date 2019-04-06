@@ -66,3 +66,12 @@ pull-r:
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-r-ubuntu:${VER_R}"
 pull-julia:
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-julia:${VER_JULIA}"
+
+
+# Clean up disk space
+prune-images:
+#	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker rmi aaltoscienceit/notebook-server:0.5.{0,1,2,3,4,5,6,7}'
+	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker image prune -f'
+	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker container prune -f'
+	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker images' | cut '-d:' '-f2-' | sort
+
