@@ -99,8 +99,10 @@ RUN \
            tqdm \
            && \
     pip install \
+        calysto \
         cvxopt \
         cvxpy==1.0.4 \
+	metakernel \
         && \
     conda clean -tipsy && \
     rm -rf /opt/conda/pkgs/cache/ && \
