@@ -41,3 +41,6 @@ def test_modules():
     # Intro to AI
     import bcolz
     import tqdm
+
+    # Introduction to Quantum Technologies, Matti Raasakka, RT#14866
+    import qiskit
