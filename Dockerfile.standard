@@ -29,22 +29,22 @@ USER root
 # scikit-learn: mlbp2018
 # tensorflow, tensorflow-tensorboard (general use)
 #           geopandas      # does not currently work
-#          rasterio 
+#          rasterio
 RUN \
     conda install \
-           networkx \
-           nose \
-	   pandas-datareader \
-	   plotly \
-	   pydotplus \
-           scikit-learn \
-	   && \
+        networkx \
+        nose \
+        pandas-datareader \
+        plotly \
+        pydotplus \
+        scikit-learn \
+        && \
     conda install -c conda-forge \
-           folium \
-           python-igraph \
-	   feather-format \
-           librosa \
-	   && \
+        folium \
+        python-igraph \
+        feather-format \
+        librosa \
+        && \
     pip install --no-cache-dir \
         plotchecker \
         && \
@@ -81,13 +81,13 @@ RUN \
 #  qiskit       - Introduction to Quantum Technologies, Matti Raasakka, RT#14866
 RUN \
     conda install -c conda-forge --only-deps --no-update-dependencies  \
-           lapack \
-           nbstripout \
-           mlxtend \
-           scikit-plot \
-           lapack \
-	   python \
-           && \
+        lapack \
+        nbstripout \
+        mlxtend \
+        scikit-plot \
+        lapack \
+        python \
+        && \
     conda upgrade -c pytorch pytorch && \
     pip install --upgrade --no-deps https://github.com/rkdarst/nbgrader/archive/a16f915.zip && \
     conda clean --all --yes && \
@@ -103,7 +103,7 @@ RUN \
         calysto \
         cvxopt \
         cvxpy==1.0.4 \
-	metakernel \
+        metakernel \
         && \
     conda clean --all --yes && \
     rm -rf /opt/conda/pkgs/cache/ && \

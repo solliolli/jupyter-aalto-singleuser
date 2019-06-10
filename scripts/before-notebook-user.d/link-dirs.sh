@@ -10,17 +10,17 @@ for path in $AALTO_EXTRA_HOME_LINKS .gitconfig .local/share/jupyter/nbgrader_cac
     basename=$(basename "$path")
     mkdir -p $HOME/"$dirname"
     case "$path" in
-	*/)
-	    # This is a directory link
-	    mkdir -p "$AALTO_NEWHOME/$path"
-	    ln -sTf "$AALTO_NEWHOME/$path" $HOME/"${path%/}"
-	    ;;
-	*)
-	    # Regular file
-	    touch "$AALTO_NEWHOME/$path"
-	    ln -sTf "$AALTO_NEWHOME/$path" $HOME/"$path"
-	    ;;
-	esac
+    */)
+        # This is a directory link
+        mkdir -p "$AALTO_NEWHOME/$path"
+        ln -sTf "$AALTO_NEWHOME/$path" $HOME/"${path%/}"
+        ;;
+    *)
+        # Regular file
+        touch "$AALTO_NEWHOME/$path"
+        ln -sTf "$AALTO_NEWHOME/$path" $HOME/"$path"
+        ;;
+    esac
 done
 
 unset path dirname basename

@@ -48,7 +48,6 @@ test-r:
 
 
 
-
 push-standard:
 	docker push aaltoscienceit/notebook-server:$(VER_STD)
 push-r:
@@ -75,4 +74,3 @@ prune-images:
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker image prune -f'
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker container prune -f'
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker images' | cut '-d:' '-f2-' | sort
-

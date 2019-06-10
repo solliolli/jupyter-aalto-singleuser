@@ -41,9 +41,9 @@ RUN  \
     echo "c.KernelSpecManager.whitelist={'julia-1.1', 'bash'}" >> /etc/jupyter/jupyter_notebook_config.py
 
 RUN \
-    conda install  \
-           pyqt \
-           && \
+    conda install \
+        pyqt \
+        && \
     conda clean --all --yes && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER

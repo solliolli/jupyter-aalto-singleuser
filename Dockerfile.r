@@ -23,42 +23,42 @@ RUN apt-get update && \
 RUN conda config --system --remove channels conda-forge && \
     conda config --system --append channels conda-forge && \
     conda install -c conda -v --quiet --yes \
-    'gcc-ng' \
-    'binutils' \
-    'nlopt' && \
+        'gcc-ng' \
+        'binutils' \
+        'nlopt' && \
     conda install --quiet --yes \
-    'r-base' \
-    'r-irkernel' \
-    'r-plyr' \
-    'r-devtools' \
-    'r-tidyverse' \
-    'r-shiny' \
-    'r-rmarkdown' \
-    'r-forecast' \
-    'r-rsqlite' \
-    'r-reshape2' \
-    'r-nycflights13' \
-    'r-caret' \
-    'r-rcurl' \
-    'r-crayon' \
-    'r-randomforest' \
-    'r-htmltools' \
-    'r-sparklyr' \
-    'r-htmlwidgets' \
-    'r-hexbin' && \
+        'r-base' \
+        'r-irkernel' \
+        'r-plyr' \
+        'r-devtools' \
+        'r-tidyverse' \
+        'r-shiny' \
+        'r-rmarkdown' \
+        'r-forecast' \
+        'r-rsqlite' \
+        'r-reshape2' \
+        'r-nycflights13' \
+        'r-caret' \
+        'r-rcurl' \
+        'r-crayon' \
+        'r-randomforest' \
+        'r-htmltools' \
+        'r-sparklyr' \
+        'r-htmlwidgets' \
+        'r-hexbin' && \
      conda install -c conda-forge --quiet --yes \
-         'r-bayesplot' \
-         'r-rstan' \
-         'r-rstanarm' \
-         'r-shinystan' \
-         'r-loo' \
-         'r-brms' \
-         'r-ggally' \
-         'r-mass' \
-         'r-coda' \
-         'r-gridbase' \
-         'r-gridextra' \
-         'r-here' && \
+        'r-bayesplot' \
+        'r-rstan' \
+        'r-rstanarm' \
+        'r-shinystan' \
+        'r-loo' \
+        'r-brms' \
+        'r-ggally' \
+        'r-mass' \
+        'r-coda' \
+        'r-gridbase' \
+        'r-gridextra' \
+        'r-here' && \
     Rscript -e 'install.packages("projpred", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
     conda clean --all --yes && \
     fix-permissions $CONDA_DIR
