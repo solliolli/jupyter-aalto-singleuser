@@ -34,6 +34,8 @@ RUN chmod a+x /usr/local/bin/disable_formgrader.sh
 RUN pip install --no-cache-dir jupyterhub==0.9.4 && \
         fix-permissions $CONDA_DIR /home/$NB_USER
 
+RUN conda install conda=4.6.14
+
 # Custom extension installations
 #   importnb allows pytest to test ipynb
 RUN conda install \

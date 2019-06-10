@@ -56,13 +56,21 @@ RUN \
 # imbalanced-learn (student request)
 RUN \
     conda install \
-	   keras \
-	   pystan prompt_toolkit \
-	   pytorch torchvision \
-	   tensorflow tensorflow-tensorboard \
-	   && \
+        keras \
+        pystan prompt_toolkit
+RUN \
+    conda install -c pytorch \
+        pytorch=1.1.0 \
+        torchvision=0.3.0
+RUN \
+    # Installing from pip because the tensorflow and tensorboard versions found
+    # from the anaconda repos don't support python 3.7 yet
+    pip install \
+        tensorflow==1.13.1 \
+        tensorflow-tensorboard==1.5.1 \
+        && \
     conda install -c conda-forge \
-           imbalanced-learn \
+        imbalanced-learn=0.4.3 \
         && \
     conda clean --all --yes && \
     rm -rf /opt/conda/pkgs/cache/ && \
@@ -80,7 +88,7 @@ RUN \
 #  tqdm         - introai2019
 #  qiskit       - Introduction to Quantum Technologies, Matti Raasakka, RT#14866
 RUN \
-    conda install -c conda-forge --only-deps --no-update-dependencies  \
+    conda install -c conda-forge --only-deps --no-update-deps  \
         lapack \
         nbstripout \
         mlxtend \
@@ -95,10 +103,10 @@ RUN \
     fix-permissions $CONDA_DIR /home/$NB_USER
 RUN \
     conda install -c conda-forge \
-           bcolz \
-           gpflow \
-           tqdm \
-           && \
+        bcolz \
+        tqdm
+RUN pip install gpflow
+RUN \
     pip install \
         calysto \
         cvxopt \
@@ -114,7 +122,6 @@ RUN \
     conda install \
            tensorflow-hub
 RUN \
-    # Sympy is included in jupyter/scipy-notebook, pip refuses to upgrade
     pip install qiskit==0.10.3
 
 #RUN apt-get update && \
