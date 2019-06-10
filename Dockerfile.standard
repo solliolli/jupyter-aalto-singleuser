@@ -46,9 +46,9 @@ RUN \
            librosa \
 	   && \
     pip install --no-cache-dir \
-           plotchecker \
-	   && \
-    conda clean -tipsy && \
+        plotchecker \
+        && \
+    conda clean --all --yes && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
@@ -63,8 +63,8 @@ RUN \
 	   && \
     conda install -c conda-forge \
            imbalanced-learn \
-	   && \
-    conda clean -tipsy && \
+        && \
+    conda clean --all --yes && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
@@ -90,7 +90,7 @@ RUN \
            && \
     conda upgrade -c pytorch pytorch && \
     pip install --upgrade --no-deps https://github.com/rkdarst/nbgrader/archive/a16f915.zip && \
-    conda clean -tipsy && \
+    conda clean --all --yes && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 RUN \
@@ -105,7 +105,7 @@ RUN \
         cvxpy==1.0.4 \
 	metakernel \
         && \
-    conda clean -tipsy && \
+    conda clean --all --yes && \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 RUN \

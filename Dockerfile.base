@@ -52,7 +52,7 @@ RUN conda install \
     ln -s /notebooks /home/jovyan/notebooks && \
     rm --dir /home/jovyan/work && \
     rm -rf /home/$NB_USER/.cache/yarn && \
-    conda clean -tipsy && \
+    conda clean --all --yes && \
     npm cache clean --force && \
     fix-permissions $CONDA_DIR /home/$NB_USER && \
     rm -rf /opt/conda/pkgs/cache/
@@ -76,7 +76,7 @@ RUN \
     jupyter labextension disable @jupyterlab/google-drive && \
     nbdime config-git --enable --system && \
     rm -rf /home/$NB_USER/.cache/yarn && \
-    conda clean -tipsy && \
+    conda clean --all --yes && \
     npm cache clean --force && \
     fix-permissions $CONDA_DIR /home/$NB_USER && \
     rm -rf /opt/conda/pkgs/cache/

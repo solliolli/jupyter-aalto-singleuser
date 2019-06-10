@@ -60,7 +60,7 @@ RUN conda config --system --remove channels conda-forge && \
          'r-gridextra' \
          'r-here' && \
     Rscript -e 'install.packages("projpred", repos="https://ftp.acc.umu.se/mirror/CRAN/")' && \
-    conda clean -tipsy && \
+    conda clean --all --yes && \
     fix-permissions $CONDA_DIR
 #        'r-gridgraphics'  ??
 
