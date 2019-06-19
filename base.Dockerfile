@@ -24,11 +24,6 @@ RUN apt-get update && \
 RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
 # sed -r -i 's/^(UMASK.*)022/\1002/' /etc/login.defs
 
-COPY start.sh scripts/ /usr/local/bin/
-COPY disable_formgrader.sh /usr/local/bin/
-RUN chmod a+x /usr/local/bin/disable_formgrader.sh
-
-
 # JupyterHub says we can use any exsting jupyter image, as long as we properly pin the JupyterHub version
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
 RUN pip install --no-cache-dir jupyterhub==0.9.4 && \
@@ -103,5 +98,10 @@ RUN pip install --no-cache-dir git+https://github.com/rkdarst/nbgrader@7626561 &
     jupyter serverextension enable --sys-prefix --py nbgrader && \
     rm -rf /home/$NB_USER/.cache/yarn && \
     fix-permissions $CONDA_DIR /home/$NB_USER
+
+# Hooks and scrips are also copied at the end of other Dockerfiles because they
+# might update frequently
+COPY hooks/ scripts/ /usr/local/bin/
+RUN chmod a+x /usr/local/bin/*.sh
 
 USER $NB_UID

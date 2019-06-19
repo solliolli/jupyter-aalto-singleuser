@@ -57,6 +57,8 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
     echo "done"
 
 
-COPY scripts/ /usr/local/bin/
+# Duplicate of base, but hooks can update frequently and are small so
+# put them last.
+COPY hooks/ scripts/ /usr/local/bin/
 
 USER $NB_UID
