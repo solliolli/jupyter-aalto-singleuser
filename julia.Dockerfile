@@ -50,7 +50,7 @@ RUN \
 
 
 RUN julia -e 'import Pkg; Pkg.update()' && \
-    julia -e "using Pkg; pkg\"add Cbc Clp ECOS ForwardDiff GLPK Ipopt JuMP Plots PyPlot\"; pkg\"precompile\"" && \
+    julia -e "using Pkg; pkg\"add Cbc Clp ECOS ForwardDiff GLPK Ipopt JuMP Plots PyPlot DataFrames Distributions CSV\"; pkg\"precompile\"" && \
     echo "Done compiling..." && \
     rm -rf $HOME/.local && \
     fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter && \

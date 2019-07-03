@@ -7,7 +7,7 @@ UPSTREAM_SCIPY_NOTEBOOK_VER=d4cbf2f80a2a  # Image updated June 2, 2019 03:45 AM
 CRAN_URL=https://cran.microsoft.com/snapshot/2018-12-31/
 VER_BASE=0.5.2-dev   # base image - jupyter stuff only, not much software
 VER_STD=0.5.14-dev   # Python
-VER_JULIA=0.5.10-dev # Julia
+VER_JULIA=0.5.10     # Julia
 VER_R=0.5.4-dev      # R
 
 TEST_MEM_LIMIT="--memory=2G"
