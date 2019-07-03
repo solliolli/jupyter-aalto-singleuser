@@ -59,22 +59,43 @@ push-r:
 push-julia:
 #	time docker save aaltoscienceit/notebook-server-julia:${VER_JULIA} | ssh manager ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
 	docker push aaltoscienceit/notebook-server-julia:$(VER_JULIA)
-push-dev:
-	time docker save aaltoscienceit/notebook-server-r-ubuntu:${VER_STD} | ssh ${KHOST} ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
+push-dev: check-khost
+	## NOTE: Saving and loading the whole image takes a long time. Pushing
+	##       partial changes to a DockerHub repo using `push-devhub` is faster
+	# time docker save aaltoscienceit/notebook-server-r-ubuntu:${VER_STD} | ssh ${KHOST} ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
+	time docker save aaltoscienceit/notebook-server:${VER_STD} | ssh ${KHOST} ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
+push-devhub: check-khost check-hubrepo
+	docker tag aaltoscienceit/notebook-server:${VER_STD} ${HUBREPO}/notebook-server:${VER_STD}
+	docker push ${HUBREPO}/notebook-server:${VER_STD}
+	ssh ${KHOST} ssh jupyter-k8s-node3.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server:${VER_STD}"
 
-
-
-pull-standard:
+pull-standard: check-khost check-knodes
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server:${VER_STD}"
-pull-r:
+pull-r: check-khost check-knodes
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-r-ubuntu:${VER_R}"
-pull-julia:
+pull-julia: check-khost check-knodes
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-julia:${VER_JULIA}"
 
-
 # Clean up disk space
-prune-images:
+prune-images: check-khost check-knodes
 #	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker rmi aaltoscienceit/notebook-server:0.5.{0,1,2,3,4,5,6,7}'
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker image prune -f'
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker container prune -f'
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker images' | cut '-d:' '-f2-' | sort
+
+# Aborts the process if necessary environment variables are not set
+# https://stackoverflow.com/a/4731504/3005969
+check-khost:
+ifndef KHOST
+	$(error KHOST is undefined. Format: KHOST=user@kubernetes_host.tld)
+endif
+
+check-knodes:
+ifndef KNODES
+	$(error KNODES is undefined. Format: KNODES=kubernetes-node[1-n].tld)
+endif
+
+check-hubrepo:
+ifndef HUBREPO
+	$(error HUBREPO is undefined. Format: HUBREPO=dockerhub_repo_name)
+endif
