@@ -5,10 +5,15 @@
 
 UPSTREAM_SCIPY_NOTEBOOK_VER=d4cbf2f80a2a  # Image updated June 2, 2019 03:45 AM
 CRAN_URL=https://cran.microsoft.com/snapshot/2018-12-31/
-VER_BASE=0.5.2-dev   # base image - jupyter stuff only, not much software
-VER_STD=0.5.14-dev   # Python
-VER_JULIA=0.5.10     # Julia
-VER_R=0.5.4-dev      # R
+
+# base image - jupyter stuff only, not much software
+VER_BASE=0.5.3-dev
+# Python
+VER_STD=0.5.15-dev
+# Julia
+VER_JULIA=0.5.11-dev
+# R
+VER_R=0.5.5-dev
 
 TEST_MEM_LIMIT="--memory=2G"
 
@@ -22,18 +27,18 @@ full-rebuild: base standard test-standard
 
 base:
 	docker build -t aaltoscienceit/notebook-server-base:$(VER_BASE) . -f base.Dockerfile --build-arg=UPSTREAM_SCIPY_NOTEBOOK_VER=$(UPSTREAM_SCIPY_NOTEBOOK_VER)
-standard:
+standard: base
 	docker build -t aaltoscienceit/notebook-server:$(VER_STD) . -f standard.Dockerfile --build-arg=VER_BASE=$(VER_BASE)
 #r:
 #	docker build -t aaltoscienceit/notebook-server-r:0.4.0 --pull=false . -f r.Dockerfile
-r:
+r: base
 	docker build -t aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) --pull=false . -f r-ubuntu.Dockerfile --build-arg=VER_BASE=$(VER_BASE) --build-arg=CRAN_URL=$(CRAN_URL)
-julia:
+julia: base
 	docker build -t aaltoscienceit/notebook-server-julia:$(VER_JULIA) --pull=false . -f julia.Dockerfile --build-arg=VER_BASE=$(VER_BASE)
 
 
 
-test-standard:
+test-standard: standard
 	mkdir -p /tmp/nbs-tests
 	rsync -a --delete tests/ /tmp/nbs-tests/
 	docker run --volume=/tmp/nbs-tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) pytest -o cache_dir=/tmp/pytestcache /tests/python/${TESTFILE} ${TESTARGS}
@@ -45,29 +50,33 @@ test-standard-full: test-standand
 	@echo
 	@echo "All tests passed..."
 
-test-r:
+test-r: r
 	mkdir -p /tmp/tests
 	rsync -a tests/ /tmp/tests/
 	docker run --volume=/tmp/tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) Rscript /tests/r/test_bayes.r
 
 
 
-push-standard:
+push-standard: standard
 	docker push aaltoscienceit/notebook-server:$(VER_STD)
-push-r:
+push-r: r
 	docker push aaltoscienceit/notebook-server-r-ubuntu:$(VER_R)
-push-julia:
+push-julia: julia
 #	time docker save aaltoscienceit/notebook-server-julia:${VER_JULIA} | ssh manager ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
 	docker push aaltoscienceit/notebook-server-julia:$(VER_JULIA)
-push-dev: check-khost
+push-dev: check-khost standard
 	## NOTE: Saving and loading the whole image takes a long time. Pushing
 	##       partial changes to a DockerHub repo using `push-devhub` is faster
 	# time docker save aaltoscienceit/notebook-server-r-ubuntu:${VER_STD} | ssh ${KHOST} ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
 	time docker save aaltoscienceit/notebook-server:${VER_STD} | ssh ${KHOST} ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
-push-devhub: check-khost check-hubrepo
+push-devhub: check-khost check-hubrepo standard
 	docker tag aaltoscienceit/notebook-server:${VER_STD} ${HUBREPO}/notebook-server:${VER_STD}
 	docker push ${HUBREPO}/notebook-server:${VER_STD}
 	ssh ${KHOST} ssh jupyter-k8s-node3.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server:${VER_STD}"
+push-devhub-base: check-khost check-hubrepo base
+	docker tag aaltoscienceit/notebook-server-base:${VER_BASE} ${HUBREPO}/notebook-server-base:${VER_BASE}
+	docker push ${HUBREPO}/notebook-server-base:${VER_BASE}
+	ssh ${KHOST} ssh jupyter-k8s-node3.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server-base:${VER_BASE}"
 
 pull-standard: check-khost check-knodes
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server:${VER_STD}"
