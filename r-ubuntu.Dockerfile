@@ -101,5 +101,6 @@ RUN sed -i -e "s/= gcc/= clang -flto=thin/" -e "s/= g++ /= clang++/" /usr/lib/R/
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
 COPY hooks/ scripts/ /usr/local/bin/
+RUN chmod a+x /usr/local/bin/*.sh
 
 USER $NB_UID

@@ -72,6 +72,7 @@ RUN \
                                  nbdime-jupyterlab && \
     jupyter labextension disable @jupyterlab/google-drive && \
     nbdime config-git --enable --system && \
+    git config --system core.editor nano && \
     rm -rf /home/$NB_USER/.cache/yarn && \
     conda clean --all --yes && \
     npm cache clean --force && \
