@@ -1,8 +1,3 @@
-## Changelog:
-##
-## 0.5.14-dev: 	new scipy image, conda 4.6.14
-## 0.5.13: 		old scipy image + qiskit
-
 UPSTREAM_SCIPY_NOTEBOOK_VER=d4cbf2f80a2a  # Image updated June 2, 2019 03:45 AM
 CRAN_URL=https://cran.microsoft.com/snapshot/2018-12-31/
 

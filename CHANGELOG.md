@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.14] - 2019-06-10
+### Updated
+- anaconda to version 4.6.14
+- the scipy image to version d4cbf2f80a2a, version published on
+  June 2, 2019 03:45 AM
+
 ## [0.5.13] - 2019-06-07
 ### Added
 - qiskit
