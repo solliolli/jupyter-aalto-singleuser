@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased]
+
+## [0.5.18-1.0] - 2019-07-24
+### Changed
+- Updated nbgrader to the latest commit
+
+## [0.5.17-1.0] - 2019-07-24
+### Changed
+- Updated JupyterHub to version 1.0
+
+## [0.5.16] - 2019-07-23
+- Prepare for JupyterHub 1.0 upgrade
+
+## [0.5.15] - 2019-07-09
+### Fixed
+- Ensure that scripts are executable after copying
+
 ## [0.5.14] - 2019-06-10
 ### Updated
 - anaconda to version 4.6.14
