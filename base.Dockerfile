@@ -26,10 +26,10 @@ RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
 
 # JupyterHub says we can use any exsting jupyter image, as long as we properly pin the JupyterHub version
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
-RUN pip install --no-cache-dir jupyterhub==0.9.4 && \
+RUN pip install --no-cache-dir jupyterhub==1.0.0 && \
         fix-permissions $CONDA_DIR /home/$NB_USER
 
-RUN conda install conda=4.6.14
+RUN conda install conda=4.7.10
 
 # Custom extension installations
 #   importnb allows pytest to test ipynb
@@ -56,7 +56,7 @@ RUN conda install \
 
 
 RUN \
-    conda install jupyterlab==0.35.* && \
+    conda install jupyterlab==1.0.2 && \
     pip install --no-cache-dir \
         jupyterlab-git \
         nbdime \
@@ -65,17 +65,23 @@ RUN \
     jupyter nbextension install --py nbdime --sys-prefix && \
     jupyter nbextension enable --py nbdime --sys-prefix && \
     jupyter serverextension enable --py --sys-prefix jupyterlab_git && \
-    jupyter labextension install @jupyterlab/hub-extension \
+    jupyter labextension install \
+                                # Deprecated, hub is now a built-in
+                                #  @jupyterlab/hub-extension \
                                  @jupyter-widgets/jupyterlab-manager \
                                  @jupyterlab/google-drive \
                                  @jupyterlab/git \
-                                 nbdime-jupyterlab && \
+                                # Incompatible with jupyterlab 1.0.2
+                                #  nbdime-jupyterlab \
+                                && \
     jupyter labextension disable @jupyterlab/google-drive && \
     nbdime config-git --enable --system && \
     git config --system core.editor nano && \
+    # TODO: replace with a cleanup file
     rm -rf /home/$NB_USER/.cache/yarn && \
     conda clean --all --yes && \
     npm cache clean --force && \
+    # TODO: reorder
     fix-permissions $CONDA_DIR /home/$NB_USER && \
     rm -rf /opt/conda/pkgs/cache/
 

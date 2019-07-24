@@ -52,7 +52,7 @@ RUN \
     rm -rf /opt/conda/pkgs/cache/ && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
-
+## TODO: Combine layers
 # imbalanced-learn (student request)
 RUN \
     conda install \
@@ -97,6 +97,7 @@ RUN \
         python \
         && \
     conda upgrade -c pytorch pytorch && \
+    # TODO: remove when updating base image
     pip install --upgrade --no-deps https://github.com/rkdarst/nbgrader/archive/a16f915.zip && \
     conda clean --all --yes && \
     rm -rf /opt/conda/pkgs/cache/ && \
