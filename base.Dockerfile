@@ -1,8 +1,9 @@
 ARG UPSTREAM_SCIPY_NOTEBOOK_VER
 FROM jupyter/scipy-notebook:${UPSTREAM_SCIPY_NOTEBOOK_VER}
 
-
 USER root
+
+ADD clean-layer.sh  /tmp/clean-layer.sh
 
 # Debian package
 RUN apt-get update && \
@@ -18,8 +19,7 @@ RUN apt-get update && \
         tzdata \
         vim \
         && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    /tmp/clean-layer.sh
 
 RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
 # sed -r -i 's/^(UMASK.*)022/\1002/' /etc/login.defs
@@ -48,12 +48,7 @@ RUN conda install \
     python -m bash_kernel.install --sys-prefix && \
     ln -s /notebooks /home/jovyan/notebooks && \
     rm --dir /home/jovyan/work && \
-    rm -rf /home/$NB_USER/.cache/yarn && \
-    conda clean --all --yes && \
-    npm cache clean --force && \
-    fix-permissions $CONDA_DIR /home/$NB_USER && \
-    rm -rf /opt/conda/pkgs/cache/
-
+    /tmp/clean-layer.sh
 
 RUN \
     conda install jupyterlab==1.0.2 && \
@@ -77,13 +72,7 @@ RUN \
     jupyter labextension disable @jupyterlab/google-drive && \
     nbdime config-git --enable --system && \
     git config --system core.editor nano && \
-    # TODO: replace with a cleanup file
-    rm -rf /home/$NB_USER/.cache/yarn && \
-    conda clean --all --yes && \
-    npm cache clean --force && \
-    # TODO: reorder
-    fix-permissions $CONDA_DIR /home/$NB_USER && \
-    rm -rf /opt/conda/pkgs/cache/
+    /tmp/clean-layer.sh
 
 #                                jupyterlab_voyager \
 
@@ -104,8 +93,7 @@ RUN pip install --no-cache-dir git+https://github.com/AaltoScienceIT/nbgrader@11
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
     jupyter nbextension enable --sys-prefix --py nbgrader && \
     jupyter serverextension enable --sys-prefix --py nbgrader && \
-    rm -rf /home/$NB_USER/.cache/yarn && \
-    fix-permissions $CONDA_DIR /home/$NB_USER
+    /tmp/clean-layer.sh
 
 # Hooks and scrips are also copied at the end of other Dockerfiles because they
 # might update frequently

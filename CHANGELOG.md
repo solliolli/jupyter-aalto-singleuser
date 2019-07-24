@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+## [0.5.19-1.0] - 2019-07-24
+- Improve layer cache clearing
+
 ## [0.5.18-1.0] - 2019-07-24
 ### Changed
 - Updated nbgrader to the latest commit

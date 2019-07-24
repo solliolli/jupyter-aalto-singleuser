@@ -5,8 +5,6 @@ FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 
 USER root
 
-
-
 ENV JULIA_DEPOT_PATH=/opt/julia
 ENV JULIA_PKGDIR=/opt/julia
 ENV JULIA_VERSION=1.1.0

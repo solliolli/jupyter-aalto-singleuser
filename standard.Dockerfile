@@ -3,13 +3,14 @@ FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 
 USER root
 
+ADD clean-layer.sh  /tmp/clean-layer.sh
+
 # Custom installations
 #RUN apt-get update && \
 #    apt-get install -y --no-install-recommends \
 #           ... \
 #           && \
-#    apt-get clean && \
-#    rm -rf /var/lib/apt/lists/*
+#    /tmp/clean-layer.sh
 
 
 # Custom installations
@@ -48,20 +49,24 @@ RUN \
     pip install --no-cache-dir \
         plotchecker \
         && \
-    conda clean --all --yes && \
-    rm -rf /opt/conda/pkgs/cache/ && \
-    fix-permissions $CONDA_DIR /home/$NB_USER
+    /tmp/clean-layer.sh
 
 ## TODO: Combine layers
 # imbalanced-learn (student request)
 RUN \
     conda install \
         keras \
-        pystan prompt_toolkit
-RUN \
-    conda install -c pytorch \
+        pystan prompt_toolkit \
+        && \
+    /tmp/clean-layer.sh
+RUN conda install -c pytorch \
         pytorch=1.1.0 \
-        torchvision=0.3.0
+        torchvision=0.3.0 \
+        && \
+    conda install -c conda-forge \
+        imbalanced-learn=0.4.3 \
+        && \
+    /tmp/clean-layer.sh
 RUN \
     # Installing from pip because the tensorflow and tensorboard versions found
     # from the anaconda repos don't support python 3.7 yet
@@ -69,13 +74,7 @@ RUN \
         tensorflow==1.13.1 \
         tensorflow-tensorboard==1.5.1 \
         && \
-    conda install -c conda-forge \
-        imbalanced-learn=0.4.3 \
-        && \
-    conda clean --all --yes && \
-    rm -rf /opt/conda/pkgs/cache/ && \
-    fix-permissions $CONDA_DIR /home/$NB_USER
-
+    /tmp/clean-layer.sh
 
 
 # Last added packages - move to somewhere above when it makes sense
@@ -99,38 +98,34 @@ RUN \
     conda upgrade -c pytorch pytorch && \
     # TODO: remove when updating base image
     pip install --upgrade --no-deps https://github.com/rkdarst/nbgrader/archive/a16f915.zip && \
-    conda clean --all --yes && \
-    rm -rf /opt/conda/pkgs/cache/ && \
-    fix-permissions $CONDA_DIR /home/$NB_USER
+    /tmp/clean-layer.sh
+
 RUN \
     conda install -c conda-forge \
         bcolz \
-        tqdm
-RUN pip install gpflow
-RUN \
+        tqdm && \
     pip install \
+        gpflow \
         calysto \
         cvxopt \
         cvxpy==1.0.4 \
         metakernel \
+        qiskit==0.10.3 \
         && \
-    conda clean --all --yes && \
-    rm -rf /opt/conda/pkgs/cache/ && \
-    fix-permissions $CONDA_DIR /home/$NB_USER
+    /tmp/clean-layer.sh
+
 RUN \
     conda install -c anaconda \
            tensorflow && \
     conda install \
-           tensorflow-hub
-RUN \
-    pip install qiskit==0.10.3
+           tensorflow-hub && \
+    /tmp/clean-layer.sh
 
 #RUN apt-get update && \
 #    apt-get install -y --no-install-recommends \
 #           ... \
 #           && \
-#    apt-get clean && \
-#    rm -rf /var/lib/apt/lists/*
+#    /tmp/clean-layer.sh
 
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
