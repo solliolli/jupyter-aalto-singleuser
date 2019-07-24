@@ -1,6 +1,7 @@
 # Changelog
 
-## [Unreleased]
+## [1.0.0] - 2019-07-24
+### Update images for JupyterHub 1.0
 
 ## [0.5.19-1.0] - 2019-07-24
 - Improve layer cache clearing
