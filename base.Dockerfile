@@ -26,8 +26,9 @@ RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
 
 # JupyterHub says we can use any exsting jupyter image, as long as we properly pin the JupyterHub version
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
-RUN pip install --no-cache-dir jupyterhub==1.0.0 && \
-        fix-permissions $CONDA_DIR /home/$NB_USER
+# JupyterHub 1.0.0 is included in the current scipy-notebook image
+# RUN pip install --no-cache-dir jupyterhub==1.0.0 && \
+        # fix-permissions $CONDA_DIR /home/$NB_USER
 
 RUN conda install conda=4.7.10
 
@@ -50,8 +51,9 @@ RUN conda install \
     rm --dir /home/jovyan/work && \
     /tmp/clean-layer.sh
 
+    # JupyterLab 1.0.1 is included in scipy-notebook
+    # conda install jupyterlab==1.0.2 && \
 RUN \
-    conda install jupyterlab==1.0.2 && \
     pip install --no-cache-dir \
         jupyterlab-git \
         nbdime \

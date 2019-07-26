@@ -1,15 +1,16 @@
-UPSTREAM_SCIPY_NOTEBOOK_VER=d4cbf2f80a2a  # Image updated June 2, 2019 03:45 AM
+UPSTREAM_SCIPY_NOTEBOOK_VER=7a3e968dd212  # Image updated July 17, 2019 12:15 AM
 CRAN_URL=https://cran.microsoft.com/snapshot/2018-12-31/
 
 # base image - jupyter stuff only, not much software
-VER_BASE=1.0.0
+VER_BASE=1.0.1
 # Python
-VER_STD=1.0.0
+VER_STD=1.0.1
 # Julia
-VER_JULIA=1.0.0
+VER_JULIA=1.0.1
 # R
-VER_R=1.0.0
+VER_R=1.0.1
 
+# VER2_R=$(VER_R)-$(GIT_REV)
 TEST_MEM_LIMIT="--memory=2G"
 
 .PHONY: default

@@ -1,18 +1,25 @@
 # Changelog
 
+## [1.0.1] - 2019-07-26
+### Changed
+- Update scipy-notebook image to version 7a3e968dd212,
+  version published on July 17, 2019 12:15 AM
+### Fixed
+- Stop pip from caching files
+
 ## [1.0.0] - 2019-07-24
-### Update images for JupyterHub 1.0
+### Updated images for JupyterHub 1.0
 
 ## [0.5.19-1.0] - 2019-07-24
-- Improve layer cache clearing
+- Improve image layer cache clearing
 
 ## [0.5.18-1.0] - 2019-07-24
 ### Changed
-- Updated nbgrader to the latest commit
+- Update nbgrader to the latest commit
 
 ## [0.5.17-1.0] - 2019-07-24
 ### Changed
-- Updated JupyterHub to version 1.0
+- Update JupyterHub to version 1.0
 
 ## [0.5.16] - 2019-07-23
 - Prepare for JupyterHub 1.0 upgrade
