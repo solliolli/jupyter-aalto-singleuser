@@ -70,7 +70,7 @@ RUN conda install -c pytorch \
 RUN \
     # Installing from pip because the tensorflow and tensorboard versions found
     # from the anaconda repos don't support python 3.7 yet
-    pip install \
+    pip install --no-cache-dir \
         tensorflow==1.13.1 \
         tensorflow-tensorboard==1.5.1 \
         && \
@@ -104,7 +104,7 @@ RUN \
     conda install -c conda-forge \
         bcolz \
         tqdm && \
-    pip install \
+    pip install --no-cache-dir \
         gpflow \
         calysto \
         cvxopt \
