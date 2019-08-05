@@ -24,13 +24,15 @@ RUN apt-get update && \
 RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
 # sed -r -i 's/^(UMASK.*)022/\1002/' /etc/login.defs
 
-# JupyterHub says we can use any exsting jupyter image, as long as we properly pin the JupyterHub version
-# https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
 # JupyterHub 1.0.0 is included in the current scipy-notebook image
+# JupyterHub says we can use any existing jupyter image, as long as we properly
+# pin the JupyterHub version
+# https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
 # RUN pip install --no-cache-dir jupyterhub==1.0.0 && \
         # fix-permissions $CONDA_DIR /home/$NB_USER
 
-RUN conda install conda=4.7.10
+# Conda 4.7.10 is included in scipy-notebook
+# RUN conda install conda=4.7.10
 
 # Custom extension installations
 #   importnb allows pytest to test ipynb
