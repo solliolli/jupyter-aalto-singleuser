@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.2] - 2019-08-05
+### Changed
+- Update nbgrader
+
 ## [1.0.1] - 2019-07-26
 ### Changed
 - Update scipy-notebook image to version 7a3e968dd212,

@@ -96,8 +96,6 @@ RUN \
         python \
         && \
     conda upgrade -c pytorch pytorch && \
-    # TODO: remove when updating base image
-    pip install --upgrade --no-deps https://github.com/rkdarst/nbgrader/archive/a16f915.zip && \
     /tmp/clean-layer.sh
 
 RUN \
