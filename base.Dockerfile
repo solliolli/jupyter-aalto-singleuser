@@ -70,6 +70,7 @@ RUN \
                                  @jupyter-widgets/jupyterlab-manager \
                                  @jupyterlab/google-drive \
                                  @jupyterlab/git \
+                                 @fissio/hub-topbar-buttons \
                                 # Incompatible with jupyterlab 1.0.2
                                 #  nbdime-jupyterlab \
                                 && \
