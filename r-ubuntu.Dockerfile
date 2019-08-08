@@ -5,6 +5,8 @@ FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 
 USER root
 
+ADD clean-layer.sh  /tmp/clean-layer.sh
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         clang \
@@ -83,18 +85,21 @@ RUN wget -q http://download2.rstudio.org/${RSTUDIO_PKG} && \
     rm ${RSTUDIO_PKG}
 
 # Rstudio for jupyterlab
-#   Viasat/nbrsessionproxy is a more up to date fork which is compatible with recent JL
-RUN git clone https://github.com/Viasat/nbrsessionproxy /usr/local/nbrsessionproxy && \
-    pip install -e /usr/local/nbrsessionproxy && \
-    jupyter serverextension enable --sys-prefix --py nbrsessionproxy && \
-    jupyter nbextension install    --sys-prefix --py nbrsessionproxy && \
-    jupyter nbextension enable     --sys-prefix --py nbrsessionproxy && \
-    jupyter labextension link /usr/local/nbrsessionproxy/jupyterlab-rsessionproxy && \
-    rm -rf /home/$NB_USER/.cache/yarn && \
-    npm cache clean --force && \
-    fix-permissions $CONDA_DIR /home/$NB_USER && \
-    fix-permissions /usr/local/nbrsessionproxy/jupyterlab-rsessionproxy/ && \
-    ln -s /usr/lib/rstudio-server/bin/rserver /usr/local/bin/
+#   Viasat/nbrsessionproxy is not compatible with JL 1.0
+RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
+    # The npm version of jupyterlab-server-proxy is not yet compatible
+    # with JupyterLab 1.0 -> using git version.
+    # See https://github.com/jupyterhub/jupyter-server-proxy/issues/139#issuecomment-516665020
+    # jupyter labextension install jupyterlab-server-proxy && \
+    cd /usr/local/src/ && \
+    git clone --depth 1 https://github.com/jupyterhub/jupyter-server-proxy && \
+    cd jupyter-server-proxy/jupyterlab-server-proxy && \
+    git checkout 90401f129 && \
+    npm install && npm run build && jupyter labextension link . && \
+    npm run build && jupyter lab build && \
+    rm -r /usr/local/src/* && \
+    ln -s /usr/lib/rstudio-server/bin/rserver /usr/local/bin/ && \
+    /tmp/clean-layer.sh
 
 RUN sed -i -e "s/= gcc/= clang -flto=thin/" -e "s/= g++ /= clang++/" /usr/lib/R/etc/Makeconf
 
