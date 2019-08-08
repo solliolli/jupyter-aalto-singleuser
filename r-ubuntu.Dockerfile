@@ -55,6 +55,7 @@ RUN \
 # Try to disable Python kernel
 # https://github.com/jupyter/jupyter_client/issues/144
 RUN rm -r /home/$NB_USER/.local/ && \
+    echo >> /etc/jupyter/jupyter_notebook_config.py && \
     echo 'c.NotebookApp.iopub_data_rate_limit = .8*2**20' >> /etc/jupyter/jupyter_notebook_config.py && \
     echo 'c.LabApp.iopub_data_rate_limit = .8*2**20' >> /etc/jupyter/jupyter_notebook_config.py && \
     echo "c.KernelSpecManager.whitelist={'ir'}" >> /etc/jupyter/jupyter_notebook_config.py
