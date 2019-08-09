@@ -30,7 +30,7 @@ RUN apt-get update && \
 #libbz2-dev
 #liblzma-dev
 
-ARG CRAN_URL=https://cran.microsoft.com/snapshot/2018-10-02/
+ARG CRAN_URL
 
 RUN \
     Rscript -e "install.packages(c('repr','IRdisplay','evaluate','crayon','pbdZMQ','devtools','uuid','digest'), repos='${CRAN_URL}', clean=TRUE)" && \
