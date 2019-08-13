@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.4] - 2019-08-07
+### Changed
+- Add hub topbar button lab extension
+
 ## [1.0.3] - 2019-08-05
 ### Changed
 - Update scipy-notebook image to version 58169ec3cfd3,
