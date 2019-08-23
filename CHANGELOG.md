@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.5] - 2019-08-22
+### Added
+- Add variable inspector to notebook and lab
+### Changed
+- Update nbgrader to commit db70a60
+
 ## [1.0.4] - 2019-08-07
 ### Changed
 - Add hub topbar button lab extension
