@@ -1,5 +1,11 @@
 # Changelog
 
+## R [1.0.2] - 2019-08-23
+### Added
+- Add jupyterlab server proxy
+### Changed
+- Update CRAN to version 2019-07-05
+
 ## [1.0.5] - 2019-08-22
 ### Added
 - Add variable inspector to notebook and lab
