@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6] Base - 2019-08-26
+### Changed
+- Update nbgrader to commit 49d2d1f
+
 ## R [1.0.2] - 2019-08-23
 ### Added
 - Add jupyterlab server proxy
