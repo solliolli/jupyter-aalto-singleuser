@@ -93,12 +93,12 @@ RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
     # See https://github.com/jupyterhub/jupyter-server-proxy/issues/139#issuecomment-516665020
     # jupyter labextension install jupyterlab-server-proxy && \
     cd /usr/local/src/ && \
-    git clone --depth 1 https://github.com/jupyterhub/jupyter-server-proxy && \
+    git clone https://github.com/jupyterhub/jupyter-server-proxy && \
     cd jupyter-server-proxy/jupyterlab-server-proxy && \
-    git checkout 90401f129 && \
+    git checkout daeb5aa08074758bf7922f6ca5b557f713feb4dd && \
     npm install && npm run build && jupyter labextension link . && \
     npm run build && jupyter lab build && \
-    rm -r /usr/local/src/* && \
+    cd /usr/local/src && rm -r /usr/local/src/* && \
     ln -s /usr/lib/rstudio-server/bin/rserver /usr/local/bin/ && \
     /tmp/clean-layer.sh
 

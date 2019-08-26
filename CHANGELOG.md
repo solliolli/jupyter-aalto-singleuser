@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6.1] R - 2019-08-26
+### Changed
+- Update jupyter-rsession-proxy
+
 ## [1.6.1] Standard - 2019-08-26
 ### Changed
 - Update qiskit to version 0.12.0
