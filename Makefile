@@ -4,7 +4,7 @@ CRAN_URL=https://cran.microsoft.com/snapshot/2019-07-05/
 # base image - jupyter stuff only, not much software
 VER_BASE=1.6
 # Python
-VER_STD=1.6.0
+VER_STD=1.6.1
 # Julia
 VER_JULIA=1.6.0
 # R

@@ -108,7 +108,7 @@ RUN \
         cvxopt \
         cvxpy==1.0.4 \
         metakernel \
-        qiskit==0.10.3 \
+        qiskit==0.12.0 \
         && \
     /tmp/clean-layer.sh
 

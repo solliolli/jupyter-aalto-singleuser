@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6.1] Standard - 2019-08-26
+### Changed
+- Update qiskit to version 0.12.0
+
 ## [1.6] Base - 2019-08-26
 ### Changed
 - Update nbgrader to commit 49d2d1f
