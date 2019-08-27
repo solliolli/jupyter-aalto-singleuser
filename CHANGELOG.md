@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.7.0] - 2019-08-26
+### Changed
+- Update scipy-notebook image to version 2ce7c06a61a1,
+  version published Aug 11, 2019 03:40 AM
+
 ## [1.6.1] R - 2019-08-26
 ### Changed
 - Update jupyter-rsession-proxy
