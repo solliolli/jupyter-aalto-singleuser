@@ -35,6 +35,8 @@ julia:
 	docker build -t aaltoscienceit/notebook-server-julia:$(VER_JULIA) --pull=false . -f julia.Dockerfile --build-arg=VER_BASE=$(VER_BASE)
 opencv:
 	docker build -t notebook-server-opencv:$(VER_CV) --pull=false . -f opencv.Dockerfile --build-arg=VER_STD=$(VER_STD)
+cuda: standard
+	docker build -t aaltoscienceit/notebook-server-cuda:$(VER_STD) --pull=false . -f cuda.Dockerfile --build-arg=VER_STD=$(VER_STD)
 
 
 test-standard:
@@ -63,6 +65,8 @@ push-r: r
 push-julia: julia
 #	time docker save aaltoscienceit/notebook-server-julia:${VER_JULIA} | ssh manager ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
 	docker push aaltoscienceit/notebook-server-julia:$(VER_JULIA)
+push-cuda: cuda
+	docker push aaltoscienceit/notebook-server-cuda:$(VER_STD)
 push-dev: check-khost standard
 	## NOTE: Saving and loading the whole image takes a long time. Pushing
 	##       partial changes to a DockerHub repo using `push-devhub` is faster
@@ -83,6 +87,8 @@ pull-r: check-khost check-knodes
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-r-ubuntu:${VER_R}"
 pull-julia: check-khost check-knodes
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-julia:${VER_JULIA}"
+pull-cuda: check-khost check-knodes
+	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-cuda:${VER_STD}"
 
 # Clean up disk space
 prune-images: check-khost check-knodes
