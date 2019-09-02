@@ -98,10 +98,15 @@ RUN \
     conda upgrade -c pytorch pytorch && \
     /tmp/clean-layer.sh
 
+# wordcloud - datasci2019
+# geopy - datasci2019
 RUN \
     conda install -c conda-forge \
         bcolz \
-        tqdm && \
+        tqdm \
+        wordcloud \
+        geopy \
+        && \
     pip install --no-cache-dir \
         gpflow \
         calysto \
