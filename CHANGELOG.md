@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.7.1] Standard - 2019-09-06
+### Added
+- Packages wordcloud and geopy for course datasci2019
+
 ## [1.7.0] - 2019-08-26
 ### Changed
 - Update scipy-notebook image to version 2ce7c06a61a1,
