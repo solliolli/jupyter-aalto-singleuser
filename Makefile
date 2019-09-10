@@ -2,15 +2,15 @@ UPSTREAM_SCIPY_NOTEBOOK_VER=2ce7c06a61a1  # Image updated Aug 11, 2019 03:40 AM
 CRAN_URL=https://cran.microsoft.com/snapshot/2019-07-05/
 
 # base image - jupyter stuff only, not much software
-VER_BASE=1.7
+VER_BASE=1.8
 # Python
-VER_STD=1.7.0
+VER_STD=1.8.0
 # Julia
-VER_JULIA=1.7.0
+VER_JULIA=1.8.0
 # R
-VER_R=1.7.0
+VER_R=1.8.0
 # OpenCV
-VER_CV=1.7.0
+VER_CV=1.8.0
 
 # VER2_R=$(VER_R)-$(GIT_REV)
 TEST_MEM_LIMIT="--memory=2G"
@@ -37,7 +37,7 @@ opencv: standard
 	docker build -t notebook-server-opencv:$(VER_CV) --pull=false . -f opencv.Dockerfile --build-arg=VER_STD=$(VER_STD)
 
 
-test-standard: standard
+test-standard:
 	mkdir -p /tmp/nbs-tests
 	rsync -a --delete tests/ /tmp/nbs-tests/
 	docker run --volume=/tmp/nbs-tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) pytest -o cache_dir=/tmp/pytestcache /tests/python/${TESTFILE} ${TESTARGS}

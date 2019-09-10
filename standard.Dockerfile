@@ -3,7 +3,9 @@ FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 
 USER root
 
-ADD clean-layer.sh  /tmp/clean-layer.sh
+ADD pinned.standard  /opt/conda/conda-meta/pinned.standard
+RUN cd /opt/conda/conda-meta/ && \
+    cat pinned.standard >> pinned
 
 # Custom installations
 #RUN apt-get update && \
@@ -60,8 +62,8 @@ RUN \
         && \
     /tmp/clean-layer.sh
 RUN conda install -c pytorch \
-        pytorch=1.1.0 \
-        torchvision=0.3.0 \
+        pytorch \
+        torchvision \
         && \
     conda install -c conda-forge \
         imbalanced-learn=0.4.3 \
@@ -89,11 +91,8 @@ RUN \
 RUN \
     conda install -c conda-forge --only-deps --no-update-deps  \
         lapack \
-        nbstripout \
         mlxtend \
         scikit-plot \
-        lapack \
-        python \
         && \
     conda upgrade -c pytorch pytorch && \
     /tmp/clean-layer.sh
@@ -111,7 +110,7 @@ RUN \
         gpflow \
         calysto \
         cvxopt \
-        cvxpy==1.0.4 \
+        cvxpy \
         metakernel \
         qiskit==0.12.0 \
         && \

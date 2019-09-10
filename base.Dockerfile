@@ -4,6 +4,7 @@ FROM jupyter/scipy-notebook:${UPSTREAM_SCIPY_NOTEBOOK_VER}
 USER root
 
 ADD clean-layer.sh  /tmp/clean-layer.sh
+ADD pinned.base  /opt/conda/conda-meta/pinned
 
 # Debian package
 RUN apt-get update && \
@@ -36,7 +37,8 @@ RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
 
 # Custom extension installations
 #   importnb allows pytest to test ipynb
-RUN conda install \
+RUN conda config --set auto_update_conda False && \
+    conda install \
         pytest \
         nbval \
         && \
@@ -54,17 +56,22 @@ RUN conda install \
     /tmp/clean-layer.sh
 
     # JupyterLab 1.0.1 is included in scipy-notebook
-    # conda install jupyterlab==1.0.2 && \
+    # conda install jupyterlab==1.1.0 && \
 RUN \
     pip install --no-cache-dir \
         jupyterlab-git \
         nbdime \
+        nbstripout \
+	nbzip \
         && \
     jupyter serverextension enable --py nbdime --sys-prefix && \
     jupyter nbextension install --py nbdime --sys-prefix && \
     jupyter nbextension enable --py nbdime --sys-prefix && \
     jupyter nbextension enable varInspector/main --sys-prefix && \
     jupyter serverextension enable --py --sys-prefix jupyterlab_git && \
+    jupyter serverextension enable --py nbzip --sys-prefix && \
+    jupyter nbextension install --py nbzip && \
+    jupyter nbextension enable --py nbzip && \
     jupyter labextension install \
                                 # Deprecated, hub is now a built-in
                                 #  @jupyterlab/hub-extension \
