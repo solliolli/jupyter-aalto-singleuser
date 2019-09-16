@@ -12,7 +12,7 @@ RUN cd /opt/conda/conda-meta/ && \
 #    apt-get install -y --no-install-recommends \
 #           ... \
 #           && \
-#    /tmp/clean-layer.sh
+#    clean-layer.sh
 
 
 # Custom installations
@@ -31,8 +31,17 @@ RUN cd /opt/conda/conda-meta/ && \
 # rasterio: BE remote sensing course
 # scikit-learn: mlbp2018
 # tensorflow, tensorflow-tensorboard (general use)
-#           geopandas      # does not currently work
-#          rasterio
+# cvxopt       - mlkern2019
+# nbstripout   - generic package
+# lapack       - dependency for cvxpy
+# cvxpy        - mlkern2019
+# gpflow       - special course Gaussian Processes, 2019
+# bcolz        - introai2019
+# tqdm         - introai2019
+# qiskit       - Introduction to Quantum Technologies, Matti Raasakka, RT#14866
+# wordcloud - datasci2019
+# geopy - datasci2019
+# imbalanced-learn (student request)
 RUN \
     conda install \
         networkx \
@@ -47,66 +56,19 @@ RUN \
         python-igraph \
         feather-format \
         librosa \
-        && \
-    pip install --no-cache-dir \
-        plotchecker \
-        && \
-    /tmp/clean-layer.sh
-
-## TODO: Combine layers
-# imbalanced-learn (student request)
-RUN \
-    conda install \
-        keras \
-        pystan prompt_toolkit \
-        && \
-    /tmp/clean-layer.sh
-RUN conda install -c pytorch \
-        pytorch \
-        torchvision \
-        && \
-    conda install -c conda-forge \
-        imbalanced-learn=0.4.3 \
-        && \
-    /tmp/clean-layer.sh
-RUN \
-    # Installing from pip because the tensorflow and tensorboard versions found
-    # from the anaconda repos don't support python 3.7 yet
-    pip install --no-cache-dir \
-        tensorflow==1.13.1 \
-        tensorflow-tensorboard==1.5.1 \
-        && \
-    /tmp/clean-layer.sh
-
-
-# Last added packages - move to somewhere above when it makes sense
-#  cvxopt       - mlkern2019
-#  nbstripout   - generic package
-#  lapack       - dependency for cvxpy
-#  cvxpy        - mlkern2019
-#  gpflow       - special course Gaussian Processes, 2019
-#  bcolz        - introai2019
-#  tqdm         - introai2019
-#  qiskit       - Introduction to Quantum Technologies, Matti Raasakka, RT#14866
-RUN \
-    conda install -c conda-forge --only-deps --no-update-deps  \
-        lapack \
-        mlxtend \
-        scikit-plot \
-        && \
-    conda upgrade -c pytorch pytorch && \
-    /tmp/clean-layer.sh
-
-# wordcloud - datasci2019
-# geopy - datasci2019
-RUN \
-    conda install -c conda-forge \
         bcolz \
         tqdm \
         wordcloud \
         geopy \
+	rasterio \
+	geopandas \
+        lapack \
+        mlxtend \
+        scikit-plot \
+        imbalanced-learn \
         && \
     pip install --no-cache-dir \
+        plotchecker \
         gpflow \
         calysto \
         cvxopt \
@@ -114,20 +76,44 @@ RUN \
         metakernel \
         qiskit==0.12.0 \
         && \
-    /tmp/clean-layer.sh
+    clean-layer.sh
+# Currently non-functional packages:
+#   geopandas (conda-forge)
+#   rasterio (conda-forge)
 
+## TODO: Combine layers
+    # Installing from pip because the tensorflow and tensorboard versions found
+    # from the anaconda repos don't support python 3.7 yet
 RUN \
-    conda install -c anaconda \
-           tensorflow && \
     conda install \
-           tensorflow-hub && \
-    /tmp/clean-layer.sh
+        keras \
+        pystan prompt_toolkit \
+        && \
+    pip install --no-cache-dir \
+        tensorflow==1.13.1 \
+        tensorflow-tensorboard==1.5.1 \
+        tensorflow-hub \
+        && \
+    clean-layer.sh
+RUN conda install -c pytorch \
+        pytorch \
+        torchvision \
+        && \
+    clean-layer.sh
+
+
+
+
+#RUN \
+#    conda install -c anaconda \
+#    conda install \
+#    clean-layer.sh
 
 #RUN apt-get update && \
 #    apt-get install -y --no-install-recommends \
 #           ... \
 #           && \
-#    /tmp/clean-layer.sh
+#    clean-layer.sh
 
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.

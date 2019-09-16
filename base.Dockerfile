@@ -3,7 +3,7 @@ FROM jupyter/scipy-notebook:${UPSTREAM_SCIPY_NOTEBOOK_VER}
 
 USER root
 
-ADD clean-layer.sh  /tmp/clean-layer.sh
+ADD scripts/clean-layer.sh /usr/local/bin/
 ADD pinned.base  /opt/conda/conda-meta/pinned
 
 # Debian package
@@ -20,7 +20,7 @@ RUN apt-get update && \
         tzdata \
         vim \
         && \
-    /tmp/clean-layer.sh
+    clean-layer.sh
 
 RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
 # sed -r -i 's/^(UMASK.*)022/\1002/' /etc/login.defs
@@ -53,7 +53,7 @@ RUN conda config --set auto_update_conda False && \
     python -m bash_kernel.install --sys-prefix && \
     ln -s /notebooks /home/jovyan/notebooks && \
     rm --dir /home/jovyan/work && \
-    /tmp/clean-layer.sh
+    clean-layer.sh
 
     # JupyterLab 1.0.1 is included in scipy-notebook
     # conda install jupyterlab==1.1.0 && \
@@ -86,7 +86,7 @@ RUN \
     jupyter labextension disable @jupyterlab/google-drive && \
     nbdime config-git --enable --system && \
     git config --system core.editor nano && \
-    /tmp/clean-layer.sh
+    clean-layer.sh
 
 #                                jupyterlab_voyager \
 
@@ -112,7 +112,7 @@ RUN pip install --no-cache-dir git+https://github.com/AaltoScienceIT/nbgrader@49
     jupyter nbextension disable --sys-prefix create_assignment/main && \
     jupyter nbextension disable --sys-prefix course_list/main --section=tree && \
     jupyter serverextension disable --sys-prefix nbgrader.server_extensions.course_list && \
-    /tmp/clean-layer.sh
+    clean-layer.sh
 
 # Hooks and scrips are also copied at the end of other Dockerfiles because they
 # might update frequently

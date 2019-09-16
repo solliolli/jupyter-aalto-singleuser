@@ -5,8 +5,6 @@ FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 
 USER root
 
-ADD clean-layer.sh  /tmp/clean-layer.sh
-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         clang \
@@ -82,8 +80,7 @@ RUN apt-get update && \
         psmisc \
         libssl1.0.0 \
         && \
-        apt-get clean && \
-        rm -rf /var/lib/apt/lists/*
+        clean-layer.sh
 
 ENV RSTUDIO_PKG=rstudio-server-1.1.456-amd64.deb
 # https://github.com/jupyterhub/nbrsessionproxy
@@ -107,7 +104,7 @@ RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
     cd /usr/local/src && rm -r /usr/local/src/* && \
     ln -s /usr/lib/rstudio-server/bin/rserver /usr/local/bin/ && \
     fix-permissions /usr/local/lib/R/site-library && \
-    /tmp/clean-layer.sh
+    clean-layer.sh
 
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.

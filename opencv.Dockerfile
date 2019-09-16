@@ -18,7 +18,7 @@ RUN \
         libavformat-dev \
         libswscale-dev \
         && \
-    /tmp/clean-layer.sh
+    clean-layer.sh
 
 RUN \
     # fontconfig causes problems during the installation, see
