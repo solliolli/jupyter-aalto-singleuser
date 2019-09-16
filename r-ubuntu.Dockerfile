@@ -21,6 +21,10 @@ RUN apt-get update && \
         libopenblas-dev \
         liblapack-dev \
         r-base && \
+    update-alternatives --set cc  /usr/bin/clang && \
+    update-alternatives --set c++ /usr/bin/clang++ && \
+    update-alternatives --set c89 /usr/bin/clang && \
+    update-alternatives --set c99 /usr/bin/clang && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -40,7 +44,7 @@ RUN jupyter kernelspec remove -f python3
 
 # Packages from jupyter r-notebook
 RUN \
-    Rscript -e "install.packages(c('plyr', 'devtools', 'tidyverse', 'shiny', 'markdown', 'forecast', 'RSQLite', 'reshape2', 'nycflights13', 'caret', 'RCurl', 'crayon', 'randomForest', 'htmltools', 'sparklyr', 'htmlwidgets', 'hexbin'), repos='${CRAN_URL}', clean=TRUE)" && \
+    Rscript -e "install.packages(c('plyr', 'devtools', 'tidyverse', 'shiny', 'markdown', 'forecast', 'RSQLite', 'reshape2', 'nycflights13', 'caret', 'RCurl', 'crayon', 'randomForest', 'htmltools', 'sparklyr', 'htmlwidgets', 'hexbin', 'caTools'), repos='${CRAN_URL}', clean=TRUE)" && \
     fix-permissions /usr/local/lib/R/site-library
 
 #
@@ -62,7 +66,9 @@ RUN rm -r /home/$NB_USER/.local/ && \
 
 # Set default R compiler to clang to save memory.
 RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
-    echo "CXX=clang++"  >> /usr/lib/R/etc/Makevars
+    echo "CXX=clang++"  >> /usr/lib/R/etc/Makevars && \
+    sed -i  -e "s/= gcc/= clang -flto=thin/g"  -e "s/= g++/= clang++/g"  /usr/lib/R/etc/Makeconf
+
 ENV R_MAKEVARS_SITE /usr/lib/R/etc/Makevars
 
 #
@@ -100,9 +106,8 @@ RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
     npm run build && jupyter lab build && \
     cd /usr/local/src && rm -r /usr/local/src/* && \
     ln -s /usr/lib/rstudio-server/bin/rserver /usr/local/bin/ && \
+    fix-permissions /usr/local/lib/R/site-library && \
     /tmp/clean-layer.sh
-
-RUN sed -i -e "s/= gcc/= clang -flto=thin/" -e "s/= g++ /= clang++/" /usr/lib/R/etc/Makeconf
 
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
