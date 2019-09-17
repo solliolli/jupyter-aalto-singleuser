@@ -1,0 +1,5 @@
+tensorflow 1.13.*
+#tensorflow-tensorboard 1.5.*
+keras 2.2.*
+pytorch 1.2.*
+torchvision 0.4.*
