@@ -58,6 +58,7 @@ RUN conda config --set auto_update_conda False && \
     # JupyterLab 1.0.1 is included in scipy-notebook
     # conda install jupyterlab==1.1.0 && \
 RUN \
+    conda install jupyterlab==1.1.3 && \
     pip install --no-cache-dir \
         jupyterlab-git \
         nbdime \

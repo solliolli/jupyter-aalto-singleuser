@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.8.1]
+### Changed
+- Updateto JupyterLab 1.1.3 ( (fixes file list with git-extension, jupyterlab/jupyterlab#7204)
+
 ## [1.8.0]
 ### Changed
 - Try to make images work for bayesian data analysis course
