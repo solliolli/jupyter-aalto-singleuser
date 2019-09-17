@@ -2,7 +2,7 @@
 
 ## [1.8.1]
 ### Changed
-- Updateto JupyterLab 1.1.3 ( (fixes file list with git-extension, jupyterlab/jupyterlab#7204)
+- Add groups.sh hook create groups and set them as server requests
 
 ## [1.8.0]
 ### Changed
@@ -11,6 +11,7 @@
   - Set CC and CXX to clang/clang++ in standard image
 - Combine standard layer creation to speed up build
 - Change location of clean-layer.sh, add some stuff to it
+- Updateto JupyterLab 1.1.3 ( (fixes file list with git-extension, jupyterlab/jupyterlab#7204)
 
 ## [1.7.1] Standard - 2019-09-06
 ### Added
