@@ -16,6 +16,7 @@ RUN cd /opt/conda/conda-meta/ && \
 
 
 # Custom installations
+# arviz: bayesian data analysis
 # folium: BE remote sensing course
 # geopandas: BE remote sensing course
 # igraph: complex networks (general)
@@ -52,6 +53,7 @@ RUN \
         scikit-learn \
         && \
     conda install -c conda-forge \
+        arviz \
         folium \
         python-igraph \
         feather-format \
