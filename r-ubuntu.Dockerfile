@@ -106,6 +106,8 @@ RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
 
+ENV CC=clang CXX=clang++
+
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
 COPY hooks/ scripts/ /usr/local/bin/
