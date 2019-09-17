@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0]
+### Changed
+- Try to make images work for bayesian data analysis course
+  - Set clang as default compilers for R, or try to
+  - Set CC and CXX to clang/clang++ in standard image
+- Combine standard layer creation to speed up build
+- Change location of clean-layer.sh, add some stuff to it
+
 ## [1.7.1] Standard - 2019-09-06
 ### Added
 - Packages wordcloud and geopy for course datasci2019
