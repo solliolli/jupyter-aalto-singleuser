@@ -60,7 +60,7 @@ RUN rm -r /home/$NB_USER/.local/ && \
     echo >> /etc/jupyter/jupyter_notebook_config.py && \
     echo 'c.NotebookApp.iopub_data_rate_limit = .8*2**20' >> /etc/jupyter/jupyter_notebook_config.py && \
     echo 'c.LabApp.iopub_data_rate_limit = .8*2**20' >> /etc/jupyter/jupyter_notebook_config.py && \
-    echo "c.KernelSpecManager.whitelist={'ir'}" >> /etc/jupyter/jupyter_notebook_config.py
+    echo "c.KernelSpecManager.whitelist={'ir', 'bash'}" >> /etc/jupyter/jupyter_notebook_config.py
 
 # Set default R compiler to clang to save memory.
 RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
@@ -105,6 +105,13 @@ RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
     ln -s /usr/lib/rstudio-server/bin/rserver /usr/local/bin/ && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
+
+
+# Last-added packages, move to above
+RUN \
+    Rscript -e "install.packages(c('RUnit'), repos='${CRAN_URL}', clean=TRUE)" && \
+    fix-permissions /usr/local/lib/R/site-library
+
 
 ENV CC=clang CXX=clang++
 
