@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.8.3]
+### Changed
+- Update RStudio version
+
 ## [1.8.1]
 ### Changed
 - Add groups.sh hook create groups and set them as server requests
