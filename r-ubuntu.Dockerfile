@@ -74,17 +74,21 @@ ENV R_MAKEVARS_SITE /usr/lib/R/etc/Makevars
 #
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        libclang-dev \
         libapparmor1 \
         libedit2 \
+        libssl1.0.0 \
         lsb-release \
         psmisc \
-        libssl1.0.0 \
         && \
         clean-layer.sh
 
-ENV RSTUDIO_PKG=rstudio-server-1.1.456-amd64.deb
+
+ENV RSTUDIO_PKG=rstudio-server-1.2.5001-amd64.deb
 # https://github.com/jupyterhub/nbrsessionproxy
-RUN wget -q http://download2.rstudio.org/${RSTUDIO_PKG} && \
+# Download url: https://www.rstudio.com/products/rstudio/download-server/
+RUN wget -q https://download2.rstudio.org/server/bionic/amd64/${RSTUDIO_PKG} && \
+    test "$(md5sum < ${RSTUDIO_PKG})" = "d33881b9ab786c09556c410e7dc477de  -" && \
     dpkg -i ${RSTUDIO_PKG} && \
     rm ${RSTUDIO_PKG}
 
