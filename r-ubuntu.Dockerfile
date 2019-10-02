@@ -113,12 +113,12 @@ RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
 
 # Last-added packages, move to above
 RUN \
-    Rscript -e "install.packages(c('RUnit'), repos='${CRAN_URL}', clean=TRUE)" && \
+    Rscript -e "install.packages(c('RUnit', 'markmyassignment'), repos='${CRAN_URL}', clean=TRUE)" && \
     fix-permissions /usr/local/lib/R/site-library
 
 
 ENV CC=clang CXX=clang++
-
+ENV BINPREF=PATH
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
 COPY hooks/ scripts/ /usr/local/bin/

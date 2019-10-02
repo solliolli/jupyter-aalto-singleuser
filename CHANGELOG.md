@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.8.4]
+- r-ubuntu: add markmyassignment
+
 ## [1.8.3]
 ### Changed
 - Update RStudio version
