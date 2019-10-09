@@ -48,4 +48,6 @@ RUN \
     make install && \
     cd /usr/local/src && rm -r /usr/local/src/*
 
+RUN conda install --quiet --yes pyflann line_profiler
+
 USER $NB_UID
