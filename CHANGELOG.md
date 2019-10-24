@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.8.5]
+- r-ubuntu: add packages for htbioinformatics2019, including bioconductor
+  and command-line tools
+
 ## [1.8.4]
 - r-ubuntu: add markmyassignment
 

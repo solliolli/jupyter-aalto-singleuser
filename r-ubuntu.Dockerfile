@@ -117,6 +117,47 @@ RUN \
     fix-permissions /usr/local/lib/R/site-library
 
 
+# openjdk-11-jre-headless: htbioinformatics2019, for fastcq
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        openjdk-11-jre-headless \
+        && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN cd /opt && \
+    mkdir fastcq && \
+    wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.8.zip && \
+    unzip fastqc_v0.11.8.zip && \
+    rm fastqc_v0.11.8.zip && \
+    chmod a+x ./FastQC/fastqc && \
+    ln -s $PWD/FastQC/fastqc /usr/local/bin/
+
+
+# htbioinformatics2019
+# http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#obtaining-bowtie-2
+RUN conda config --append channels bioconda && \
+    conda install \
+        bowtie2 \
+        && \
+    clean-layer.sh
+
+# htbioinformatics2019
+# https://ccb.jhu.edu/software/tophat/tutorial.shtml
+RUN cd /opt && \
+    wget https://ccb.jhu.edu/software/tophat/downloads/tophat-2.1.1.Linux_x86_64.tar.gz && \
+    tar xf tophat-2.1.1.Linux_x86_64.tar.gz && \
+    sed 's@/usr/bin/env python@/usr/bin/python@' tophat-2.1.1.Linux_x86_64/tophat && \
+    ln -s $PWD/tophat-2.1.1.Linux_x86_64/tophat2 /usr/local/bin/
+
+
+# Bioconductor
+RUN Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") ; BiocManager::install()' && \
+    Rscript -e 'BiocManager::install(c("edgeR", "GenomicRanges"))'
+
+
+
+
 ENV CC=clang CXX=clang++
 ENV BINPREF=PATH
 # Duplicate of base, but hooks can update frequently and are small so
