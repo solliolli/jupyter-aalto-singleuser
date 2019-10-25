@@ -131,7 +131,8 @@ RUN cd /opt && \
     unzip fastqc_v0.11.8.zip && \
     rm fastqc_v0.11.8.zip && \
     chmod a+x ./FastQC/fastqc && \
-    ln -s $PWD/FastQC/fastqc /usr/local/bin/
+    ln -s $PWD/FastQC/fastqc /usr/local/bin/ && \
+    fix-permissions /opt/fastcq /usr/local/bin
 
 
 # htbioinformatics2019
@@ -147,14 +148,16 @@ RUN conda config --append channels bioconda && \
 RUN cd /opt && \
     wget https://ccb.jhu.edu/software/tophat/downloads/tophat-2.1.1.Linux_x86_64.tar.gz && \
     tar xf tophat-2.1.1.Linux_x86_64.tar.gz && \
-    sed 's@/usr/bin/env python@/usr/bin/python@' tophat-2.1.1.Linux_x86_64/tophat && \
-    ln -s $PWD/tophat-2.1.1.Linux_x86_64/tophat2 /usr/local/bin/
+    sed -i 's@/usr/bin/env python@/usr/bin/python@' tophat-2.1.1.Linux_x86_64/tophat && \
+    ln -s $PWD/tophat-2.1.1.Linux_x86_64/tophat2 /usr/local/bin/ && \
+    fix-permissions /opt/fastcq /usr/local/bin
 
 
 # Bioconductor
 RUN Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") ; BiocManager::install()' && \
-    Rscript -e 'BiocManager::install(c("edgeR", "GenomicRanges"))'
-
+    Rscript -e 'BiocManager::install(c("edgeR", "GenomicRanges"))' && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
 
 
 

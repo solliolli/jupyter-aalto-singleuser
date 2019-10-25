@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.8.6]
+- r-ubuntu: fix tophat2 python interpreter, clean layers
+
 ## [1.8.5]
 - r-ubuntu: add packages for htbioinformatics2019, including bioconductor
   and command-line tools
