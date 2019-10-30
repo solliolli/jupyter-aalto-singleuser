@@ -118,9 +118,17 @@ RUN \
 
 
 # openjdk-11-jre-headless: htbioinformatics2019, for fastcq
+# python-htseq:            htbioinformatics2019, https://htseq.readthedocs.io/en/release_0.11.1/install.html
+# libbz2-dev:              dependency for samtools
+# libncurses5-dev:         dependency for samtools
+# liblzma-dev:             dependency for samtools
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        libbz2-dev \
+	libncurses5-dev \
+	liblzma-dev \
         openjdk-11-jre-headless \
+	python-htseq \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -158,6 +166,17 @@ RUN Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.pa
     Rscript -e 'BiocManager::install(c("edgeR", "GenomicRanges"))' && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
+
+# samtools: htbioinformatics, http://www.htslib.org/download/
+RUN \
+    mkdir /opt/samtools && \
+    cd /opt/samtools && \
+    wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2 && \
+    tar xf samtools-1.9.tar.bz2 && \
+    cd samtools-1.9 && \
+    ./configure --prefix=/opt/samtools/install/ --bindir=/usr/local/bin/ && \
+    make && \
+    make install
 
 
 

@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.8.7]
+- r-ubuntu: Add htseq and samtools for htbioinformatics2019
+
 ## [1.8.6]
 - r-ubuntu: fix tophat2 python interpreter, clean layers
 
