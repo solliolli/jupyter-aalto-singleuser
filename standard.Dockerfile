@@ -103,6 +103,16 @@ RUN conda install -c pytorch \
         && \
     clean-layer.sh
 
+# nbgitpuller: Move to base on next update
+# pydub: ???
+# cma: ??
+RUN pip install --no-cache-dir \
+    pydub \
+    cma \
+    nbgitpuller \
+    && \
+    jupyter serverextension enable nbgitpuller --sys-prefix && \
+    clean-layer.sh
 
 
 

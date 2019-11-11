@@ -4,6 +4,7 @@ def test_modules():
     import igraph
     import imblearn
     import keras
+    import nbgitpuller
     #import nbstripout        # not importable in tests/notebooks
     import networkx
     import nose
@@ -44,3 +45,7 @@ def test_modules():
 
     # Introduction to Quantum Technologies, Matti Raasakka, RT#14866
     import qiskit
+
+    # intcompmedia
+    import pydub
+    import cma
