@@ -131,7 +131,11 @@ RUN apt-get update && \
 	python-htseq \
         && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    pip install --no-cache-dir \
+        htseq \
+	&& \
+    clean-layer.sh
 
 RUN cd /opt && \
     mkdir fastcq && \
