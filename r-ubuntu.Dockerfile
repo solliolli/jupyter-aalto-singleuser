@@ -168,6 +168,7 @@ RUN Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.pa
     clean-layer.sh
 
 # samtools: htbioinformatics, http://www.htslib.org/download/
+# pysam:    same --^
 RUN \
     mkdir /opt/samtools && \
     cd /opt/samtools && \
@@ -176,7 +177,12 @@ RUN \
     cd samtools-1.9 && \
     ./configure --prefix=/opt/samtools/install/ --bindir=/usr/local/bin/ && \
     make && \
-    make install
+    make install && \
+    pip install --no-cache-dir \
+        pysam \
+	&& \
+    clean-layer.sh
+
 
 # macs2: htbioinformatics
 RUN pip install --no-cache-dir \
