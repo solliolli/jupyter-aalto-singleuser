@@ -163,7 +163,7 @@ RUN cd /opt && \
 
 # Bioconductor
 RUN Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") ; BiocManager::install()' && \
-    Rscript -e 'BiocManager::install(c("edgeR", "GenomicRanges"))' && \
+    Rscript -e 'BiocManager::install(c("edgeR", "GenomicRanges", "rtracklayer"))' && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
 
@@ -177,6 +177,12 @@ RUN \
     ./configure --prefix=/opt/samtools/install/ --bindir=/usr/local/bin/ && \
     make && \
     make install
+
+# macs2: htbioinformatics
+RUN pip install --no-cache-dir \
+        macs2 \
+	&& \
+    clean-layer.sh
 
 
 
