@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.8.11] r-ubuntu - 2019-11-21
+### Changed
+- Fix rtracklayer installation
+
 ## 1.8.8 (standard)
 - Install cma, pydub (intcompmedia)
 - Install nbgitpuller
