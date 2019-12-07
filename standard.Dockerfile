@@ -106,10 +106,12 @@ RUN conda install -c pytorch \
 # nbgitpuller: Move to base on next update
 # pydub: ???
 # cma: ??
+# nltk: datasci2019  (use conda  when upgrading)
 RUN pip install --no-cache-dir \
-    pydub \
-    cma \
-    nbgitpuller \
+        pydub \
+        cma \
+        nbgitpuller \
+        nltk \
     && \
     jupyter serverextension enable nbgitpuller --sys-prefix && \
     clean-layer.sh

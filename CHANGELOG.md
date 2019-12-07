@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.8.12 (standard)
+- Install nltk
+
 ## [1.8.11] r-ubuntu - 2019-11-21
 ### Changed
 - Fix rtracklayer installation
