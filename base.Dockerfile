@@ -106,7 +106,7 @@ RUN sed -i s/625147942732-t30t8vnn43fl5mvg1qde5pl84603dr6s.apps.googleuserconten
      /opt/conda/share/jupyter/lab/staging/node_modules/@jupyterlab/google-drive/lib/gapi*
 
 # Commit on Aug 25, 2019, branch live
-RUN pip install --no-cache-dir git+https://github.com/AaltoScienceIT/nbgrader@49d2d1f && \
+RUN pip install --no-cache-dir git+https://github.com/AaltoScienceIT/nbgrader@4c5d6f60 && \
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
     jupyter nbextension enable --sys-prefix --py nbgrader && \
     jupyter serverextension enable --sys-prefix --py nbgrader && \
