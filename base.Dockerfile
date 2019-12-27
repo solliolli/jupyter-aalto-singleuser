@@ -29,8 +29,8 @@ RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
 # JupyterHub says we can use any existing jupyter image, as long as we properly
 # pin the JupyterHub version
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
-# RUN pip install --no-cache-dir jupyterhub==1.0.0 && \
-        # fix-permissions $CONDA_DIR /home/$NB_USER
+RUN pip install --no-cache-dir jupyterhub==1.1.0b1 && \
+    fix-permissions $CONDA_DIR /home/$NB_USER
 
 # Conda 4.7.10 is included in scipy-notebook
 # RUN conda install conda=4.7.10
@@ -58,10 +58,11 @@ RUN conda config --set auto_update_conda False && \
     # JupyterLab 1.0.1 is included in scipy-notebook
     # conda install jupyterlab==1.1.0 && \
 RUN \
-    conda install jupyterlab==1.1.3 && \
+    conda install jupyterlab==1.2.4 && \
     pip install --no-cache-dir \
         jupyterlab-git \
         nbdime \
+        nbgitpuller \
         nbstripout \
 	nbzip \
         && \
@@ -81,11 +82,12 @@ RUN \
                                  @jupyterlab/git \
                                  @fissio/hub-topbar-buttons \
                                 # Incompatible with jupyterlab 1.0.2
-                                #  nbdime-jupyterlab \
+                                 nbdime-jupyterlab \
                                  @lckr/jupyterlab_variableinspector \
                                 && \
     jupyter labextension disable @jupyterlab/google-drive && \
     nbdime config-git --enable --system && \
+    jupyter serverextension enable nbgitpuller --sys-prefix && \
     git config --system core.editor nano && \
     clean-layer.sh
 
