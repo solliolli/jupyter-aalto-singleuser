@@ -1,3 +1,4 @@
+{
 rm -rf /tmp/*
 
 rm -rf /home/$NB_USER/.cache/yarn
@@ -13,3 +14,5 @@ apt-get clean
 rm -rf /var/lib/apt/lists/*
 
 fix-permissions $CONDA_DIR /home/$NB_USER
+
+} 2>&1 | sed -e 's/^/clean-layer:    /'
