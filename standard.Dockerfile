@@ -17,6 +17,7 @@ RUN cd /opt/conda/conda-meta/ && \
 
 # Custom installations
 # arviz: bayesian data analysis
+# cma: ??
 # folium: BE remote sensing course
 # geopandas: BE remote sensing course
 # igraph: complex networks (general)
@@ -27,6 +28,7 @@ RUN cd /opt/conda/conda-meta/ && \
 # plotchecker: for nbgrader, mlbp2018
 # plotly: student request
 # pydotplus - dsfb2018 instructor request
+# pydub: ???
 # pytorch: general use
 # pystan: general use, bayes course (updated prompt_toolkit needed as dependency)
 # rasterio: BE remote sensing course
@@ -34,6 +36,7 @@ RUN cd /opt/conda/conda-meta/ && \
 # tensorflow, tensorflow-tensorboard (general use)
 # cvxopt       - mlkern2019
 # nbstripout   - generic package
+# nltk         -  datasci2019  (use conda  when upgrading)
 # lapack       - dependency for cvxpy
 # cvxpy        - mlkern2019
 # gpflow       - special course Gaussian Processes, 2019
@@ -68,15 +71,18 @@ RUN \
         mlxtend \
         scikit-plot \
         imbalanced-learn \
+        nltk \
         && \
     pip install --no-cache-dir \
         plotchecker \
         gpflow \
         calysto \
+        cma \
         cvxopt \
         cvxpy \
         metakernel \
-        qiskit==0.12.0 \
+        pydub \
+        qiskit \
         && \
     clean-layer.sh
 # Currently non-functional packages:
@@ -103,18 +109,9 @@ RUN conda install -c pytorch \
         && \
     clean-layer.sh
 
-# nbgitpuller: Move to base on next update
-# pydub: ???
-# cma: ??
-# nltk: datasci2019  (use conda  when upgrading)
-RUN pip install --no-cache-dir \
-        pydub \
-        cma \
-        nbgitpuller \
-        nltk \
-    && \
-    jupyter serverextension enable nbgitpuller --sys-prefix && \
-    clean-layer.sh
+#RUN pip install --no-cache-dir \
+#    && \
+#    clean-layer.sh
 
 
 
