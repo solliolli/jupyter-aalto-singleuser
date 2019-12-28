@@ -48,6 +48,7 @@ RUN conda config --set auto_update_conda False && \
         ipymd \
         ipywidgets \
         jupyter_contrib_nbextensions \
+	pipdeptree \
         && \
     jupyter contrib nbextension install --sys-prefix && \
     python -m bash_kernel.install --sys-prefix && \
