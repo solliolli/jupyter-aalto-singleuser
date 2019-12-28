@@ -47,15 +47,14 @@ RUN cd /opt/conda/conda-meta/ && \
 # geopy - datasci2019
 # imbalanced-learn (student request)
 RUN \
-    conda install \
+    conda config --add channels conda-forge && \
+    conda install --freeze-installed \
         networkx \
         nose \
         pandas-datareader \
         plotly \
         pydotplus \
         scikit-learn \
-        && \
-    conda install -c conda-forge \
         arviz \
         folium \
         python-igraph \
@@ -65,8 +64,8 @@ RUN \
         tqdm \
         wordcloud \
         geopy \
-	rasterio \
-	geopandas \
+        rasterio \
+        geopandas \
         lapack \
         mlxtend \
         scikit-plot \
@@ -93,7 +92,7 @@ RUN \
     # Installing from pip because the tensorflow and tensorboard versions found
     # from the anaconda repos don't support python 3.7 yet
 RUN \
-    conda install \
+    conda install --freeze-installed \
         keras \
         pystan prompt_toolkit \
         && \
@@ -103,7 +102,7 @@ RUN \
         tensorflow-hub \
         && \
     clean-layer.sh
-RUN conda install -c pytorch \
+RUN conda install --freeze-installed -c pytorch \
         pytorch \
         torchvision \
         && \
