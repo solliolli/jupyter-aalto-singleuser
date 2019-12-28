@@ -98,8 +98,8 @@ RUN \
         pystan prompt_toolkit \
         && \
     pip install --no-cache-dir \
-        tensorflow==1.13.1 \
-        tensorflow-tensorboard==1.5.1 \
+        tensorflow==2.0.0 \
+        tensorboard \
         tensorflow-hub \
         && \
     clean-layer.sh
