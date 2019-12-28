@@ -39,7 +39,7 @@ RUN cd /opt/conda/conda-meta/ && \
 # nltk         -  datasci2019  (use conda  when upgrading)
 # lapack       - dependency for cvxpy
 # cvxpy        - mlkern2019
-# gpflow       - special course Gaussian Processes, 2019
+# gpflow       - special course Gaussian Processes, 2019 (pinned to 2.0.0rc1 to force tf2.0 compat)
 # bcolz        - introai2019
 # tqdm         - introai2019
 # qiskit       - Introduction to Quantum Technologies, Matti Raasakka, RT#14866
@@ -75,7 +75,7 @@ RUN \
         && \
     pip install --no-cache-dir \
         plotchecker \
-        gpflow \
+        gpflow==2.0.0rc1 \
         calysto \
         cma \
         cvxopt \
