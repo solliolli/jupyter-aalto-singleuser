@@ -4,7 +4,10 @@ FROM jupyter/scipy-notebook:${UPSTREAM_SCIPY_NOTEBOOK_VER}
 USER root
 
 ADD scripts/clean-layer.sh /usr/local/bin/
-ADD pinned.base  /opt/conda/conda-meta/pinned
+RUN echo "python ==3.7.3"                    >> /opt/conda/conda-meta/pinned && \
+    echo "numpy 1.17.*"                      >> /opt/conda/conda-meta/pinned && \
+    echo "scipy 1.3.*"                       >> /opt/conda/conda-meta/pinned && \
+    clean-layer.sh
 
 # Debian package
 RUN apt-get update && \
