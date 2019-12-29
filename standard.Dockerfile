@@ -48,7 +48,7 @@ RUN cd /opt/conda/conda-meta/ && \
 # imbalanced-learn (student request)
 RUN \
     conda config --add channels conda-forge && \
-    conda install --freeze-installed \
+    conda install \
         networkx \
         nose \
         pandas-datareader \
