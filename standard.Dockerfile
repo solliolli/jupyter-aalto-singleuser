@@ -3,9 +3,15 @@ FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 
 USER root
 
-ADD pinned.standard  /opt/conda/conda-meta/pinned.standard
-RUN cd /opt/conda/conda-meta/ && \
-    cat pinned.standard >> pinned
+RUN echo "tensorflow 2.0.*"                  >> /opt/conda/conda-meta/pinned && \
+    echo "#tensorflow-tensorboard 1.5.*"     >> /opt/conda/conda-meta/pinned && \
+    echo "keras 2.3.*"                       >> /opt/conda/conda-meta/pinned && \
+    echo "pytorch 1.3.*"                     >> /opt/conda/conda-meta/pinned && \
+    echo "torchvision 0.4.*"                 >> /opt/conda/conda-meta/pinned && \
+    clean-layer.sh
+
+
+
 
 # Custom installations
 #RUN apt-get update && \
