@@ -5,10 +5,12 @@ FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 
 USER root
 
+# libxml2-dev: for R package xml2, indirect dependency of devtools
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         clang \
         ed \
+        file \
         fonts-dejavu \
         tzdata \
         gfortran \
@@ -18,6 +20,7 @@ RUN apt-get update && \
         libssl-dev \
         libopenblas-dev \
         liblapack-dev \
+        libxml2-dev \
         r-base && \
     update-alternatives --set cc  /usr/bin/clang && \
     update-alternatives --set c++ /usr/bin/clang++ && \

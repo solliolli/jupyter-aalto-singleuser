@@ -10,6 +10,7 @@ ADD pinned.base  /opt/conda/conda-meta/pinned
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         clang \
+        file \
         git-annex \
         git-lfs \
         git-svn \
