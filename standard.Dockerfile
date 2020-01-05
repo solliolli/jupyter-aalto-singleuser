@@ -114,14 +114,13 @@ RUN conda install --freeze-installed -c pytorch \
         && \
     clean-layer.sh
 
-#RUN pip install --no-cache-dir \
-#    && \
-#    clean-layer.sh
-
-
+RUN pip install --no-cache-dir \
+        geoplotlib \
+    && \
+    clean-layer.sh
 
 #RUN \
-#    conda install -c anaconda \
+#    conda install --freeze-installed \
 #    conda install \
 #    clean-layer.sh
 
