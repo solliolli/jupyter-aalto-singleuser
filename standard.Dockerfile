@@ -119,10 +119,12 @@ RUN pip install --no-cache-dir \
     && \
     clean-layer.sh
 
-#RUN \
-#    conda install --freeze-installed \
-#    conda install \
-#    clean-layer.sh
+# owslib: mlpython
+RUN \
+    conda install --freeze-installed \
+        owslib \
+    && \
+    clean-layer.sh
 
 #RUN apt-get update && \
 #    apt-get install -y --no-install-recommends \
