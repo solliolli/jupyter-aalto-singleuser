@@ -52,6 +52,7 @@ RUN echo "tensorflow 2.0.*"                  >> /opt/conda/conda-meta/pinned && 
 # wordcloud - datasci2019
 # geopy - datasci2019
 # imbalanced-learn (student request)
+# opencv: mlpython
 RUN \
     conda config --add channels conda-forge && \
     conda install \
@@ -77,6 +78,7 @@ RUN \
         scikit-plot \
         imbalanced-learn \
         nltk \
+        opencv \
         && \
     pip install --no-cache-dir \
         plotchecker \
