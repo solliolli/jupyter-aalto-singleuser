@@ -116,16 +116,20 @@ RUN conda install --freeze-installed -c pytorch \
         && \
     clean-layer.sh
 
-RUN pip install --no-cache-dir \
-        geoplotlib \
-    && \
-    clean-layer.sh
-
 # owslib: mlpython
 RUN \
     conda install --freeze-installed \
         owslib \
-    && \
+        && \
+    clean-layer.sh
+
+RUN pip install --no-cache-dir \
+        geoplotlib \
+        ipympl \
+        && \
+    jupyter labextension install \
+        jupyter-matplotlib \
+        && \
     clean-layer.sh
 
 #RUN apt-get update && \
