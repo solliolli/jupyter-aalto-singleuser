@@ -24,21 +24,21 @@ full-rebuild: base standard test-standard
 
 
 base:
-	! grep -P '\t' base.Dockerfile || { echo "ERROR: Tabs in base.Dockerfile" ; exit 1 ; }
+	@! grep -P '\t' -C 1 base.Dockerfile || { echo "ERROR: Tabs in base.Dockerfile" ; exit 1 ; }
 	docker build -t aaltoscienceit/notebook-server-base:$(VER_BASE) . -f base.Dockerfile --build-arg=UPSTREAM_SCIPY_NOTEBOOK_VER=$(UPSTREAM_SCIPY_NOTEBOOK_VER)
 standard:
-	! grep -P '\t' standard.Dockerfile || { echo "ERROR: Tabs in standard.Dockerfile" ; exit 1 ; }
+	@! grep -P '\t' -C 1 standard.Dockerfile || { echo "ERROR: Tabs in standard.Dockerfile" ; exit 1 ; }
 	docker build -t aaltoscienceit/notebook-server:$(VER_STD) . -f standard.Dockerfile --build-arg=VER_BASE=$(VER_BASE)
 #r:
 #	docker build -t aaltoscienceit/notebook-server-r:0.4.0 --pull=false . -f r.Dockerfile
 r:
-	! grep -P '\t' r-ubuntu.Dockerfile || { echo "ERROR: Tabs in r-ubuntu.Dockerfile" ; exit 1 ; }
+	@! grep -P '\t' -C 1 r-ubuntu.Dockerfile || { echo "ERROR: Tabs in r-ubuntu.Dockerfile" ; exit 1 ; }
 	docker build -t aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) --pull=false . -f r-ubuntu.Dockerfile --build-arg=VER_BASE=$(VER_BASE) --build-arg=CRAN_URL=$(CRAN_URL)
 julia:
-	! grep -P '\t' julia.Dockerfile || { echo "ERROR: Tabs in julia.Dockerfile" ; exit 1 ; }
+	@! grep -P '\t' -C 1 julia.Dockerfile || { echo "ERROR: Tabs in julia.Dockerfile" ; exit 1 ; }
 	docker build -t aaltoscienceit/notebook-server-julia:$(VER_JULIA) --pull=false . -f julia.Dockerfile --build-arg=VER_BASE=$(VER_BASE)
 opencv:
-	! grep -P '\t' opencv.Dockerfile || { echo "ERROR: Tabs in opencv.Dockerfile" ; exit 1 ; }
+	@! grep -P '\t' -C 1 opencv.Dockerfile || { echo "ERROR: Tabs in opencv.Dockerfile" ; exit 1 ; }
 	docker build -t notebook-server-opencv:$(VER_CV) --pull=false . -f opencv.Dockerfile --build-arg=VER_STD=$(VER_STD)
 
 
