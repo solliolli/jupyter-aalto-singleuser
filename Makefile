@@ -81,11 +81,11 @@ push-dev: check-khost standard
 push-devhub: check-khost check-hubrepo standard
 	docker tag aaltoscienceit/notebook-server:${VER_STD} ${HUBREPO}/notebook-server:${VER_STD}
 	docker push ${HUBREPO}/notebook-server:${VER_STD}
-	ssh ${KHOST} ssh jupyter-k8s-node3.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server:${VER_STD}"
+	ssh ${KHOST} ssh k8s-node4.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server:${VER_STD}"
 push-devhub-base: check-khost check-hubrepo base
 	docker tag aaltoscienceit/notebook-server-base:${VER_BASE} ${HUBREPO}/notebook-server-base:${VER_BASE}
 	docker push ${HUBREPO}/notebook-server-base:${VER_BASE}
-	ssh ${KHOST} ssh jupyter-k8s-node3.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server-base:${VER_BASE}"
+	ssh ${KHOST} ssh k8s-node4.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server-base:${VER_BASE}"
 
 pull-standard: check-khost check-knodes
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server:${VER_STD}"
