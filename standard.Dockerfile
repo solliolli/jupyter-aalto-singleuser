@@ -138,6 +138,10 @@ RUN pip install --no-cache-dir \
 #           && \
 #    clean-layer.sh
 
+# Fix nbgrader permissions problem
+RUN \
+    sed -i "s@assert '0600' ==.*@assert stat.S_IMODE(os.stat(fname).st_mode) \& 0o77 == 0@" /opt/conda/lib/python3.7/site-packages/jupyter_client/connect.py
+
 ENV CC=clang CXX=clang++
 
 
