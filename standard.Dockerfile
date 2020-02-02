@@ -123,9 +123,11 @@ RUN \
         && \
     clean-layer.sh
 
+# ortools:   ai2020
 RUN pip install --no-cache-dir \
         geoplotlib \
         ipympl \
+        ortools \
         && \
     jupyter labextension install \
         jupyter-matplotlib \
