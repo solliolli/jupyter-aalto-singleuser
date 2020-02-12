@@ -49,3 +49,6 @@ def test_modules():
     # intcompmedia
     import pydub
     import cma
+
+    # ai2020
+    import ortools
