@@ -124,8 +124,10 @@ RUN \
     clean-layer.sh
 
 # ortools:   ai2020
+# inotify:   base package, for coursedir setup
 RUN pip install --no-cache-dir \
         geoplotlib \
+	inotify \
         ipympl \
         ortools \
         && \
