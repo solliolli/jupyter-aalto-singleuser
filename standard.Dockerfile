@@ -123,9 +123,11 @@ RUN \
         && \
     clean-layer.sh
 
+# configargparse: deeplearn2020, also generally useful
 # ortools:   ai2020
 # inotify:   base package, for coursedir setup
 RUN pip install --no-cache-dir \
+        configargparse \
         geoplotlib \
 	inotify \
         ipympl \
