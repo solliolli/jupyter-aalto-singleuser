@@ -7,7 +7,7 @@ if [ -e "/notebooks" ] ; then
     mkdir -p "$AALTO_NEWHOME"
 
     # If a directory, it must end it slash or else the dir won't be created.
-    for path in $AALTO_EXTRA_HOME_LINKS .gitconfig .local/share/jupyter/nbgrader_cache/ .ssh/ ; do
+    for path in $AALTO_EXTRA_HOME_LINKS .gitconfig .local/share/jupyter/nbgrader_cache/ .ssh/ .bash_history ; do
 	dirname=$(dirname "$path")
 	basename=$(basename "$path")
 	mkdir -p $HOME/"$dirname"
