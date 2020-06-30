@@ -138,6 +138,12 @@ RUN pip install --no-cache-dir \
         && \
     clean-layer.sh
 
+RUN \
+    conda install --freeze-installed \
+        conda-tree \
+        && \
+    clean-layer.sh
+
 #RUN apt-get update && \
 #    apt-get install -y --no-install-recommends \
 #           ... \
