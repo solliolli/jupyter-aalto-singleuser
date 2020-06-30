@@ -43,12 +43,14 @@ RUN pip install --no-cache-dir jupyterhub==1.1.0 && \
 #   importnb allows pytest to test ipynb
 RUN conda config --set auto_update_conda False && \
     conda install \
+        conda-tree \
         pytest \
         nbval \
         && \
     pip install --no-cache-dir \
         bash_kernel \
         importnb \
+        inotify \
         ipymd \
         ipywidgets \
         jupyter_contrib_nbextensions \
