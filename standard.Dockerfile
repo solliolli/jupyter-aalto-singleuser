@@ -129,7 +129,7 @@ RUN \
 RUN pip install --no-cache-dir \
         configargparse \
         geoplotlib \
-	inotify \
+        inotify \
         ipympl \
         ortools \
         && \

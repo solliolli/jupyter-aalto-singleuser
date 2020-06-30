@@ -4,9 +4,9 @@ FROM jupyter/scipy-notebook:${UPSTREAM_SCIPY_NOTEBOOK_VER}
 USER root
 
 ADD scripts/clean-layer.sh /usr/local/bin/
-RUN echo "python ==3.7.3"                    >> /opt/conda/conda-meta/pinned && \
-    echo "numpy 1.17.*"                      >> /opt/conda/conda-meta/pinned && \
-    echo "scipy 1.3.*"                       >> /opt/conda/conda-meta/pinned && \
+RUN echo "python ==3.7.6"                    >> /opt/conda/conda-meta/pinned && \
+    echo "numpy 1.18.*"                      >> /opt/conda/conda-meta/pinned && \
+    echo "scipy 1.4.*"                       >> /opt/conda/conda-meta/pinned && \
     clean-layer.sh
 
 # Debian package
@@ -33,7 +33,7 @@ RUN touch /.nbgrader.log && chmod 777 /.nbgrader.log
 # JupyterHub says we can use any existing jupyter image, as long as we properly
 # pin the JupyterHub version
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
-RUN pip install --no-cache-dir jupyterhub==1.1.0b1 && \
+RUN pip install --no-cache-dir jupyterhub==1.1.0 && \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
 # Conda 4.7.10 is included in scipy-notebook
@@ -52,7 +52,7 @@ RUN conda config --set auto_update_conda False && \
         ipymd \
         ipywidgets \
         jupyter_contrib_nbextensions \
-	pipdeptree \
+        pipdeptree \
         && \
     jupyter contrib nbextension install --sys-prefix && \
     python -m bash_kernel.install --sys-prefix && \
@@ -63,13 +63,13 @@ RUN conda config --set auto_update_conda False && \
     # JupyterLab 1.0.1 is included in scipy-notebook
     # conda install jupyterlab==1.1.0 && \
 RUN \
-    conda install jupyterlab==1.2.4 && \
+    conda install jupyterlab==2.1.5 && \
     pip install --no-cache-dir \
         jupyterlab-git \
         nbdime \
         nbgitpuller \
         nbstripout \
-	nbzip \
+        nbzip \
         && \
     jupyter serverextension enable --py nbdime --sys-prefix && \
     jupyter nbextension install --py nbdime --sys-prefix && \
