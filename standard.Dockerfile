@@ -3,11 +3,11 @@ FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 
 USER root
 
-RUN echo "tensorflow 2.0.*"                  >> /opt/conda/conda-meta/pinned && \
+RUN echo "tensorflow 2.2.*"                  >> /opt/conda/conda-meta/pinned && \
     echo "#tensorflow-tensorboard 1.5.*"     >> /opt/conda/conda-meta/pinned && \
-    echo "keras 2.3.*"                       >> /opt/conda/conda-meta/pinned && \
-    echo "pytorch 1.3.*"                     >> /opt/conda/conda-meta/pinned && \
-    echo "torchvision 0.4.*"                 >> /opt/conda/conda-meta/pinned && \
+    echo "keras 2.4.*"                       >> /opt/conda/conda-meta/pinned && \
+    echo "pytorch 1.5.*"                     >> /opt/conda/conda-meta/pinned && \
+    echo "torchvision 0.6.*"                 >> /opt/conda/conda-meta/pinned && \
     clean-layer.sh
 
 
@@ -31,6 +31,7 @@ RUN echo "tensorflow 2.0.*"                  >> /opt/conda/conda-meta/pinned && 
 # librarosa: datasci2018
 # networkx: complex networks (general)
 # nose: mlbp2018
+# owslib: mlpython
 # plotchecker: for nbgrader, mlbp2018
 # plotly: student request
 # pydotplus - dsfb2018 instructor request
@@ -53,6 +54,8 @@ RUN echo "tensorflow 2.0.*"                  >> /opt/conda/conda-meta/pinned && 
 # geopy - datasci2019
 # imbalanced-learn (student request)
 # opencv: mlpython
+# configargparse: deeplearn2020, also generally useful
+# ortools:   ai2020
 RUN \
     conda config --add channels conda-forge && \
     conda install \
@@ -79,6 +82,7 @@ RUN \
         imbalanced-learn \
         nltk \
         opencv \
+        owslib \
         && \
     pip install --no-cache-dir \
         plotchecker \
@@ -90,6 +94,10 @@ RUN \
         metakernel \
         pydub \
         qiskit \
+        configargparse \
+        geoplotlib \
+        ipympl \
+        ortools \
         && \
     clean-layer.sh
 # Currently non-functional packages:
@@ -116,38 +124,15 @@ RUN conda install --freeze-installed -c pytorch \
         && \
     clean-layer.sh
 
-# owslib: mlpython
-RUN \
-    conda install --freeze-installed \
-        owslib \
-        && \
-    clean-layer.sh
-
-# configargparse: deeplearn2020, also generally useful
-# ortools:   ai2020
-# inotify:   base package, for coursedir setup
-RUN pip install --no-cache-dir \
-        configargparse \
-        geoplotlib \
-        ipympl \
-        ortools \
-        && \
-    jupyter labextension install \
-        jupyter-matplotlib \
-        && \
-    clean-layer.sh
-
 #RUN \
 #    conda install --freeze-installed \
-#        conda-tree \
 #        && \
 #    clean-layer.sh
 
-#RUN apt-get update && \
-#    apt-get install -y --no-install-recommends \
-#           ... \
-#           && \
+#RUN pip install --no-cache-dir \
+#        && \
 #    clean-layer.sh
+
 
 # Fix nbgrader permissions problem
 RUN \

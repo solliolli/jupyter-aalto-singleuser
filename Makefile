@@ -1,5 +1,5 @@
-UPSTREAM_SCIPY_NOTEBOOK_VER=4f99cb54f9ea  # Image updated 2020-06-25
-CRAN_URL=https://cran.microsoft.com/snapshot/2019-12-29/
+UPSTREAM_SCIPY_NOTEBOOK_VER=54462805efcb  # Image updated 2020-06-25
+CRAN_URL=https://cran.microsoft.com/snapshot/2020-07-01/
 
 # base image - jupyter stuff only, not much software
 VER_BASE=3.0
