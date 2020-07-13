@@ -108,12 +108,14 @@ RUN \
     # Installing from pip because the tensorflow and tensorboard versions found
     # from the anaconda repos don't support python 3.7 yet
 RUN \
-    conda install --freeze-installed \
+    conda upgrade conda && \
+    conda config --system --set channel_priority flexible && \
+    conda install \
         keras \
         pystan prompt_toolkit \
         && \
     pip install --no-cache-dir \
-        tensorflow==2.0.0 \
+        tensorflow==2.2.0 \
         tensorboard \
         tensorflow-hub \
         && \
@@ -136,7 +138,7 @@ RUN conda install --freeze-installed -c pytorch \
 
 # Fix nbgrader permissions problem
 RUN \
-    sed -i "s@assert '0600' ==.*@assert stat.S_IMODE(os.stat(fname).st_mode) \& 0o77 == 0@" /opt/conda/lib/python3.7/site-packages/jupyter_client/connect.py
+    sed -i "s@assert '0600' ==.*@assert stat.S_IMODE(os.stat(fname).st_mode) \& 0o77 == 0@" /opt/conda/lib/python3.8/site-packages/jupyter_client/connect.py
 
 ENV CC=clang CXX=clang++
 
