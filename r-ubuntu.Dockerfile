@@ -16,6 +16,7 @@ RUN apt-get update && \
         gfortran \
         gzip \
         libblas-dev \
+        libcurl4-openssl-dev \
         libgit2-dev \
         libssl-dev \
         libopenblas-dev \
@@ -38,7 +39,7 @@ RUN apt-get update && \
 ARG CRAN_URL
 
 RUN \
-    Rscript -e "install.packages(c('repr','IRdisplay','evaluate','crayon','pbdZMQ','devtools','uuid','digest'), repos='${CRAN_URL}', clean=TRUE)" && \
+    Rscript -e "install.packages(c('devtools','repr','IRdisplay','evaluate','crayon','pbdZMQ','uuid','digest'), repos='${CRAN_URL}', clean=TRUE)" && \
     Rscript -e "devtools::install_github('IRkernel/IRkernel')" && \
     Rscript -e 'IRkernel::installspec(user = FALSE)'
 RUN jupyter kernelspec remove -f python3
@@ -80,18 +81,18 @@ RUN apt-get update && \
         libclang-dev \
         libapparmor1 \
         libedit2 \
-        libssl1.0.0 \
+        libssl1.1 \
         lsb-release \
         psmisc \
         && \
         clean-layer.sh
 
 
-ENV RSTUDIO_PKG=rstudio-server-1.2.5001-amd64.deb
+ENV RSTUDIO_PKG=rstudio-server-1.3.959-amd64.deb
 # https://github.com/jupyterhub/nbrsessionproxy
 # Download url: https://www.rstudio.com/products/rstudio/download-server/
 RUN wget -q https://download2.rstudio.org/server/bionic/amd64/${RSTUDIO_PKG} && \
-    test "$(md5sum < ${RSTUDIO_PKG})" = "d33881b9ab786c09556c410e7dc477de  -" && \
+    test "$(md5sum < ${RSTUDIO_PKG})" = "24c0dd4a9622aa3229ea5006fc83e7bd  -" && \
     dpkg -i ${RSTUDIO_PKG} && \
     rm ${RSTUDIO_PKG}
 
@@ -105,7 +106,7 @@ RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
     cd /usr/local/src/ && \
     git clone https://github.com/jupyterhub/jupyter-server-proxy && \
     cd jupyter-server-proxy/jupyterlab-server-proxy && \
-    git checkout daeb5aa08074758bf7922f6ca5b557f713feb4dd && \
+    git checkout e8c45f9565844df9497360b767f07fe1b84e19cc && \
     npm install && npm run build && jupyter labextension link . && \
     npm run build && jupyter lab build && \
     cd /usr/local/src && rm -r /usr/local/src/* && \
@@ -128,16 +129,16 @@ RUN \
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         libbz2-dev \
-	libncurses5-dev \
-	liblzma-dev \
+        libncurses5-dev \
+        liblzma-dev \
         openjdk-11-jre-headless \
-	python-htseq \
+        python-htseq \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     pip install --no-cache-dir \
         htseq \
-	&& \
+        && \
     clean-layer.sh
 
 RUN cd /opt && \
@@ -153,6 +154,7 @@ RUN cd /opt && \
 # htbioinformatics2019, RT#15527
 # http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#obtaining-bowtie-2
 RUN conda config --append channels bioconda && \
+    conda config --system --set channel_priority flexible && \
     conda install \
         bowtie2 \
         && \
@@ -160,8 +162,10 @@ RUN conda config --append channels bioconda && \
 
 # htbioinformatics2019
 # https://ccb.jhu.edu/software/tophat/tutorial.shtml
+# TODO: changed https->http because of a SSL error in ubuntu as of
+# 2020-07-10, convert http->https later and see if it works
 RUN cd /opt && \
-    wget https://ccb.jhu.edu/software/tophat/downloads/tophat-2.1.1.Linux_x86_64.tar.gz && \
+    wget http://ccb.jhu.edu/software/tophat/downloads/tophat-2.1.1.Linux_x86_64.tar.gz && \
     tar xf tophat-2.1.1.Linux_x86_64.tar.gz && \
     sed -i 's@/usr/bin/env python@/usr/bin/python@' tophat-2.1.1.Linux_x86_64/tophat && \
     ln -s $PWD/tophat-2.1.1.Linux_x86_64/tophat2 /usr/local/bin/ && \
@@ -202,7 +206,7 @@ RUN \
     pip install --no-cache-dir \
         pysam \
         macs2 \
-	&& \
+        && \
     clean-layer.sh
 
 
