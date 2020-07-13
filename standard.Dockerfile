@@ -121,8 +121,8 @@ RUN \
         && \
     clean-layer.sh
 RUN conda install --freeze-installed -c pytorch \
-        pytorch \
-        torchvision \
+        pytorch==1.5.* \
+        torchvision==0.6.* \
         && \
     clean-layer.sh
 
