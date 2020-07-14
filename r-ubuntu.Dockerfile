@@ -6,6 +6,7 @@ FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 USER root
 
 # libxml2-dev: for R package xml2, indirect dependency of devtools
+# libnode-dev: for rstan
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         clang \
@@ -18,6 +19,7 @@ RUN apt-get update && \
         libblas-dev \
         libcurl4-openssl-dev \
         libgit2-dev \
+        libnode-dev \
         libssl-dev \
         libopenblas-dev \
         liblapack-dev \
