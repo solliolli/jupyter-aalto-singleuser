@@ -211,6 +211,11 @@ RUN \
         && \
     clean-layer.sh
 
+# Last-added packages, move to above
+RUN \
+    Rscript -e "install.packages(c('StanHeaders'), repos='${CRAN_URL}', clean=TRUE)" && \
+    fix-permissions /usr/local/lib/R/site-library
+
 
 ENV CC=clang CXX=clang++
 ENV BINPREF=PATH

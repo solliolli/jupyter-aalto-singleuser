@@ -8,7 +8,7 @@ VER_STD=3.0.0
 # Julia
 VER_JULIA=3.0.0
 # R
-VER_R=3.0.0
+VER_R=3.0.1
 # OpenCV
 VER_CV=1.8.0
 
@@ -39,7 +39,7 @@ r-ubuntu:
 	@! grep -P '\t' -C 1 r-ubuntu.Dockerfile || { echo "ERROR: Tabs in r-ubuntu.Dockerfile" ; exit 1 ; }
 	docker build -t aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) --pull=false . -f r-ubuntu.Dockerfile --build-arg=VER_BASE=$(VER_BASE) --build-arg=CRAN_URL=$(CRAN_URL)
 	#docker run --rm aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) conda env export -n base > environment-yml/$@-$(VER_R).yml
-	docker run --rm aaltoscienceit/notebook-server:$(VER_R) conda list --revisions > conda-history/$@-$(VER_R).yml
+	docker run --rm aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) conda list --revisions > conda-history/$@-$(VER_R).yml
 julia:
 	@! grep -P '\t' -C 1 julia.Dockerfile || { echo "ERROR: Tabs in julia.Dockerfile" ; exit 1 ; }
 	docker build -t aaltoscienceit/notebook-server-julia:$(VER_JULIA) --pull=false . -f julia.Dockerfile --build-arg=VER_BASE=$(VER_BASE)
