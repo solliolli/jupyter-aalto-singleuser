@@ -57,7 +57,7 @@ RUN \
 
 # Packages needed for bayesian macheine learning course
 RUN \
-    Rscript -e "install.packages(c('nloptr', 'bayesplot', 'rstan', 'rstanarm', 'shinystan', 'loo', 'brms', 'GGally', 'MASS', 'coda', 'gridBase', 'gridExtra', 'here', 'projpred'), repos='${CRAN_URL}', clean=TRUE)" && \
+    Rscript -e "install.packages(c('nloptr', 'bayesplot', 'rstan', 'rstanarm', 'shinystan', 'loo', 'brms', 'GGally', 'MASS', 'coda', 'gridBase', 'gridExtra', 'here', 'projpred', 'StanHeaders', 'tweenr', 'gganimate'), repos='${CRAN_URL}', clean=TRUE)" && \
     fix-permissions /usr/local/lib/R/site-library
 
 # Try to disable Python kernel
