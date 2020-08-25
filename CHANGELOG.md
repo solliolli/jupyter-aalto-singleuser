@@ -1,5 +1,70 @@
 # Changelog
 
+## [3.0.1] r-ubuntu - 2020-08-21
+### Added
+- New package: StanHeaders
+
+## [3.0.0] - 2020-07-14
+### Changed
+- Upgrade Python from 3.7.6 to 3.8.3
+- Upgrade CRAN snapshot to 2020-07-12
+- Upgrade nbgrader to version 26 Jun 2020 (b5ae9f8)
+- Upgrade scipy notebook to version 2020-07-05 (5197709e9f23)
+- Upgrade julia to v1.4.2
+- Bump package versions:
+  - tensorflow 2.0 -> 2.2
+  - keras 2.3 -> 2.4
+  - pytorch 1.3 -> 1.5
+  - torchvision 0.4 -> 0.6
+  - rstudio 1.2.5001 -> 1.3.959
+
+### Fixed
+- Fix python-igraph unit test
+
+## [2.0.6] Standard - 2020-06-30
+### Added
+- Basic unit test for ortools package
+- New packages: inotify, configargparse, conda-tree
+
+### Changed
+- Made `.bash_history` persistent across server instances
+
+## [2.0.5] Standard - 2020-02-02
+### Added
+- New package: ortools
+
+## [2.0.4] Standard - 2020-01-16
+### Fixed
+- Fix nbgrader permissions problem
+
+## [2.0.3] Standard - 2020-01-15
+### Added
+- New packages: jupyter-matplotlib, ipympl
+
+## [2.0.2] Standard - 2020-01-13
+### Added
+- New package: opencv
+
+## [2.0.1] Standard - 2020-01-07
+### Added
+- New package: owslib
+
+## [2.0.0] - 2019-12-30
+### Changed
+- Upgrade jupyterlab to v1.2.4
+- Upgrade scipy notebook to version 12 Dec 2019
+- Upgrade nbgrader to version 12 Nov 2019 (4c5d6f6)
+- Downgrade gpflow to v2.0.0rc1
+- Upgrade julia to v1.3.0
+- Upgrade CRAN snapshot to 2019-12-29
+- Bump package versions:
+  - tensorflow 2.0.0
+  - keras 2.3
+  - pytorch 1.3
+
+### Added
+- New package: pipdeptree
+
 ## 1.8.12 (standard)
 - Install nltk
 
