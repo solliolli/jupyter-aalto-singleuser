@@ -179,7 +179,8 @@ RUN cd /opt && \
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        libomp-dev r-cran-xml && \
+        libomp-dev r-cran-xml \
+	&& \
     echo 'if (!requireNamespace("BiocManager", quietly = TRUE)) '\
             'install.packages("BiocManager") ; ' \
             'BiocManager::install()' \
