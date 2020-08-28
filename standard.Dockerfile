@@ -6,8 +6,8 @@ USER root
 RUN echo "tensorflow 2.2.*"                  >> /opt/conda/conda-meta/pinned && \
     echo "#tensorflow-tensorboard 1.5.*"     >> /opt/conda/conda-meta/pinned && \
     echo "keras 2.4.*"                       >> /opt/conda/conda-meta/pinned && \
-    echo "pytorch 1.5.*"                     >> /opt/conda/conda-meta/pinned && \
-    echo "torchvision 0.6.*"                 >> /opt/conda/conda-meta/pinned && \
+    echo "pytorch 1.2.0"                     >> /opt/conda/conda-meta/pinned && \
+    echo "#torchvision 0.6.*"                 >> /opt/conda/conda-meta/pinned && \
     clean-layer.sh
 
 
@@ -121,8 +121,8 @@ RUN \
         && \
     clean-layer.sh
 RUN conda install --freeze-installed -c pytorch \
-        pytorch==1.5.* \
-        torchvision==0.6.* \
+        pytorch \
+        torchvision \
         && \
     clean-layer.sh
 
@@ -138,7 +138,7 @@ RUN conda install --freeze-installed -c pytorch \
 
 # Fix nbgrader permissions problem
 RUN \
-    sed -i "s@assert '0600' ==.*@assert stat.S_IMODE(os.stat(fname).st_mode) \& 0o77 == 0@" /opt/conda/lib/python3.8/site-packages/jupyter_client/connect.py
+    sed -i "s@assert '0600' ==.*@assert stat.S_IMODE(os.stat(fname).st_mode) \& 0o77 == 0@" /opt/conda/lib/python3.7/site-packages/jupyter_client/connect.py
 
 ENV CC=clang CXX=clang++
 

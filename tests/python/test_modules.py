@@ -15,7 +15,7 @@ def test_modules():
     import sklearn
     import tensorflow ; assert tensorflow.__version__ >= '2.0'
     import tensorflow_hub
-    import torch ; assert torch.__version__ >= '1.3.0'
+    import torch ; assert torch.__version__ == '1.2.0'
     import torchvision ; assert torchvision.__version__ >= '0.2.1'
 
     # Misc requested courses

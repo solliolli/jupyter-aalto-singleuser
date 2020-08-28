@@ -1,16 +1,16 @@
-UPSTREAM_SCIPY_NOTEBOOK_VER=5197709e9f23  # Image updated 2020-07-05
-CRAN_URL=https://cran.microsoft.com/snapshot/2020-08-21/
+UPSTREAM_SCIPY_NOTEBOOK_VER=54462805efcb  # Image updated 2020-06-25, python 3.7.6
+CRAN_URL=https://cran.microsoft.com/snapshot/2020-07-12/
 
 # base image - jupyter stuff only, not much software
-VER_BASE=3.0
+VER_BASE=3.0-py37
 # Python
-VER_STD=3.0.0
+VER_STD=3.0.0-py37
 # Julia
 VER_JULIA=3.0.0
 # R
 VER_R=3.0.3
 # OpenCV
-VER_CV=1.8.0
+VER_CV=3.0.0-py37-cv4.1.0
 
 # VER2_R=$(VER_R)-$(GIT_REV)
 TEST_MEM_LIMIT="--memory=2G"
@@ -47,9 +47,9 @@ julia:
 	docker run --rm aaltoscienceit/notebook-server:$(VER_JULIA) conda list --revisions > conda-history/$@-$(VER_JULIA).yml
 opencv:
 	@! grep -P '\t' -C 1 opencv.Dockerfile || { echo "ERROR: Tabs in opencv.Dockerfile" ; exit 1 ; }
-	docker build -t notebook-server-opencv:$(VER_CV) --pull=false . -f opencv.Dockerfile --build-arg=VER_STD=$(VER_STD)
-	docker run --rm notebook-server-opencv:$(VER_CV) conda env export -n base > environment-yml/$@-$(VER_CV).yml
-	docker run --rm aaltoscienceit/notebook-server:$(VER_CV) conda list --revisions > conda-history/$@-$(VER_CV).yml
+	docker build -t registry.cs.aalto.fi/jupyter/notebook-server-opencv:$(VER_CV) --pull=false . -f opencv.Dockerfile --build-arg=VER_STD=$(VER_STD)
+	docker run --rm registry.cs.aalto.fi/jupyter/notebook-server-opencv:$(VER_CV) conda env export -n base > environment-yml/$@-$(VER_CV).yml
+	docker run --rm registry.cs.aalto.fi/jupyter/notebook-server-opencv:$(VER_CV) conda list --revisions > conda-history/$@-$(VER_CV).yml
 
 
 pre-test:
@@ -60,6 +60,9 @@ pre-test:
 
 test-standard: pre-test
 	docker run --volume=$(TEST_DIR):/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) pytest -o cache_dir=/tmp/pytestcache /tests/python/${TESTFILE} ${TESTARGS}
+	rm -r $(TEST_DIR)
+test-opencv: pre-test
+	docker run --volume=$(TEST_DIR):/tests:ro ${TEST_MEM_LIMIT} notebook-server-opencv:$(VER_CV) pytest -o cache_dir=/tmp/pytestcache /tests/python-opencv /tests/python/${TESTFILE} ${TESTARGS}
 	rm -r $(TEST_DIR)
 #	CC="clang" CXX="clang++" jupyter nbconvert --exec --ExecutePreprocessor.timeout=300 pystan_demo.ipynb --stdout
 test-standard-full: test-standard pre-test
@@ -96,6 +99,8 @@ push-devhub-base: check-khost check-hubrepo base
 	docker tag aaltoscienceit/notebook-server-base:${VER_BASE} ${HUBREPO}/notebook-server-base:${VER_BASE}
 	docker push ${HUBREPO}/notebook-server-base:${VER_BASE}
 	ssh ${KHOST} ssh k8s-node4.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server-base:${VER_BASE}"
+push-opencv: opencv
+	docker push registry.cs.aalto.fi/jupyter/notebook-server-opencv:$(VER_CV)
 
 pull-standard: check-khost check-knodes
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server:${VER_STD}"
@@ -103,6 +108,8 @@ pull-r-ubuntu: check-khost check-knodes
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-r-ubuntu:${VER_R}"
 pull-julia: check-khost check-knodes
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-julia:${VER_JULIA}"
+pull-opencv: check-khost check-knodes
+	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull registry.cs.aalto.fi/jupyter/notebook-server-opencv:${VER_STD}"
 
 # Clean up disk space
 prune-images: check-khost check-knodes

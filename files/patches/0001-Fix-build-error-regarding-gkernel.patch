@@ -1,0 +1,30 @@
+From c7d238d2241576e8e8b813745e1a4a765333e949 Mon Sep 17 00:00:00 2001
+From: Sami Laine <sami.v.laine@aalto.fi>
+Date: Fri, 28 Aug 2020 15:45:03 +0300
+Subject: [PATCH 1/1] Fix build error regarding gkernel
+
+Fixes #17952. See
+<https://github.com/opencv/opencv/issues/17952#issuecomment-666664154>
+for more info
+---
+ modules/gapi/include/opencv2/gapi/gkernel.hpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/modules/gapi/include/opencv2/gapi/gkernel.hpp b/modules/gapi/include/opencv2/gapi/gkernel.hpp
+index 7a18d8966f..f2b0808a40 100644
+--- a/modules/gapi/include/opencv2/gapi/gkernel.hpp
++++ b/modules/gapi/include/opencv2/gapi/gkernel.hpp
+@@ -39,8 +39,8 @@ struct GAPI_EXPORTS GKernel
+     const std::string name;       // kernel ID, defined by its API (signature)
+     const std::string tag;        // some (implementation-specific) tag
+     const M           outMeta;    // generic adaptor to API::outMeta(...)
+-    const GSpecs      inSpecs;    // specs of kernel's inputs (FIXME: below)
+-    const GShapes     outShapes;  // types (shapes) kernel's outputs
++    GSpecs            inSpecs;    // specs of kernel's inputs (FIXME: below)
++    GShapes           outShapes;  // types (shapes) kernel's outputs
+ };
+ // TODO: It's questionable if inSpecs should really be here. Instead,
+ // this information could come from meta.
+--
+2.28.0
+

@@ -1,8 +1,9 @@
 ARG VER_STD
 FROM aaltoscienceit/notebook-server:${VER_STD}
-ENV OPENCV_VERSION 4.1.1
+ENV OPENCV_VERSION 4.1.0
 
 USER root
+COPY files/patches /usr/local/src
 
 # Installation steps from
 # https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html
@@ -20,14 +21,23 @@ RUN \
         && \
     clean-layer.sh
 
+# The course requested, should be in the base image already but making sure
 RUN \
-    # fontconfig causes problems during the installation, see
-    # https://github.com/opencv/opencv/issues/12625#issuecomment-515152948
-    conda uninstall fontconfig && \
+    sed -i '/python.*/d' /opt/conda/conda-meta/pinned && \
+    echo "python ==3.7.8" >> /opt/conda/conda-meta/pinned
+
+RUN \
     cd /usr/local/src && \
     git clone https://github.com/opencv/opencv.git && \
     git clone https://github.com/opencv/opencv_contrib.git && \
-    cd opencv && \
+    cd opencv_contrib && \
+    git checkout -q $OPENCV_VERSION && \
+    cd ../opencv && \
+    git checkout -q $OPENCV_VERSION && \
+    # https://github.com/opencv/opencv/issues/17952#issuecomment-666664154
+    if [ "$OPENCV_VERSION" = "4.4.0" ]; then \
+      git apply /usr/local/src/0001-Fix-build-error-regarding-gkernel.patch; \
+    fi && \
     mkdir build && cd build && \
     # https://stackoverflow.com/a/54176727
     cmake \

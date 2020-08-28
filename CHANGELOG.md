@@ -5,6 +5,13 @@
 - Made sure that copied scripts have the executable bit set within the image
   after building
 
+## [3.0.x] OpenCV - 2020-09-03
+### Changed
+- Set up a new OpenCV image with the following versions:
+  - python 3.7.8
+  - pytorch 1.2.0
+  - opencv 4.1.0
+
 ## [3.0.3] r-ubuntu - 2020-08-27
 ### Added
 - New packages: gifski ggforce ggrepel
