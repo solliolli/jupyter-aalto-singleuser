@@ -146,6 +146,6 @@ ENV CC=clang CXX=clang++
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
 COPY hooks/ scripts/ /usr/local/bin/
-RUN chmod a+x /usr/local/bin/*.sh
+RUN chmod a+rx /usr/local/bin/*.sh
 
 USER $NB_UID
