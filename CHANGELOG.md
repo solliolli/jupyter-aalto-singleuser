@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+### Fixed
+- Made sure that copied scripts have the executable bit set within the image
+  after building
+
 ## [3.0.1] r-ubuntu - 2020-08-21
 ### Added
 - New package: StanHeaders
