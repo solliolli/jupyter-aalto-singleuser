@@ -52,22 +52,27 @@ opencv:
 	docker run --rm aaltoscienceit/notebook-server:$(VER_CV) conda list --revisions > conda-history/$@-$(VER_CV).yml
 
 
-test-standard:
-	mkdir -p /tmp/nbs-tests
-	rsync -a --delete tests/ /tmp/nbs-tests/
-	docker run --volume=/tmp/nbs-tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) pytest -o cache_dir=/tmp/pytestcache /tests/python/${TESTFILE} ${TESTARGS}
+pre-test:
+	$(eval TEST_DIR := $(shell mktemp -d /tmp/pytest.XXXXXX))
+	rsync -a --delete tests/ $(TEST_DIR)
+	chmod -R o+r $(TEST_DIR)
+	find $(TEST_DIR) -type d -exec chmod o+rx {} \;
+
+test-standard: pre-test
+	docker run --volume=$(TEST_DIR):/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) pytest -o cache_dir=/tmp/pytestcache /tests/python/${TESTFILE} ${TESTARGS}
+	rm -r $(TEST_DIR)
 #	CC="clang" CXX="clang++" jupyter nbconvert --exec --ExecutePreprocessor.timeout=300 pystan_demo.ipynb --stdout
-test-standard-full: test-standard
+test-standard-full: test-standard pre-test
 	docker run --volume=/tmp/nbs-tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) bash -c 'cd /tmp ; git clone https://github.com/avehtari/BDA_py_demos ; cd BDA_py_demos/demos_pystan/ ; CC=clang CXX=clang++ jupyter nbconvert --exec --ExecutePreprocessor.timeout=300 pystan_demo.ipynb --stdout > /dev/null'
+	rm -r $(TEST_DIR)
 	@echo
 	@echo
 	@echo
 	@echo "All tests passed..."
 
-test-r-ubuntu: r-ubuntu
-	mkdir -p /tmp/tests
-	rsync -a tests/ /tmp/tests/
-	docker run --volume=/tmp/tests:/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) Rscript /tests/r/test_bayes.r
+test-r-ubuntu: r-ubuntu pre-test
+	docker run --volume=$(TEST_DIR):/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) Rscript /tests/r/test_bayes.r
+	rm -r $(TEST_DIR)
 
 
 

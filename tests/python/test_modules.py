@@ -19,7 +19,7 @@ def test_modules():
     import torchvision ; assert torchvision.__version__ >= '0.2.1'
 
     # Misc requested courses
-    import gpflow
+    #import gpflow
 
     # BuiltEnv remote sensing course
     #import geopandas   # does not work at start of 2019.
