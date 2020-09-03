@@ -16,9 +16,11 @@ RUN apt-get update && \
         tzdata \
         gfortran \
         gzip \
+        libavfilter-dev \
         libblas-dev \
         libcurl4-openssl-dev \
         libgit2-dev \
+        libmagick++-dev \
         libnode-dev \
         libssl-dev \
         libopenblas-dev \
@@ -57,7 +59,7 @@ RUN \
 
 # Packages needed for bayesian macheine learning course
 RUN \
-    Rscript -e "install.packages(c('nloptr', 'bayesplot', 'rstan', 'rstanarm', 'shinystan', 'loo', 'brms', 'GGally', 'MASS', 'coda', 'gridBase', 'gridExtra', 'here', 'projpred', 'StanHeaders', 'tweenr', 'gganimate', 'gifski', 'ggforce', 'ggrepel'), repos='${CRAN_URL}', clean=TRUE)" && \
+    Rscript -e "install.packages(c('nloptr', 'bayesplot', 'rstan', 'rstanarm', 'shinystan', 'loo', 'brms', 'GGally', 'MASS', 'coda', 'gridBase', 'gridExtra', 'here', 'projpred', 'StanHeaders', 'tweenr', 'gganimate', 'ggforce', 'ggrepel', 'av', 'magick'), repos='${CRAN_URL}', clean=TRUE)" && \
     fix-permissions /usr/local/lib/R/site-library
 
 # Try to disable Python kernel
@@ -180,7 +182,7 @@ RUN cd /opt && \
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         libomp-dev r-cran-xml \
-	&& \
+        && \
     echo 'if (!requireNamespace("BiocManager", quietly = TRUE)) '\
             'install.packages("BiocManager") ; ' \
             'BiocManager::install()' \

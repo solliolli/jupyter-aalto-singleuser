@@ -5,6 +5,11 @@
 - Made sure that copied scripts have the executable bit set within the image
   after building
 
+## [3.0.4] r-umuntu - 2020-09-03
+### Added
+- Ubuntu packages libavfilter-dev and libmagick++-dev, for the below:
+- Add R packages av and magick
+
 ## [3.0.3] r-ubuntu - 2020-08-27
 ### Added
 - New packages: gifski ggforce ggrepel
