@@ -1,4 +1,7 @@
-This is the default singleuser image for the Aalto teaching and light
+This branch contains a custom image built for the Aalto University
+course CS-E4850 - Computer Vision in 2020.
+
+This image is used for the Aalto teaching and light
 computing JupyterHub at https://jupyter.cs.aalto.fi.
 
 Submit issues and pull requests to this repository for user server
