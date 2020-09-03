@@ -89,34 +89,34 @@ push-julia: julia
 push-dev: check-khost standard
 	## NOTE: Saving and loading the whole image takes a long time. Pushing
 	##       partial changes to a DockerHub repo using `push-devhub` is faster
-	# time docker save aaltoscienceit/notebook-server-r-ubuntu:${VER_STD} | ssh ${KHOST} ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
-	time docker save aaltoscienceit/notebook-server:${VER_STD} | ssh ${KHOST} ssh k8s-node4.cs.aalto.fi 'docker load'
+	# time docker save aaltoscienceit/notebook-server-r-ubuntu:${VER_STD} | ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
+	time docker save aaltoscienceit/notebook-server:${VER_STD} | ssh k8s-node4.cs.aalto.fi 'docker load'
 push-devhub: check-khost check-hubrepo standard
 	docker tag aaltoscienceit/notebook-server:${VER_STD} ${HUBREPO}/notebook-server:${VER_STD}
 	docker push ${HUBREPO}/notebook-server:${VER_STD}
-	ssh ${KHOST} ssh k8s-node4.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server:${VER_STD}"
+	ssh k8s-node4.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server:${VER_STD}"
 push-devhub-base: check-khost check-hubrepo base
 	docker tag aaltoscienceit/notebook-server-base:${VER_BASE} ${HUBREPO}/notebook-server-base:${VER_BASE}
 	docker push ${HUBREPO}/notebook-server-base:${VER_BASE}
-	ssh ${KHOST} ssh k8s-node4.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server-base:${VER_BASE}"
+	ssh k8s-node4.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server-base:${VER_BASE}"
 push-opencv: opencv
 	docker push registry.cs.aalto.fi/jupyter/notebook-server-opencv:$(VER_CV)
 
 pull-standard: check-khost check-knodes
-	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server:${VER_STD}"
+	time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server:${VER_STD}"
 pull-r-ubuntu: check-khost check-knodes
-	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-r-ubuntu:${VER_R}"
+	time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-r-ubuntu:${VER_R}"
 pull-julia: check-khost check-knodes
-	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-julia:${VER_JULIA}"
+	time pdsh -R ssh -w ${KNODES} "docker pull aaltoscienceit/notebook-server-julia:${VER_JULIA}"
 pull-opencv: check-khost check-knodes
-	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull registry.cs.aalto.fi/jupyter/notebook-server-opencv:${VER_STD}"
+	time pdsh -R ssh -w ${KNODES} "docker pull registry.cs.aalto.fi/jupyter/notebook-server-opencv:${VER_CV}"
 
 # Clean up disk space
 prune-images: check-khost check-knodes
-#	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker rmi aaltoscienceit/notebook-server:0.5.{0,1,2,3,4,5,6,7}'
-	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker image prune -f'
-	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker container prune -f'
-	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} 'docker images' | cut '-d:' '-f2-' | sort
+#	time pdsh -R ssh -w ${KNODES} 'docker rmi aaltoscienceit/notebook-server:0.5.{0,1,2,3,4,5,6,7}'
+	time pdsh -R ssh -w ${KNODES} 'docker image prune -f'
+	time pdsh -R ssh -w ${KNODES} 'docker container prune -f'
+	time pdsh -R ssh -w ${KNODES} 'docker images' | cut '-d:' '-f2-' | sort
 
 # Aborts the process if necessary environment variables are not set
 # https://stackoverflow.com/a/4731504/3005969
