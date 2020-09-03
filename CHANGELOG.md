@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.3] r-ubuntu - 2020-08-27
+### Added
+- New packages: gifski ggforce ggrepel
+
 ## [3.0.1] r-ubuntu - 2020-08-21
 ### Added
 - New package: StanHeaders
