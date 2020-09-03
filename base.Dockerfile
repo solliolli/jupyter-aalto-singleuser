@@ -128,6 +128,6 @@ RUN pip install --no-cache-dir git+https://github.com/AaltoScienceIT/nbgrader@b5
 # Hooks and scrips are also copied at the end of other Dockerfiles because they
 # might update frequently
 COPY hooks/ scripts/ /usr/local/bin/
-RUN chmod a+x /usr/local/bin/*.sh
+RUN chmod a+rx /usr/local/bin/*.sh
 
 USER $NB_UID

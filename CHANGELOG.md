@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+### Fixed
+- Made sure that copied scripts have the executable bit set within the image
+  after building
+
 ## [3.0.3] r-ubuntu - 2020-08-27
 ### Added
 - New packages: gifski ggforce ggrepel
