@@ -8,7 +8,7 @@ VER_STD=3.0.0
 # Julia
 VER_JULIA=3.0.0
 # R
-VER_R=3.0.4
+VER_R=3.0.5
 # OpenCV
 VER_CV=1.8.0
 

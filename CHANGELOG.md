@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+
+## [3.0.5] - r-ubuntu - 2020-10-23
+### Added
+- r-ubuntu: packages aods3 (CRAN) and (BiSeq, limma) (bioconductor)
+
 ### Fixed
 - Made sure that copied scripts have the executable bit set within the image
   after building
