@@ -1,6 +1,9 @@
 # Changelog
 
-## [Unreleased]
+## [3.0.5] Standard - 2020-10-30
+### Changed
+- Changed JupyterLab staging directory permissions so that clients are able
+  to build extensions manually
 ### Fixed
 - Made sure that copied scripts have the executable bit set within the image
   after building
@@ -13,6 +16,12 @@
 ## [3.0.3] r-ubuntu - 2020-08-27
 ### Added
 - New packages: gifski ggforce ggrepel
+
+## [3.0.2] r-ubuntu - 2020-08-24
+### Added
+- New packages: StanHeaders, tweenr, gganimate
+### Changed
+- Updated CRAN snapshot date
 
 ## [3.0.1] r-ubuntu - 2020-08-21
 ### Added
