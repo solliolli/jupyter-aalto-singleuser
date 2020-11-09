@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+## [3.0.5] - r-ubuntu - 2020-10-23
+### Added
+- r-ubuntu: packages aods3 (CRAN) and (BiSeq, limma) (bioconductor)
+
 ## [3.0.5] Standard - 2020-10-30
 ### Changed
 - Changed JupyterLab staging directory permissions so that clients are able

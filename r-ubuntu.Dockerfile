@@ -58,8 +58,9 @@ RUN \
 #
 
 # Packages needed for bayesian macheine learning course
+# aods3: htbioinformatics
 RUN \
-    Rscript -e "install.packages(c('nloptr', 'bayesplot', 'rstan', 'rstanarm', 'shinystan', 'loo', 'brms', 'GGally', 'MASS', 'coda', 'gridBase', 'gridExtra', 'here', 'projpred', 'StanHeaders', 'tweenr', 'gganimate', 'ggforce', 'ggrepel', 'av', 'magick'), repos='${CRAN_URL}', clean=TRUE)" && \
+    Rscript -e "install.packages(c('nloptr', 'bayesplot', 'rstan', 'rstanarm', 'shinystan', 'loo', 'brms', 'GGally', 'MASS', 'coda', 'gridBase', 'gridExtra', 'here', 'projpred', 'StanHeaders', 'tweenr', 'gganimate', 'ggforce', 'ggrepel', 'av', 'magick', 'aods3'), repos='${CRAN_URL}', clean=TRUE)" && \
     fix-permissions /usr/local/lib/R/site-library
 
 # Try to disable Python kernel
@@ -178,6 +179,8 @@ RUN cd /opt && \
 
 # Bioconductor
 # edgeR, GenomicRanges, rtracklayer: htbioinformatics
+# BiSeq, limma: htbioinformatics
+
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -191,7 +194,9 @@ RUN apt-get update && \
             '"edgeR", ' \
             '"GenomicRanges", ' \
             '"rtracklayer", ' \
-            '"BSgenome.Hsapiens.NCBI.GRCh38" ' \
+            '"BSgenome.Hsapiens.NCBI.GRCh38", ' \
+            '"BiSeq", ' \
+            '"limma" ' \
         '))' | Rscript - && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
