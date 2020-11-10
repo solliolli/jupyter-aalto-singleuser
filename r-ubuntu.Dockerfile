@@ -184,7 +184,7 @@ RUN cd /opt && \
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        libomp-dev r-cran-xml \
+        libomp-dev r-cran-xml llvm-10-dev \
         && \
     echo 'if (!requireNamespace("BiocManager", quietly = TRUE)) '\
             'install.packages("BiocManager") ; ' \
@@ -223,6 +223,14 @@ RUN \
 RUN \
     Rscript -e "install.packages(c('StanHeaders'), repos='${CRAN_URL}', clean=TRUE)" && \
     fix-permissions /usr/local/lib/R/site-library
+
+
+RUN \
+    echo 'BiocManager::install(c('\
+            '"BiSeq" ' \
+        '))' | CC=gcc CXX=g++ Rscript - && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
 
 
 ENV CC=clang CXX=clang++
