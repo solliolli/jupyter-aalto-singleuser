@@ -71,11 +71,6 @@ RUN rm -r /home/$NB_USER/.local/ && \
     echo 'c.LabApp.iopub_data_rate_limit = .8*2**20' >> /etc/jupyter/jupyter_notebook_config.py && \
     echo "c.KernelSpecManager.whitelist={'ir', 'bash'}" >> /etc/jupyter/jupyter_notebook_config.py
 
-# Set default R compiler to clang to save memory.
-RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
-    echo "CXX=clang++"  >> /usr/lib/R/etc/Makevars && \
-    sed -i  -e "s/= gcc/= clang -flto=thin/g"  -e "s/= g++/= clang++/g"  /usr/lib/R/etc/Makeconf
-
 ENV R_MAKEVARS_SITE /usr/lib/R/etc/Makevars
 
 #
@@ -232,6 +227,10 @@ RUN \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
 
+# Set default R compiler to clang to save memory.
+RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
+    echo "CXX=clang++"  >> /usr/lib/R/etc/Makevars && \
+    sed -i  -e "s/= gcc/= clang -flto=thin/g"  -e "s/= g++/= clang++/g"  /usr/lib/R/etc/Makeconf
 
 ENV CC=clang CXX=clang++
 ENV BINPREF=PATH
