@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.0.7] - r-ubuntu - 2020-11-19
+### Changed
+- Downgrade HTSeq to 0.11.1
+
 ## [3.0.5] - r-ubuntu - 2020-10-23
 ### Added
 - r-ubuntu: packages aods3 (CRAN) and (BiSeq, limma) (bioconductor)

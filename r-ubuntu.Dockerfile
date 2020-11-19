@@ -137,7 +137,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     pip install --no-cache-dir \
-        htseq \
+        htseq==0.11.1 \
         && \
     clean-layer.sh
 
