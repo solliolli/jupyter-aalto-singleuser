@@ -10,8 +10,8 @@ RUN \
     # version than the one in the upstream image.
     # sed -i '/python.*/d'                        /opt/conda/conda-meta/pinned && \
     # echo "python ==3.8.3"                    >> /opt/conda/conda-meta/pinned && \
-    echo "numpy 1.18.*"                      >> /opt/conda/conda-meta/pinned && \
-    echo "scipy 1.4.*"                       >> /opt/conda/conda-meta/pinned && \
+    echo "numpy 1.19.*"                      >> /opt/conda/conda-meta/pinned && \
+    echo "scipy 1.5.*"                       >> /opt/conda/conda-meta/pinned && \
     clean-layer.sh
 
 # Debian package
@@ -51,6 +51,7 @@ RUN conda config --set auto_update_conda False && \
         conda-tree \
         pytest \
         nbval \
+        voila \
         && \
     pip install --no-cache-dir \
         bash_kernel \

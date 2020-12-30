@@ -3,11 +3,11 @@ FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 
 USER root
 
-RUN echo "tensorflow 2.2.*"                  >> /opt/conda/conda-meta/pinned && \
+RUN echo "tensorflow 2.3.*"                  >> /opt/conda/conda-meta/pinned && \
     echo "#tensorflow-tensorboard 1.5.*"     >> /opt/conda/conda-meta/pinned && \
     echo "keras 2.4.*"                       >> /opt/conda/conda-meta/pinned && \
-    echo "pytorch 1.5.*"                     >> /opt/conda/conda-meta/pinned && \
-    echo "torchvision 0.6.*"                 >> /opt/conda/conda-meta/pinned && \
+    echo "pytorch 1.7.*"                     >> /opt/conda/conda-meta/pinned && \
+    echo "torchvision 0.8.*"                 >> /opt/conda/conda-meta/pinned && \
     clean-layer.sh
 
 
@@ -108,21 +108,21 @@ RUN \
     # Installing from pip because the tensorflow and tensorboard versions found
     # from the anaconda repos don't support python 3.7 yet
 RUN \
-    conda upgrade conda && \
+    set -x && \
     conda config --system --set channel_priority flexible && \
     conda install \
-        keras \
         pystan prompt_toolkit \
         && \
     pip install --no-cache-dir \
-        tensorflow==2.2.0 \
+        keras==2.4.* \
+        tensorflow==2.3.* \
         tensorboard \
         tensorflow-hub \
         && \
     clean-layer.sh
 RUN conda install --freeze-installed -c pytorch \
-        pytorch==1.5.* \
-        torchvision==0.6.* \
+        pytorch==1.7.* \
+        torchvision==0.8.* \
         && \
     clean-layer.sh
 

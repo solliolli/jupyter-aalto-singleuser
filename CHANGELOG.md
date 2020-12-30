@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+## 4.0
+
+- Add `viola` to base packages
+- Change: Bump julia to 1.5.3
+- Change: Bump versions of various packages
+- Change: Bump base scipy notebook version
+- Change: Re-adjust installing keras, do it via pip only
+
+
 ## [3.0.7] - r-ubuntu - 2020-11-19
 ### Changed
 - Downgrade HTSeq to 0.11.1
