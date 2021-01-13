@@ -37,8 +37,8 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
 
 # Try to disable Python kernel
 # https://github.com/jupyter/jupyter_client/issues/144
-RUN  \
-    echo "c.KernelSpecManager.whitelist={'julia-1.3', 'bash'}" >> /etc/jupyter/jupyter_notebook_config.py
+#RUN  \
+#    echo "c.KernelSpecManager.whitelist={'julia-1.3', 'bash'}" >> /etc/jupyter/jupyter_notebook_config.py
 
 RUN \
     conda install \
