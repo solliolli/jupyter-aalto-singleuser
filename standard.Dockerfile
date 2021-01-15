@@ -127,6 +127,33 @@ RUN conda install --freeze-installed -c pytorch \
         && \
     clean-layer.sh
 
+# To move to the above
+# rpy2: dsfbii
+# shap: dsfbii
+# lifeline: dsfbii
+# pycox: dsfbii
+# pysurvival: dsfbii
+# scikit-survival: dsfbii
+# beautifulsoup4: bdaaccounting
+# xlsxwriter: bdaaccounting
+# xlwt: bdaaccounting
+RUN \
+    conda install --freeze-installed \
+        beautifulsoup4 \
+        lifelines \
+        rpy2 \
+        shap \
+        xlsxwriter \
+        xlwt \
+        && \
+    pip install --no-cache-dir \
+        pycox \
+        pysurvival \
+        scikit-survival \
+        && \
+    clean-layer.sh
+
+
 #RUN \
 #    conda install --freeze-installed \
 #        && \
