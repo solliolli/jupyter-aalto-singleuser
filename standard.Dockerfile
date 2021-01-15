@@ -163,6 +163,10 @@ RUN \
 #        && \
 #    clean-layer.sh
 
+# Update nbgrader
+RUN \
+    pip install --force --no-deps --upgrade --no-cache-dir git+https://github.com/AaltoSciComp/nbgrader@9d3e8004
+
 
 # Fix nbgrader permissions problem
 RUN \
