@@ -2,6 +2,24 @@
 
 ## [Unreleased]
 
+## 4.1.3
+
+- Fix: downgrade nbconvert to <6
+- Fix: revert nbgrader to before nbconvert 6.0 support
+- The above two are needed because my attempt at fixing nbgrader,
+  https://github.com/jupyter/nbgrader/pull/1405, has apparently
+  failed.  The changes in nbconvert to make feedback work and look
+  good don't really work yet.
+
+## 4.1.2
+
+- Fix: more nbgrader bugs (standard)
+  This is not yet put into the base image, but should be.
+- Changed: add packages for bdaaccounting2021
+
+## 4.1
+
+
 ## 4.0
 
 - Add `viola` to base packages
