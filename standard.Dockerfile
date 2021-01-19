@@ -165,7 +165,10 @@ RUN \
 
 # Update nbgrader
 RUN \
-    pip install --force --no-deps --upgrade --no-cache-dir git+https://github.com/AaltoSciComp/nbgrader@9d3e8004
+    pip install --force --no-deps --upgrade --no-cache-dir \
+        git+https://github.com/AaltoSciComp/nbgrader@live-2020 \
+        'nbconvert<6' && \
+    clean-layer.sh
 
 
 # Fix nbgrader permissions problem
