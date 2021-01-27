@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 4.1.4
+
+- Add mne
+
 ## 4.1.3
 
 - Fix: downgrade nbconvert to <6

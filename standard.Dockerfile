@@ -128,6 +128,7 @@ RUN conda install --freeze-installed -c pytorch \
     clean-layer.sh
 
 # To move to the above
+# mne: gabs2021
 # rpy2: dsfbii
 # shap: dsfbii
 # lifeline: dsfbii
@@ -147,6 +148,7 @@ RUN \
         xlwt \
         && \
     pip install --no-cache-dir \
+        mne \
         pycox \
         pysurvival \
         scikit-survival \
