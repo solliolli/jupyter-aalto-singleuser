@@ -172,6 +172,33 @@ RUN \
         'nbconvert<6' && \
     clean-layer.sh
 
+RUN apt-get update && \
+    apt-get upgrade -y --no-install-recommends \
+           sudo \
+           && \
+    clean-layer.sh
+
+
+# gensim: bdaaccounting
+# pdfplumber: bdaaccounting
+# pyodbc: bdaaccounting
+# pmdarima: bdaaccounting
+# tweepy: bdaaccounting
+RUN \
+    apt-get update && \
+    apt-get upgrade -y --no-install-recommends \
+        unixodbc-dev \
+        && \
+    pip install \
+        gensim \
+        pdfplumber \
+        pyodbc \
+        pmdarima \
+        tweepy \
+        && \
+    clean-layer.sh
+
+# ========================================
 
 # Fix nbgrader permissions problem
 RUN \

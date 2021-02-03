@@ -227,6 +227,29 @@ RUN \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
 
+
+# ELEC-A8720 - Biologisten ilmiöiden mittaaminen (Quantifying/measuring biological phenomena).
+RUN \
+    echo 'BiocManager::install(c('\
+            '"biomaRt", ' \
+            '"snpStats" ' \
+        '))' | CC=gcc CXX=g++ Rscript - && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
+
+# plink: ELEC-A8720 - Biologisten ilmiöiden mittaaminen (Quantifying/measuring biological phenomena).
+RUN \
+    mkdir /opt/plink && \
+    cd /opt/plink && \
+    wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20190304.zip && \
+    unzip plink_linux_x86_64_20190304.zip && \
+    ln -s $PWD/plink /usr/local/bin/ && \
+    fix-permissions /opt/plink /usr/local/bin
+
+
+# ====================================
+
+
 # Set default R compiler to clang to save memory.
 RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
     echo "CXX=clang++"  >> /usr/lib/R/etc/Makevars && \

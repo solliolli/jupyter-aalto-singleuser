@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 4.1.5
+
+- r-ubuntu: Add bioconductor packages biomaRt and snpStats
+- r-ubuntu: Add plink
+- standard: Add six packages for bdaanccounting
+
 ## 4.1.4
 
 - Add mne
