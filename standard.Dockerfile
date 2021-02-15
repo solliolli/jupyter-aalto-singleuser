@@ -197,6 +197,17 @@ RUN \
         tweepy \
         && \
     clean-layer.sh
+RUN \
+    conda install --freeze-installed \
+        freetds \
+        && \
+    echo [FreeTDS] >> /etc/odbcinst.ini && \
+    echo Description=FreeTDS Driver >> /etc/odbcinst.ini && \
+    echo Driver=/opt/conda/lib/libtdsodbc.so >> /etc/odbcinst.ini && \
+    echo Setup=/opt/conda/lib/libtdsS.so >> /etc/odbcinst.ini && \
+    clean-layer.sh
+
+
 
 # ========================================
 

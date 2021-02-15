@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## 4.1.6
+
+- standard: Add conda freetds package, to access MS SQL Server via
+  ODBC.
+
 ## 4.1.5
 
 - r-ubuntu: Add bioconductor packages biomaRt and snpStats
