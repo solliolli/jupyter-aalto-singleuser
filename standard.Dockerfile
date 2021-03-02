@@ -207,6 +207,10 @@ RUN \
     echo Setup=/opt/conda/lib/libtdsS.so >> /etc/odbcinst.ini && \
     clean-layer.sh
 
+RUN pip install --no-cache-dir \
+        sklearn-pandas \
+        && \
+    clean-layer.sh
 
 
 # ========================================

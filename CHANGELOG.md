@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## 4.1.7
+
+- Install sklearn-pandas
+
+
 ## 4.1.6
 
 - standard: Add conda freetds package, to access MS SQL Server via
