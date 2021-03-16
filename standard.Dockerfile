@@ -209,6 +209,7 @@ RUN \
 
 RUN pip install --no-cache-dir \
         sklearn-pandas \
+        https://github.com/AntoinePassemiers/Lexicon-Based-Sentiment-Analysis/archive/283a2c819016e9a90d408bc82c6edbcd4104be9c.zip \
         && \
     clean-layer.sh
 
