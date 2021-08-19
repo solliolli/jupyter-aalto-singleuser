@@ -4,11 +4,11 @@ CRAN_URL=https://cran.microsoft.com/snapshot/2020-12-28/
 # base image - jupyter stuff only, not much software
 VER_BASE=4.1
 # Python
-VER_STD=4.1.8
+VER_STD=4.1.9
 # Julia
-VER_JULIA=4.1.0
+VER_JULIA=4.1.9
 # R
-VER_R=4.1.5
+VER_R=4.1.9
 # OpenCV
 VER_CV=1.8.0
 

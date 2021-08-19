@@ -247,6 +247,14 @@ RUN \
     fix-permissions /opt/plink /usr/local/bin
 
 
+RUN \
+    conda install \
+        notebook==6.4.1 \
+        jupyterlab==2.2.10 \
+    && \
+    clean-layer.sh
+
+
 # ====================================
 
 

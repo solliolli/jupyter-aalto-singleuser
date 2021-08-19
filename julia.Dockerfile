@@ -57,6 +57,14 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
     echo "done"
 
 
+RUN \
+    conda install \
+        notebook==6.4.1 \
+        jupyterlab==2.2.10 \
+    && \
+    clean-layer.sh
+
+
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
 COPY hooks/ scripts/ /usr/local/bin/
