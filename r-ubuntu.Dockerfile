@@ -251,7 +251,8 @@ RUN \
     conda install \
         notebook==6.4.1 \
         jupyterlab==2.2.10 \
-    && \
+        && \
+    jupyter lab build && \
     clean-layer.sh
 
 
