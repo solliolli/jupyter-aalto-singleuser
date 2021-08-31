@@ -6,7 +6,7 @@ VER_BASE=4.1
 # Python
 VER_STD=4.1.11
 # Julia
-VER_JULIA=4.1.12
+VER_JULIA=4.1.13
 # R
 VER_R=4.1.11
 # OpenCV

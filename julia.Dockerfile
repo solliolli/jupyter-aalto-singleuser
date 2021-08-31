@@ -56,6 +56,14 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
     fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter && \
     echo "done"
 
+RUN julia -e 'import Pkg; Pkg.update()' && \
+    julia -e "using Pkg; pkg\"add BenchmarkTools Test LaTeXStrings\"; pkg\"precompile\"" && \
+    echo "Done compiling..." && \
+    rm -rf $HOME/.local && \
+    fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter && \
+    echo "done"
+
+
 
 RUN \
     conda install \
