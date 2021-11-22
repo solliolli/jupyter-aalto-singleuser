@@ -4,6 +4,7 @@ rm -rf /tmp/*
 rm -rf /home/$NB_USER/.cache/yarn
 
 conda clean --all --yes
+mamba clean --all --yes
 mountpoint /opt/conda/pkgs/cache/ || rm -rf /opt/conda/pkgs/cache/
 mountpoint /root/.cache/pip/ || rm -rf /root/.cache/pip/*
 npm cache clean --force

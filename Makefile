@@ -1,3 +1,4 @@
+UPSTREAM_MINIMAL_NOTEBOOK_VER=6e246ea4bbff  # 2021-11-20
 UPSTREAM_SCIPY_NOTEBOOK_VER=d113a601dbb8  # Image updated 2020-12-26
 CRAN_URL=https://cran.microsoft.com/snapshot/2020-12-28/
 
@@ -32,6 +33,11 @@ base:
 	docker build -t aaltoscienceit/notebook-server-base:$(VER_BASE) . -f base.Dockerfile --build-arg=UPSTREAM_SCIPY_NOTEBOOK_VER=$(UPSTREAM_SCIPY_NOTEBOOK_VER)
 	docker run --rm aaltoscienceit/notebook-server-base:$(VER_BASE) conda env export -n base > environment-yml/$@-$(VER_BASE).yml
 	docker run --rm aaltoscienceit/notebook-server-base:$(VER_BASE) conda list --revisions > conda-history/$@-$(VER_BASE).yml
+base2:
+	@! grep -P '\t' -C 1 base2.Dockerfile || { echo "ERROR: Tabs in base2.Dockerfile" ; exit 1 ; }
+	docker build -t aaltoscienceit/notebook-server-base:$(VER_BASE) . -f base2.Dockerfile --build-arg=UPSTREAM_MINIMAL_NOTEBOOK_VER=$(UPSTREAM_MINIMAL_NOTEBOOK_VER)
+	docker run --rm aaltoscienceit/notebook-server-base:$(VER_BASE) conda env export -n base > environment-yml/$@-$(VER_BASE2).yml
+	docker run --rm aaltoscienceit/notebook-server-base:$(VER_BASE) conda list --revisions > conda-history/$@-$(VER_BASE2).yml
 standard:
 	@! grep -P '\t' -C 1 standard.Dockerfile || { echo "ERROR: Tabs in standard.Dockerfile" ; exit 1 ; }
 	docker build -t ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) . -f standard.Dockerfile --build-arg=VER_BASE=$(VER_BASE)
