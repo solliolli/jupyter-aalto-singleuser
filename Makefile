@@ -3,7 +3,7 @@ UPSTREAM_SCIPY_NOTEBOOK_VER=d113a601dbb8  # Image updated 2020-12-26
 CRAN_URL=https://cran.microsoft.com/snapshot/2020-12-28/
 
 # base image - jupyter stuff only, not much software
-VER_BASE=4.1
+VER_BASE=5.0
 # Python
 VER_STD=4.1.11
 # Julia
@@ -88,7 +88,7 @@ push-r-ubuntu: r-ubuntu
 push-julia: julia
 #	time docker save aaltoscienceit/notebook-server-julia:${VER_JULIA} | ssh manager ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
 	docker push ${REGISTRY}${GROUP}/notebook-server-julia:$(VER_JULIA)
-push-dev: check-khost standard	
+push-dev: check-khost standard
 	## NOTE: Saving and loading the whole image takes a long time. Pushing
 	##       partial changes to a DockerHub repo using `push-devhub` is faster
 	# time docker save aaltoscienceit/notebook-server-r-ubuntu:${VER_STD} | ssh ${KHOST} ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
