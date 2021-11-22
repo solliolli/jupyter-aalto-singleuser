@@ -247,32 +247,6 @@ RUN \
     fix-permissions /opt/plink /usr/local/bin
 
 
-RUN \
-    conda install \
-        notebook==6.4.1 \
-        jupyterlab==2.2.10 \
-        && \
-    jupyter lab build && \
-    clean-layer.sh
-
-# DUPLICATE OF ABOVE: remove when refactoring the image, this was
-#  added while updating the image to rebuild things.
-# Rstudio for jupyterlab
-#   Viasat/nbrsessionproxy is not compatible with JL 1.0
-RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
-    # The npm version of jupyterlab-server-proxy is not yet compatible
-    # with JupyterLab 1.0 -> using git version.
-    # See https://github.com/jupyterhub/jupyter-server-proxy/issues/139#issuecomment-516665020
-    # jupyter labextension install jupyterlab-server-proxy && \
-    cd /usr/local/src/ && \
-    git clone https://github.com/jupyterhub/jupyter-server-proxy && \
-    cd jupyter-server-proxy/jupyterlab-server-proxy && \
-    git checkout e8c45f9565844df9497360b767f07fe1b84e19cc && \
-    npm install && npm run build && jupyter labextension link . && \
-    npm run build && jupyter lab build && \
-    cd /usr/local/src && rm -r /usr/local/src/*
-
-
 # ====================================
 
 
