@@ -5,11 +5,17 @@ USER root
 
 ADD scripts/clean-layer.sh /usr/local/bin/
 
-# Debian package
+## Debian packages
+# These are from scipy-notebook and needed for matplotlib/latex:
+#  ffmpeg dvipng cm-super
+# See https://github.com/jupyter/docker-stacks/blob/master/scipy-notebook/Dockerfile
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         clang \
+        cm-super \
+        dvipng \
         ed \
+        ffmpeg \
         file \
         git-annex \
         git-lfs \
