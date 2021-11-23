@@ -5,13 +5,20 @@ CRAN_URL=https://cran.microsoft.com/snapshot/2020-12-28/
 # base image - jupyter stuff only, not much software
 VER_BASE=5.0
 # Python
-VER_STD=4.1.11
+VER_STD=5.0.0-dev1
 # Julia
 VER_JULIA=4.1.13
 # R
 VER_R=4.1.14
 # OpenCV
 VER_CV=1.8.0
+
+PACK_PATH=/m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda-dev/packs
+ENVIRONMENT_NAME=jupyter-generic
+ENVIRONMENT_VERSION=2021-11-23
+# NOTE: not the final pack
+ENVIRONMENT_HASH=56467d9f
+CONDA_FILE=$(PACK_PATH)/$(ENVIRONMENT_NAME)_$(ENVIRONMENT_VERSION)_$(ENVIRONMENT_HASH).tar.gz
 
 # VER2_R=$(VER_R)-$(GIT_REV)
 TEST_MEM_LIMIT="--memory=2G"
@@ -23,7 +30,7 @@ GROUP=aaltoscienceit
 .PHONY: default
 
 default:
-	echo "Please specifiy a command to run"
+	echo "Please specify a command to run"
 
 full-rebuild: base standard test-standard
 
@@ -35,7 +42,14 @@ base:
 	docker run --rm aaltoscienceit/notebook-server-base:$(VER_BASE) conda list --revisions > conda-history/$@-$(VER_BASE).yml
 standard:
 	@! grep -P '\t' -C 1 standard.Dockerfile || { echo "ERROR: Tabs in standard.Dockerfile" ; exit 1 ; }
-	docker build -t ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) . -f standard.Dockerfile --build-arg=VER_BASE=$(VER_BASE)
+	mkdir -p conda
+	[ -e "conda/${CONDA_FILE}" ] || cp -v "${CONDA_FILE}" conda
+	docker build -t ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) . \
+		-f standard.Dockerfile \
+		--build-arg=VER_BASE=$(VER_BASE) \
+		--build-arg=ENVIRONMENT_NAME=$(ENVIRONMENT_NAME) \
+		--build-arg=ENVIRONMENT_VERSION=$(ENVIRONMENT_VERSION) \
+		--build-arg=ENVIRONMENT_HASH=$(ENVIRONMENT_HASH)
 	docker run --rm ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) conda env export -n base > environment-yml/$@-$(VER_STD).yml
 	docker run --rm ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) conda list --revisions > conda-history/$@-$(VER_STD).yml
 #r:
