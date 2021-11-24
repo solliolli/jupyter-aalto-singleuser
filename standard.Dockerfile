@@ -38,6 +38,9 @@ RUN /opt/software/bin/python -m ipykernel install --prefix=/opt/conda --display-
 
 ENV CC=clang CXX=clang++
 
+RUN echo "import os ; os.environ['PATH'] = '/opt/software/bin:'+os.environ['PATH']" >> /etc/jupyter/jupyter_notebook_config.py
+RUN echo "import os ; os.environ['PATH'] = '/opt/software/bin:'+os.environ['PATH']" >> /etc/jupyter/jupyter_server_config.py
+
 
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
