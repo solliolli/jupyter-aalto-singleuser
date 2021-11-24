@@ -23,7 +23,7 @@ CONDA_FILE=$(ENVIRONMENT_NAME)_$(ENVIRONMENT_VERSION)_$(ENVIRONMENT_HASH).tar.gz
 # VER2_R=$(VER_R)-$(GIT_REV)
 TEST_MEM_LIMIT="--memory=2G"
 
-# For private registary, use:  REGISTRY=registry.cs.aalto.fi GROUP=jupyter
+# For private registry, run: `make REGISTRY=registry.cs.aalto.fi/ GROUP=jupyter [..]`
 REGISTRY=                   # use the form "registry.cs.aalto.fi/"
 GROUP=aaltoscienceit
 
