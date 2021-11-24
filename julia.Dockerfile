@@ -27,7 +27,7 @@ RUN mkdir /etc/julia && \
 
 RUN julia -e 'import Pkg; Pkg.update()' && \
     (test $TEST_ONLY_BUILD || julia -e 'import Pkg; Pkg.add("HDF5")') && \
-    julia -e "using Pkg; pkg\"add Gadfly RDatasets IJulia InstantiateFromURL\"; pkg\"precompile\"" && \
+    julia -e "using Pkg; pkg\"add Gadfly RDatasets IJulia InstantiateFromURL Cbc Clp ECOS ForwardDiff GLPK Ipopt JuMP Plots PyPlot DataFrames Distributions CSV BenchmarkTools Test LaTeXStrings\"; pkg\"precompile\"" && \
     echo "Done compiling..." && \
     mv $HOME/.local/share/jupyter/kernels/julia* $CONDA_DIR/share/jupyter/kernels/ && \
     chmod -R go+rx $CONDA_DIR/share/jupyter && \
@@ -49,20 +49,12 @@ RUN \
     fix-permissions $CONDA_DIR /home/$NB_USER
 
 
-RUN julia -e 'import Pkg; Pkg.update()' && \
-    julia -e "using Pkg; pkg\"add Cbc Clp ECOS ForwardDiff GLPK Ipopt JuMP Plots PyPlot DataFrames Distributions CSV\"; pkg\"precompile\"" && \
-    echo "Done compiling..." && \
-    rm -rf $HOME/.local && \
-    fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter && \
-    echo "done"
-
-RUN julia -e 'import Pkg; Pkg.update()' && \
-    julia -e "using Pkg; pkg\"add BenchmarkTools Test LaTeXStrings\"; pkg\"precompile\"" && \
-    echo "Done compiling..." && \
-    rm -rf $HOME/.local && \
-    fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter && \
-    echo "done"
-
+#RUN julia -e 'import Pkg; Pkg.update()' && \
+#    julia -e "using Pkg; pkg\"add AAA BBB\"; pkg\"precompile\"" && \
+#    echo "Done compiling..." && \
+#    rm -rf $HOME/.local && \
+#    fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter && \
+#    echo "done"
 
 
 # Duplicate of base, but hooks can update frequently and are small so
