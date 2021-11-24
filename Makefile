@@ -73,9 +73,7 @@ opencv:
 
 pre-test:
 	$(eval TEST_DIR := $(shell mktemp -d /tmp/pytest.XXXXXX))
-	rsync -a --delete tests/ $(TEST_DIR)
-	chmod -R o+r $(TEST_DIR)
-	find $(TEST_DIR) -type d -exec chmod o+rx {} \;
+	rsync --chmod=Do+x,+r -a --delete tests/ $(TEST_DIR)
 
 test-standard: pre-test
 	docker run --volume=$(TEST_DIR):/tests:ro ${TEST_MEM_LIMIT} aaltoscienceit/notebook-server:$(VER_STD) pytest -o cache_dir=/tmp/pytestcache /tests/python/${TESTFILE} ${TESTARGS}
