@@ -26,6 +26,7 @@ RUN apt-get update && \
         lsb-release \
         man-db \
         psmisc \
+        vim \
         && \
     clean-layer.sh
 
