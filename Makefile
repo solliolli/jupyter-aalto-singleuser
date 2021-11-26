@@ -44,6 +44,9 @@ r-ubuntu:
 	docker build -t ${REGISTRY}${GROUP}/notebook-server-r-ubuntu:$(VER_R) --pull=false . -f r-ubuntu.Dockerfile --build-arg=VER_BASE=$(VER_BASE) --build-arg=CRAN_URL=$(CRAN_URL)
 #	#docker run --rm aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) conda env export -n base > environment-yml/$@-$(VER_R).yml
 	docker run --rm ${REGISTRY}${GROUP}/notebook-server-r-ubuntu:$(VER_R) conda list --revisions > conda-history/$@-$(VER_R).yml
+r-ubuntu-htbio2021:
+	@! grep -P '\t' -C 1 r-ubuntu-htbio2021.Dockerfile || { echo "ERROR: Tabs in r-ubuntu-htbio2021.Dockerfile" ; exit 1 ; }
+	docker build -t ${REGISTRY}${GROUP}/notebook-server-r-ubuntu:$(VER_R)-htbio2021 --pull=false . -f r-ubuntu-htbio2021.Dockerfile --build-arg=VER_R=$(VER_R)
 julia:
 	@! grep -P '\t' -C 1 julia.Dockerfile || { echo "ERROR: Tabs in julia.Dockerfile" ; exit 1 ; }
 	docker build -t ${REGISTRY}${GROUP}/notebook-server-julia:$(VER_JULIA) --pull=false . -f julia.Dockerfile --build-arg=VER_BASE=$(VER_BASE)
@@ -87,7 +90,7 @@ push-r-ubuntu: r-ubuntu
 push-julia: julia
 #	time docker save aaltoscienceit/notebook-server-julia:${VER_JULIA} | ssh manager ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
 	docker push ${REGISTRY}${GROUP}/notebook-server-julia:$(VER_JULIA)
-push-dev: check-khost standard	
+push-dev: check-khost standard
 	## NOTE: Saving and loading the whole image takes a long time. Pushing
 	##       partial changes to a DockerHub repo using `push-devhub` is faster
 	# time docker save aaltoscienceit/notebook-server-r-ubuntu:${VER_STD} | ssh ${KHOST} ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
