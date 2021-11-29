@@ -44,6 +44,7 @@ r-ubuntu:
 	docker build -t ${REGISTRY}${GROUP}/notebook-server-r-ubuntu:$(VER_R) --pull=false . -f r-ubuntu.Dockerfile --build-arg=VER_BASE=$(VER_BASE) --build-arg=CRAN_URL=$(CRAN_URL)
 #	#docker run --rm aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) conda env export -n base > environment-yml/$@-$(VER_R).yml
 	docker run --rm ${REGISTRY}${GROUP}/notebook-server-r-ubuntu:$(VER_R) conda list --revisions > conda-history/$@-$(VER_R).yml
+# NOTE: This is a temporary rule, to be removed once r-ubuntu is fixed and rebuilt
 r-ubuntu-htbio2021:
 	@! grep -P '\t' -C 1 r-ubuntu-htbio2021.Dockerfile || { echo "ERROR: Tabs in r-ubuntu-htbio2021.Dockerfile" ; exit 1 ; }
 	docker build -t ${REGISTRY}${GROUP}/notebook-server-r-ubuntu:$(VER_R)-htbio2021 --pull=false . -f r-ubuntu-htbio2021.Dockerfile --build-arg=VER_R=$(VER_R)

@@ -167,6 +167,9 @@ RUN conda config --append channels bioconda && \
 RUN cd /opt && \
     wget http://ccb.jhu.edu/software/tophat/downloads/tophat-2.1.1.Linux_x86_64.tar.gz && \
     tar xf tophat-2.1.1.Linux_x86_64.tar.gz && \
+    # TODO: this needs to be changed to point explicitly to python2 when the
+    # image is rebuilt, currently using a separate dockerfile to fix the issue
+    # for the htbioinformatics2021 course
     sed -i 's@/usr/bin/env python@/usr/bin/python@' tophat-2.1.1.Linux_x86_64/tophat && \
     ln -s $PWD/tophat-2.1.1.Linux_x86_64/tophat2 /usr/local/bin/ && \
     fix-permissions /opt/fastcq /usr/local/bin

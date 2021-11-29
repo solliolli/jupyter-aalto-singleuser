@@ -1,3 +1,4 @@
+# NOTE: This is a temporary file, to be removed once r-ubuntu is fixed and rebuilt
 ARG VER_R
 FROM aaltoscienceit/notebook-server-r-ubuntu:${VER_R}
 
