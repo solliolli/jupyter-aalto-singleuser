@@ -8,7 +8,7 @@ VER_STD=4.1.11
 # Julia
 VER_JULIA=4.1.13
 # R
-VER_R=4.1.14
+VER_R=4.1.15
 # OpenCV
 VER_CV=1.8.0
 
@@ -45,9 +45,6 @@ r-ubuntu:
 #	#docker run --rm aaltoscienceit/notebook-server-r-ubuntu:$(VER_R) conda env export -n base > environment-yml/$@-$(VER_R).yml
 	docker run --rm ${REGISTRY}${GROUP}/notebook-server-r-ubuntu:$(VER_R) conda list --revisions > conda-history/$@-$(VER_R).yml
 # NOTE: This is a temporary rule, to be removed once r-ubuntu is fixed and rebuilt
-r-ubuntu-htbio2021:
-	@! grep -P '\t' -C 1 r-ubuntu-htbio2021.Dockerfile || { echo "ERROR: Tabs in r-ubuntu-htbio2021.Dockerfile" ; exit 1 ; }
-	docker build -t ${REGISTRY}${GROUP}/notebook-server-r-ubuntu:$(VER_R)-htbio2021 --pull=false . -f r-ubuntu-htbio2021.Dockerfile --build-arg=VER_R=$(VER_R)
 julia:
 	@! grep -P '\t' -C 1 julia.Dockerfile || { echo "ERROR: Tabs in julia.Dockerfile" ; exit 1 ; }
 	docker build -t ${REGISTRY}${GROUP}/notebook-server-julia:$(VER_JULIA) --pull=false . -f julia.Dockerfile --build-arg=VER_BASE=$(VER_BASE)

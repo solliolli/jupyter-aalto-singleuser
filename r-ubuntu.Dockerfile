@@ -173,6 +173,7 @@ RUN cd /opt && \
     sed -i 's@/usr/bin/env python@/usr/bin/python@' tophat-2.1.1.Linux_x86_64/tophat && \
     ln -s $PWD/tophat-2.1.1.Linux_x86_64/tophat2 /usr/local/bin/ && \
     fix-permissions /opt/fastcq /usr/local/bin
+    # TODO: remove the downloaded tarball
 
 
 # Bioconductor
@@ -286,6 +287,10 @@ RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
 
 ENV CC=clang CXX=clang++
 ENV BINPREF=PATH
+
+# TODO: move this earlier
+RUN sed -i 's@/usr/bin/python@/usr/bin/python2@' /opt/tophat-2.1.1.Linux_x86_64/tophat
+
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
 COPY hooks/ scripts/ /usr/local/bin/
