@@ -236,6 +236,11 @@ RUN \
     && \
     clean-layer.sh
 
+RUN \
+    pip install \
+        xgboost \
+    && \
+    clean-layer.sh
 
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.

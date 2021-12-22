@@ -4,7 +4,7 @@ CRAN_URL=https://cran.microsoft.com/snapshot/2020-12-28/
 # base image - jupyter stuff only, not much software
 VER_BASE=4.1
 # Python
-VER_STD=4.1.11
+VER_STD=4.1.16-dsfbi2022
 # Julia
 VER_JULIA=4.1.13
 # R
@@ -34,7 +34,7 @@ base:
 	docker run --rm aaltoscienceit/notebook-server-base:$(VER_BASE) conda list --revisions > conda-history/$@-$(VER_BASE).yml
 standard:
 	@! grep -P '\t' -C 1 standard.Dockerfile || { echo "ERROR: Tabs in standard.Dockerfile" ; exit 1 ; }
-	docker build -t ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) . -f standard.Dockerfile --build-arg=VER_BASE=$(VER_BASE)
+	docker build -t ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) . -f standard.Dockerfile --build-arg=VER_BASE=$(VER_BASE) --cache-from=aaltoscienceit/notebook-server:4.1.11
 	docker run --rm ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) conda env export -n base > environment-yml/$@-$(VER_STD).yml
 	docker run --rm ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) conda list --revisions > conda-history/$@-$(VER_STD).yml
 #r:
