@@ -67,6 +67,26 @@ ENV CC=clang CXX=clang++
 RUN echo "import os ; os.environ['PATH'] = '/opt/software/bin:'+os.environ['PATH']" >> /etc/jupyter/jupyter_notebook_config.py
 RUN echo "import os ; os.environ['PATH'] = '/opt/software/bin:'+os.environ['PATH']" >> /etc/jupyter/jupyter_server_config.py
 
+    #apt-get update && \
+    #apt-get install -y --no-install-recommends software-properties-common && \
+    #add-apt-repository ppa:gladky-anton/lammps && \
+    #add-apt-repository ppa:openkim/latest && \
+RUN \
+    apt-get update && \
+    apt-get install -y --no-install-recommends gnupg2 && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-key A5E1187F047C159C83981FA42C301800CBF334E1 && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-key 02219381E9161C78A46CB2BFA5279A973B1F56C0 && \
+    echo 'deb http://ppa.launchpad.net/gladky-anton/lammps/ubuntu focal main' > /etc/apt/sources.list.d/gladky-anton-ubuntu-lammps-focal.list && \
+    echo 'deb http://ppa.launchpad.net/openkim/latest/ubuntu focal main' > /etc/apt/sources.list.d/openkim-ubuntu-latest-focal.list && \
+    apt update && \
+    apt-get install -y lammps-stable \
+      lammps-stable-doc \
+      lammps-stable-data \
+      openkim-models \
+      openmpi-bin \
+    && \
+    clean-layer.sh
+
 ENV PATH=/opt/software/bin:${PATH}
 ENV CONDA_DIR=/opt/software
 
