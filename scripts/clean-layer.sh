@@ -15,4 +15,4 @@ rm -rf /var/lib/apt/lists/*
 
 fix-permissions $CONDA_DIR /home/$NB_USER
 
-} 2>&1 | sed -e 's/^/clean-layer:    /'
+} 2>&1 > /dev/null
