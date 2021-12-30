@@ -61,4 +61,9 @@ ENV CONDA_DIR=/opt/software
 COPY hooks/ scripts/ /usr/local/bin/
 RUN chmod a+rx /usr/local/bin/*.sh
 
+# Save version information within the image
+ARG VER_STD
+RUN echo IMAGE_VERSION=${VER_STD} >> /etc/cs-jupyter-release && \
+    echo JUPYTER_SOFTWARE_IMAGE=${JUPYTER_SOFTWARE_IMAGE} >> /etc/cs-jupyter-release
+
 USER $NB_UID
