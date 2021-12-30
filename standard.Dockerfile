@@ -9,6 +9,15 @@ ARG ENVIRONMENT_HASH
 ENV JUPYTER_SOFTWARE_IMAGE=${ENVIRONMENT_NAME}_${ENVIRONMENT_VERSION}_${ENVIRONMENT_HASH}
 
 ADD conda/${JUPYTER_SOFTWARE_IMAGE}.tar.gz /opt/software
+# NOTE: This will massively inflate the image size, permissions should be set
+#       correctly when creating the archive, or we should mount the archive and
+#       exctract manually
+# RUN fix-permissions /opt/software
+
+# Incremental updates to the software stack:
+# COPY delta.tardiff /tmp
+# RUN /usr/local/bin/update-software.sh /tmp/delta.tardiff
+
 
 # Custom installations
 #RUN apt-get update && \
