@@ -15,8 +15,8 @@ ADD conda/${JUPYTER_SOFTWARE_IMAGE}.tar.gz /opt/software
 # RUN fix-permissions /opt/software
 
 # Incremental updates to the software stack:
-# COPY delta.tardiff /tmp
-# RUN /usr/local/bin/update-software.sh /tmp/delta.tardiff
+COPY delta_e97c272-443f529f.tardiff /tmp
+RUN /usr/local/bin/update-software.sh /tmp/delta_e97c272-443f529f.tardiff
 
 
 # Custom installations
