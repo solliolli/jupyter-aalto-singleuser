@@ -4,3 +4,4 @@ k-cs.sh
 k-dockerhub.sh
 .dockerignore
 conda
+.docker
