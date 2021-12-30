@@ -149,7 +149,7 @@ ifndef HUBREPO
 endif
 
 no-pack:
-	echo conda > .dockerignore
+	echo conda >> .dockerignore
 
 include-pack:
-	rm -f .dockerignore
+	sed -i '/^conda$$/d' .dockerignore
