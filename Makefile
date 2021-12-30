@@ -25,7 +25,9 @@ TEST_MEM_LIMIT="--memory=2G"
 
 # For private registry, run: `make REGISTRY=registry.cs.aalto.fi/ GROUP=jupyter [..]`
 REGISTRY=                   # use the form "registry.cs.aalto.fi/"
+# REGISTRY=registry.cs.aalto.fi/
 GROUP=aaltoscienceit
+# GROUP=jupyter
 
 .PHONY: default
 
