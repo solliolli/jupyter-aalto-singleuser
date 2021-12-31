@@ -14,12 +14,13 @@ ADD conda/${JUPYTER_SOFTWARE_IMAGE}.tar.gz /opt/software
 #       exctract manually
 # RUN fix-permissions /opt/software
 
+# FIXME: The script currently breaks file permissions on /opt/software
 # Incremental updates to the software stack:
 # TODO: Move the scripts to the base image when updating
-COPY scripts/update-software.sh /usr/local/bin
-COPY scripts/tar-patch /usr/local/bin
-COPY delta_e97c272-443f529f.tardiff /tmp
-RUN /usr/local/bin/update-software.sh /tmp/delta_e97c272-443f529f.tardiff
+# COPY scripts/update-software.sh /usr/local/bin
+# COPY scripts/tar-patch /usr/local/bin
+# COPY delta_e97c272-443f529f.tardiff /tmp
+# RUN /usr/local/bin/update-software.sh /tmp/delta_e97c272-443f529f.tardiff
 
 
 # Custom installations
