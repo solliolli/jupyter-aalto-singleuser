@@ -8,7 +8,13 @@ ARG ENVIRONMENT_VERSION
 ARG ENVIRONMENT_HASH
 ENV JUPYTER_SOFTWARE_IMAGE=${ENVIRONMENT_NAME}_${ENVIRONMENT_VERSION}_${ENVIRONMENT_HASH}
 
+# NOTE: files contained in the tar archive must have gid=100 and file mode g=rw
+#       if the user is supposed to be able to use `mamba install` on the base
+#       environment when running the image
 ADD conda/${JUPYTER_SOFTWARE_IMAGE}.tar.gz /opt/software
+RUN chgrp 100 /opt/software && \
+    chmod g+rw /opt/software
+
 # NOTE: This will massively inflate the image size, permissions should be set
 #       correctly when creating the archive, or we should mount the archive and
 #       exctract manually
