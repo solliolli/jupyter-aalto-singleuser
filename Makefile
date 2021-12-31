@@ -5,7 +5,7 @@ CRAN_URL=https://cran.microsoft.com/snapshot/2020-12-28/
 # base image - jupyter stuff only, not much software
 VER_BASE=5.0
 # Python
-VER_STD=5.0.0-laines5-dev10-setgid
+VER_STD=5.0.0-laines5-dev11-setgid-full
 # Julia
 VER_JULIA=5.0.0
 # R
@@ -14,10 +14,10 @@ VER_R=4.1.14
 VER_CV=1.8.0
 
 PACK_PATH=/m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda-dev/packs
-ENVIRONMENT_NAME=miniconda
-ENVIRONMENT_VERSION=4.9.2
+ENVIRONMENT_NAME=jupyter-generic
+ENVIRONMENT_VERSION=2021-11-23
 # NOTE: not the final pack
-ENVIRONMENT_HASH=9b304e95
+ENVIRONMENT_HASH=e97c2729
 CONDA_FILE=$(ENVIRONMENT_NAME)_$(ENVIRONMENT_VERSION)_$(ENVIRONMENT_HASH).tar.gz
 
 # VER2_R=$(VER_R)-$(GIT_REV)
