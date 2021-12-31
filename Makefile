@@ -159,7 +159,7 @@ ifndef HUBREPO
 endif
 
 no-pack:
-	sed -i '\,^!conda/${CONDA_FILE}$$,d' .dockerignore
+	sed -i '\,^!conda/.*\.tar.gz,d' .dockerignore
 
-include-pack:
+include-pack: no-pack
 	echo '!conda/${CONDA_FILE}' >> .dockerignore
