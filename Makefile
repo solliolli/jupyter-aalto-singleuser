@@ -5,7 +5,7 @@ CRAN_URL=https://cran.microsoft.com/snapshot/2020-12-28/
 # base image - jupyter stuff only, not much software
 VER_BASE=5.0
 # Python
-VER_STD=5.0.0-laines5-dev8-fingerprint
+VER_STD=5.0.0-laines5-dev8-tar-chmod
 # Julia
 VER_JULIA=5.0.0
 # R
@@ -45,7 +45,12 @@ base: no-pack
 standard: include-pack
 	@! grep -P '\t' -C 1 standard.Dockerfile || { echo "ERROR: Tabs in standard.Dockerfile" ; exit 1 ; }
 	mkdir -p conda
-	[ -e "conda/${CONDA_FILE}" ] || cp -v "$(PACK_PATH)/${CONDA_FILE}" conda
+	if ! [ -e "conda/${CONDA_FILE}" ]; then\
+		rm -rf conda/unpack ;\
+		mkdir -p conda/unpack ;\
+		tar xf $(PACK_PATH)/${CONDA_FILE} -C conda/unpack ;\
+		tar -czf conda/${CONDA_FILE} --group=100 --mode='g+rw' -C conda/unpack . ;\
+	fi
 	docker build -t ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) . \
 		-f standard.Dockerfile \
 		--build-arg=VER_BASE=$(VER_BASE) \
