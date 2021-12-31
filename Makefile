@@ -5,7 +5,7 @@ CRAN_URL=https://cran.microsoft.com/snapshot/2020-12-28/
 # base image - jupyter stuff only, not much software
 VER_BASE=5.0
 # Python
-VER_STD=5.0.0-laines5-dev11-setgid-full
+VER_STD=5.0.0-laines5-dev12-formgrader-path
 # Julia
 VER_JULIA=5.0.0
 # R
