@@ -5,7 +5,7 @@ CRAN_URL=https://cran.microsoft.com/snapshot/2020-12-28/
 # base image - jupyter stuff only, not much software
 VER_BASE=5.0
 # Python
-VER_STD=5.0.0-laines5-dev12-formgrader-path
+VER_STD=5.0.0
 # Julia
 VER_JULIA=5.0.0
 # R
@@ -16,7 +16,6 @@ VER_CV=1.8.0
 PACK_PATH=/m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda-dev/packs
 ENVIRONMENT_NAME=jupyter-generic
 ENVIRONMENT_VERSION=2021-11-23
-# NOTE: not the final pack
 ENVIRONMENT_HASH=e97c2729
 CONDA_FILE=$(ENVIRONMENT_NAME)_$(ENVIRONMENT_VERSION)_$(ENVIRONMENT_HASH).tar.gz
 
@@ -45,6 +44,8 @@ base: no-pack
 standard: include-pack
 	@! grep -P '\t' -C 1 standard.Dockerfile || { echo "ERROR: Tabs in standard.Dockerfile" ; exit 1 ; }
 	mkdir -p conda
+# NOTE: This is a temporary workaround. It would be more efficient to create
+#       the archives directly with the correct permissions
 	if ! [ -e "conda/${CONDA_FILE}" ]; then\
 		rm -rf conda/unpack ;\
 		mkdir -p conda/unpack ;\

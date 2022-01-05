@@ -8,8 +8,6 @@ ARG ENVIRONMENT_VERSION
 ARG ENVIRONMENT_HASH
 ENV JUPYTER_SOFTWARE_IMAGE=${ENVIRONMENT_NAME}_${ENVIRONMENT_VERSION}_${ENVIRONMENT_HASH}
 
-RUN echo invalidate cache3
-
 # NOTE: files contained in the tar archive must have gid=100 and file mode g=rw
 #       if the user is supposed to be able to use `mamba install` on the base
 #       environment when running the image
