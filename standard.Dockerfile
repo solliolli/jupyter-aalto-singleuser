@@ -51,6 +51,16 @@ RUN chgrp 100 /opt/software && \
 #     echo Setup=/opt/conda/lib/libtdsS.so >> /etc/odbcinst.ini && \
 #     clean-layer.sh
 
+
+# Installing using mamba instead of an incremental tar for now because the
+# `update-software.sh` script has issues regarding file permissions
+#
+# nbgrader doesn't work with the most recent sqlalchemy, see
+# https://github.com/jupyter/nbgrader/issues/1434 for more details. An
+# alternative fix would be to upgrade nbgrader
+RUN mamba install sqlalchemy==1.3.23 && \
+    clean-layer.sh
+
 # ========================================
 
 RUN /opt/software/bin/python -m ipykernel install --prefix=/opt/conda --display-name="Python 3"
