@@ -41,7 +41,8 @@ base: no-pack
 	docker build -t ${REGISTRY}${GROUP}/notebook-server-base:$(VER_BASE) . -f base.Dockerfile --build-arg=UPSTREAM_MINIMAL_NOTEBOOK_VER=$(UPSTREAM_MINIMAL_NOTEBOOK_VER)
 	docker run --rm ${REGISTRY}${GROUP}/notebook-server-base:$(VER_BASE) conda env export -n base > environment-yml/$@-$(VER_BASE).yml
 	docker run --rm ${REGISTRY}${GROUP}/notebook-server-base:$(VER_BASE) conda list --revisions > conda-history/$@-$(VER_BASE).yml
-standard: include-pack
+standard: | include-pack build-standard no-pack
+build-standard:
 	@! grep -P '\t' -C 1 standard.Dockerfile || { echo "ERROR: Tabs in standard.Dockerfile" ; exit 1 ; }
 	mkdir -p conda
 # NOTE: This is a temporary workaround. It would be more efficient to create
@@ -160,7 +161,12 @@ ifndef HUBREPO
 endif
 
 no-pack:
-	sed -i '\,^!conda/.*\.tar.gz,d' .dockerignore
+	$(no-pack)
 
-include-pack: no-pack
+define no-pack =
+	sed -i '\,^!conda/.*\.tar.gz,d' .dockerignore
+endef
+
+include-pack:
+	$(no-pack)
 	echo '!conda/${CONDA_FILE}' >> .dockerignore
