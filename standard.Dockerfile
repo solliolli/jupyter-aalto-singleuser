@@ -36,12 +36,12 @@ RUN chgrp 100 /opt/software && \
 #           && \
 #    clean-layer.sh
 
-# # Update nbgrader
-# RUN \
-#     pip install --force --no-deps --upgrade --no-cache-dir \
-#         git+https://github.com/AaltoSciComp/nbgrader@live-2020 \
-#         'nbconvert<6' && \
-#     clean-layer.sh
+ # Update nbgrader
+RUN \
+    pip install --force --upgrade --no-cache-dir \
+        git+https://github.com/AaltoSciComp/nbgrader@live-2022#egg=nbgrader==0.7.0-dev1+aalto \
+        'nbconvert<6' && \
+    clean-layer.sh
 
 # requires bdaaccounting collection in the builder
 # RUN \
@@ -51,15 +51,6 @@ RUN chgrp 100 /opt/software && \
 #     echo Setup=/opt/conda/lib/libtdsS.so >> /etc/odbcinst.ini && \
 #     clean-layer.sh
 
-
-# Installing using mamba instead of an incremental tar for now because the
-# `update-software.sh` script has issues regarding file permissions
-#
-# nbgrader doesn't work with the most recent sqlalchemy, see
-# https://github.com/jupyter/nbgrader/issues/1434 for more details. An
-# alternative fix would be to upgrade nbgrader
-RUN mamba install sqlalchemy==1.3.23 && \
-    clean-layer.sh
 
 # ========================================
 
