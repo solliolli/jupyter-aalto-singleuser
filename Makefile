@@ -53,7 +53,7 @@ build-standard:
 		tar xf $(PACK_PATH)/${CONDA_FILE} -C conda/unpack ;\
 		chmod -R g+rwX conda/unpack ;\
 		find conda/unpack -type d -exec chmod +6000 {} \; ;\
-		tar -czf conda/${CONDA_FILE} --group=100 -C conda/unpack . ; \
+		tar -czf conda/${CONDA_FILE} --owner=1000 --group=100 -C conda/unpack . ; \
 	fi
 	docker build -t ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) . \
 		-f standard.Dockerfile \
