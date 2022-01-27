@@ -37,6 +37,7 @@ RUN apt-get update && \
 # JupyterHub says we can use any existing jupyter image, as long as we properly
 # pin the JupyterHub version
 # https://github.com/jupyterhub/jupyterhub/tree/master/singleuser
+# TODO: should this be removed and the upstream version used instead?
 RUN mamba install jupyterhub==1.1.0 && \
     clean-layer.sh
 
