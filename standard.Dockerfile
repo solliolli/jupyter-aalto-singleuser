@@ -30,6 +30,8 @@ RUN /usr/local/bin/update-software.sh /tmp/delta.tardiff
 # The delta file was generated using the following command:
 #   tar-diff /m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda-dev/packs/jupyter-generic_2021-11-23_{e97c2729,443f529f}.tar.gz delta_e97c272-443f529f.tardiff
 
+COPY delta_443f529f-0db9baab.tardiff /tmp/delta.tardiff
+RUN /usr/local/bin/update-software.sh /tmp/delta.tardiff
 
 # Custom installations
 #RUN apt-get update && \
