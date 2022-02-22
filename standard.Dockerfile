@@ -50,12 +50,11 @@ RUN \
     clean-layer.sh
 
 # requires bdaaccounting collection in the builder
-# RUN \
-#     echo [FreeTDS] >> /etc/odbcinst.ini && \
-#     echo Description=FreeTDS Driver >> /etc/odbcinst.ini && \
-#     echo Driver=/opt/conda/lib/libtdsodbc.so >> /etc/odbcinst.ini && \
-#     echo Setup=/opt/conda/lib/libtdsS.so >> /etc/odbcinst.ini && \
-#     clean-layer.sh
+RUN \
+    echo [FreeTDS] >> /etc/odbcinst.ini && \
+    echo Description=FreeTDS Driver >> /etc/odbcinst.ini && \
+    echo Driver=/opt/software/lib/libtdsodbc.so >> /etc/odbcinst.ini && \
+    echo Setup=/opt/software/lib/libtdsS.so >> /etc/odbcinst.ini
 
 
 # ========================================
