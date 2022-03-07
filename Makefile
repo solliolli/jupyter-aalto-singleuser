@@ -5,7 +5,7 @@ CRAN_URL=https://cran.microsoft.com/snapshot/2020-12-28/
 # base image - jupyter stuff only, not much software
 VER_BASE=5.0
 # Python
-VER_STD=5.0.7
+VER_STD=5.0.8
 # Julia
 VER_JULIA=5.0.0
 # R
@@ -13,10 +13,10 @@ VER_R=5.0.5
 # OpenCV
 VER_CV=1.8.0
 
-PACK_PATH=/m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda-dev/packs
+PACK_PATH=/m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda/packs
 ENVIRONMENT_NAME=jupyter-generic
-ENVIRONMENT_VERSION=2022-03-04
-ENVIRONMENT_HASH=879a89c7
+ENVIRONMENT_VERSION=2022-03-07
+ENVIRONMENT_HASH=560c880a
 CONDA_FILE=$(ENVIRONMENT_NAME)_$(ENVIRONMENT_VERSION)_$(ENVIRONMENT_HASH).tar.gz
 
 # VER2_R=$(VER_R)-$(GIT_REV)
