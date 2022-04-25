@@ -25,10 +25,10 @@ COPY scripts/tar-patch /usr/local/bin
 COPY scripts/update-software.sh /usr/local/bin
 
 # Incremental updates to the software stack:
-# COPY delta_e97c272-443f529f.tardiff /tmp/delta.tardiff
-# RUN /usr/local/bin/update-software.sh /tmp/delta.tardiff
+COPY delta_560c880a-aaa369e3.tardiff /tmp/delta.tardiff
+RUN /usr/local/bin/update-software.sh /tmp/delta.tardiff
 # The delta file was generated using the following command:
-#   tar-diff /m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda-dev/packs/jupyter-generic_2021-11-23_{e97c2729,443f529f}.tar.gz delta_e97c272-443f529f.tardiff
+#   tar-diff /m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda/packs/jupyter-generic_2022-03-07_{560c880a,aaa369e3}.tar.gz delta_560c880a-aaa369e3.tardiff
 
 # Custom installations
 #RUN apt-get update && \
