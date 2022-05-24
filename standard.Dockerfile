@@ -41,8 +41,7 @@ RUN /usr/local/bin/update-software.sh /tmp/delta.tardiff
 RUN \
     pip uninstall nbgrader -y && \
     pip install --no-cache-dir \
-        git+https://github.com/AaltoSciComp/nbgrader@live-2022#egg=nbgrader==0.7.0-dev2+aalto \
-        'nbconvert<6' && \
+        git+https://github.com/AaltoSciComp/nbgrader@live-2022#egg=nbgrader==0.7.0-dev3+aalto && \
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
     clean-layer.sh
 
