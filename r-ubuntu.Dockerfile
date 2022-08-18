@@ -46,8 +46,10 @@ RUN apt-get update && \
 ARG CRAN_URL
 
 RUN \
-    Rscript -e "install.packages(c('devtools','repr','IRdisplay','evaluate','crayon','pbdZMQ','uuid','digest'), repos='${CRAN_URL}', clean=TRUE)" && \
-    Rscript -e "devtools::install_github('IRkernel/IRkernel')" && \
+    Rscript -e "install.packages(c('IRkernel'), repos='${CRAN_URL}', clean=TRUE)"
+
+RUN \
+    Rscript -e "install.packages(c('repr','IRdisplay','evaluate','crayon','pbdZMQ','uuid','digest'), repos='${CRAN_URL}', clean=TRUE)" && \
     Rscript -e 'IRkernel::installspec(user = FALSE)'
 RUN jupyter kernelspec remove -f python3
 
@@ -112,6 +114,7 @@ RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
     git checkout e8c45f9565844df9497360b767f07fe1b84e19cc && \
     npm install && npm run build && jupyter labextension link . && \
     npm run build && jupyter lab build && \
+    jupyter labextension install @techrah/text-shortcuts && \
     cd /usr/local/src && rm -r /usr/local/src/* && \
     ln -s /usr/lib/rstudio-server/bin/rserver /usr/local/bin/ && \
     fix-permissions /usr/local/lib/R/site-library && \
