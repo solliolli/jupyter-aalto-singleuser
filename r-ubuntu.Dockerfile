@@ -26,7 +26,10 @@ RUN apt-get update && \
         libopenblas-dev \
         liblapack-dev \
         libxml2-dev \
-        r-base && \
+        r-base \
+        # TODO: remove when base image is updated
+        build-essential \
+          && \
     update-alternatives --set cc  /usr/bin/clang && \
     update-alternatives --set c++ /usr/bin/clang++ && \
     update-alternatives --set c89 /usr/bin/clang && \
