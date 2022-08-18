@@ -7,7 +7,12 @@ USER root
 
 # libxml2-dev: for R package xml2, indirect dependency of devtools
 # libnode-dev: for rstan
-RUN apt-get update && \
+
+RUN wget -q https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc \
+         -O /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc && \
+    echo "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/" \
+        > /etc/apt/sources.list.d/cran.list && \
+    apt-get update && \
     apt-get install -y --no-install-recommends \
         clang \
         ed \
