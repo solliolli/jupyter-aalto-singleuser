@@ -169,7 +169,7 @@ RUN cd /opt && \
     tar xf tophat-2.1.1.Linux_x86_64.tar.gz && \
     sed -i 's@/usr/bin/env python@/usr/bin/python2@' tophat-2.1.1.Linux_x86_64/tophat && \
     ln -s $PWD/tophat-2.1.1.Linux_x86_64/tophat2 /usr/local/bin/ && \
-    rm tophat-2.1.1.Linux_x86_64.tar.gz
+    rm tophat-2.1.1.Linux_x86_64.tar.gz && \
     fix-permissions /opt/fastcq /usr/local/bin
 
 
