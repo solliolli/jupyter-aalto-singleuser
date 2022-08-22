@@ -5,3 +5,4 @@ k-dockerhub.sh
 .dockerignore
 conda
 .docker
+conda-history
