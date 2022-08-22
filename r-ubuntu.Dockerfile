@@ -94,6 +94,7 @@ RUN \
 
 # Packages needed for bayesian macheine learning course
 # aods3: htbioinformatics
+# StanHeaders: bayesian data analysis
 RUN \
     echo "install.packages(c(" \
             "'nloptr'," \
@@ -110,12 +111,15 @@ RUN \
             "'gridExtra'," \
             "'here'," \
             "'projpred'," \
+            "'StanHeaders'," \
             "'tweenr'," \
             "'gganimate'," \
             "'ggforce'," \
             "'ggrepel'," \
             "'av'," \
             "'magick'," \
+            "'markmyassignment'," \
+            "'RUnit'," \
             "'aods3'" \
         "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
     fix-permissions /usr/local/lib/R/site-library
@@ -171,13 +175,6 @@ RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
     ln -s /usr/lib/rstudio-server/bin/rserver /usr/local/bin/ && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
-
-
-# Last-added packages, move to above
-RUN \
-    Rscript -e "install.packages(c('RUnit', 'markmyassignment'), repos='${CRAN_URL}', clean=TRUE)" && \
-    fix-permissions /usr/local/lib/R/site-library
-
 
 # openjdk-11-jre-headless: htbioinformatics2019, for fastcq
 # python-htseq:            htbioinformatics2019, https://htseq.readthedocs.io/en/release_0.11.1/install.html
@@ -273,12 +270,6 @@ RUN \
         && \
     clean-layer.sh
 
-# Last-added packages, move to above
-RUN \
-    Rscript -e "install.packages(c('StanHeaders'), repos='${CRAN_URL}', clean=TRUE)" && \
-    fix-permissions /usr/local/lib/R/site-library
-
-
 # ELEC-A8720 - Biologisten ilmiöiden mittaaminen (Quantifying/measuring biological phenomena).
 RUN \
     echo 'BiocManager::install(c('\
@@ -297,6 +288,15 @@ RUN \
     ln -s $PWD/plink /usr/local/bin/ && \
     fix-permissions /opt/plink /usr/local/bin
 
+#
+# Last-added packages, move to above
+#
+
+# RUN \
+#     echo "install.packages(c(" \
+#             "'packagename'," \
+#         "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
+#     fix-permissions /usr/local/lib/R/site-library
 
 # ====================================
 
