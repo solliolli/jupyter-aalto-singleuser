@@ -92,12 +92,9 @@ RUN \
 # Course setup
 #
 
-# Packages needed for bayesian macheine learning course
-# aods3: htbioinformatics
-# StanHeaders: bayesian data analysis
 RUN \
     echo "install.packages(c(" \
-            "'nloptr'," \
+            # Packages needed for bayesian macheine learning course, RT#13568
             "'bayesplot'," \
             "'rstan'," \
             "'rstanarm'," \
@@ -111,6 +108,7 @@ RUN \
             "'gridExtra'," \
             "'here'," \
             "'projpred'," \
+            # " RT#17144
             "'StanHeaders'," \
             "'tweenr'," \
             "'gganimate'," \
@@ -118,9 +116,13 @@ RUN \
             "'ggrepel'," \
             "'av'," \
             "'magick'," \
+            # " RT#15341
             "'markmyassignment'," \
             "'RUnit'," \
-            "'aods3'" \
+            # htbioinformatics RT#17450
+            "'aods3'," \
+            # unknown purpose, included in the original Dockerfile
+            "'nloptr'" \
         "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
     fix-permissions /usr/local/lib/R/site-library
 
