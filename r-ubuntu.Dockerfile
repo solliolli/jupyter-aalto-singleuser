@@ -51,16 +51,41 @@ RUN wget -q https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc \
 ARG CRAN_URL
 
 RUN \
-    Rscript -e "install.packages(c('IRkernel'), repos='${CRAN_URL}', clean=TRUE)"
-
-RUN \
-    Rscript -e "install.packages(c('repr','IRdisplay','evaluate','crayon','pbdZMQ','uuid','digest'), repos='${CRAN_URL}', clean=TRUE)" && \
+    echo "install.packages(c(" \
+            "'IRkernel'," \
+            "'repr'," \
+            "'IRdisplay'," \
+            "'evaluate'," \
+            "'crayon'," \
+            "'pbdZMQ'," \
+            "'uuid'," \
+            "'digest'" \
+        "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
     Rscript -e 'IRkernel::installspec(user = FALSE)'
 RUN jupyter kernelspec remove -f python3
 
 # Packages from jupyter r-notebook
 RUN \
-    Rscript -e "install.packages(c('plyr', 'devtools', 'tidyverse', 'shiny', 'markdown', 'forecast', 'RSQLite', 'reshape2', 'nycflights13', 'caret', 'RCurl', 'crayon', 'randomForest', 'htmltools', 'sparklyr', 'htmlwidgets', 'hexbin', 'caTools'), repos='${CRAN_URL}', clean=TRUE)" && \
+    echo "install.packages(c(" \
+            "'plyr'," \
+            "'devtools'," \
+            "'tidyverse'," \
+            "'shiny'," \
+            "'markdown'," \
+            "'forecast'," \
+            "'RSQLite'," \
+            "'reshape2'," \
+            "'nycflights13'," \
+            "'caret'," \
+            "'RCurl'," \
+            "'crayon'," \
+            "'randomForest'," \
+            "'htmltools'," \
+            "'sparklyr'," \
+            "'htmlwidgets'," \
+            "'hexbin'," \
+            "'caTools'" \
+        "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
     fix-permissions /usr/local/lib/R/site-library
 
 #
@@ -70,7 +95,29 @@ RUN \
 # Packages needed for bayesian macheine learning course
 # aods3: htbioinformatics
 RUN \
-    Rscript -e "install.packages(c('nloptr', 'bayesplot', 'rstan', 'rstanarm', 'shinystan', 'loo', 'brms', 'GGally', 'MASS', 'coda', 'gridBase', 'gridExtra', 'here', 'projpred', 'StanHeaders', 'tweenr', 'gganimate', 'ggforce', 'ggrepel', 'av', 'magick', 'aods3'), repos='${CRAN_URL}', clean=TRUE)" && \
+    echo "install.packages(c(" \
+            "'nloptr'," \
+            "'bayesplot'," \
+            "'rstan'," \
+            "'rstanarm'," \
+            "'shinystan'," \
+            "'loo'," \
+            "'brms'," \
+            "'GGally'," \
+            "'MASS'," \
+            "'coda'," \
+            "'gridBase'," \
+            "'gridExtra'," \
+            "'here'," \
+            "'projpred'," \
+            "'tweenr'," \
+            "'gganimate'," \
+            "'ggforce'," \
+            "'ggrepel'," \
+            "'av'," \
+            "'magick'," \
+            "'aods3'" \
+        "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
     fix-permissions /usr/local/lib/R/site-library
 
 # Try to disable Python kernel
