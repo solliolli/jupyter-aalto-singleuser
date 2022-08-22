@@ -232,14 +232,6 @@ RUN \
     fix-permissions /usr/local/lib/R/site-library
 
 
-RUN \
-    echo 'BiocManager::install(c('\
-            '"BiSeq" ' \
-        '))' | CC=gcc CXX=g++ Rscript - && \
-    fix-permissions /usr/local/lib/R/site-library && \
-    clean-layer.sh
-
-
 # ELEC-A8720 - Biologisten ilmiöiden mittaaminen (Quantifying/measuring biological phenomena).
 RUN \
     echo 'BiocManager::install(c('\
