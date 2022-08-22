@@ -231,23 +231,15 @@ RUN cd /opt && \
 
 
 # Bioconductor
-# edgeR, GenomicRanges, rtracklayer: htbioinformatics
-# BiSeq, limma: htbioinformatics
 
-
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        libomp-dev r-cran-xml llvm-10-dev \
-        && \
-    echo 'if (!requireNamespace("BiocManager", quietly = TRUE)) '\
-            'install.packages("BiocManager") ; ' \
-            'BiocManager::install()' \
-        | Rscript - && \
+RUN Rscript -e 'install.packages("BiocManager")' && \
     echo 'BiocManager::install(c('\
+            # RT#15527 htbioinformatics
             '"edgeR", ' \
             '"GenomicRanges", ' \
             '"rtracklayer", ' \
             '"BSgenome.Hsapiens.NCBI.GRCh38", ' \
+            # RT#17450 htbioinformatics
             '"BiSeq", ' \
             '"limma" ' \
         '))' | Rscript - && \
