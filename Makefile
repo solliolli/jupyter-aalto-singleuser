@@ -1,6 +1,6 @@
 UPSTREAM_MINIMAL_NOTEBOOK_VER=6e246ea4bbff  # 2021-11-20
 UPSTREAM_SCIPY_NOTEBOOK_VER=d113a601dbb8  # Image updated 2020-12-26
-CRAN_URL=https://cran.microsoft.com/snapshot/2020-12-28/
+CRAN_URL=https://cran.microsoft.com/snapshot/2022-08-19/
 
 # base image - jupyter stuff only, not much software
 VER_BASE=5.0
