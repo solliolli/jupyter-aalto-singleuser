@@ -158,21 +158,10 @@ RUN wget -q https://download2.rstudio.org/server/bionic/amd64/${RSTUDIO_PKG} && 
     rm ${RSTUDIO_PKG}
 
 # Rstudio for jupyterlab
-#   Viasat/nbrsessionproxy is not compatible with JL 1.0
-RUN set -x && pip install --no-cache-dir jupyter-rsession-proxy && \
-    # The npm version of jupyterlab-server-proxy is not yet compatible
-    # with JupyterLab 1.0 -> using git version.
-    # See https://github.com/jupyterhub/jupyter-server-proxy/issues/139#issuecomment-516665020
-    # jupyter labextension install jupyterlab-server-proxy && \
-    cd /usr/local/src/ && \
-    git clone https://github.com/jupyterhub/jupyter-server-proxy && \
-    cd jupyter-server-proxy/jupyterlab-server-proxy && \
-    git checkout e8c45f9565844df9497360b767f07fe1b84e19cc && \
-    npm install && npm run build && jupyter labextension link . && \
-    npm run build && jupyter lab build && \
+RUN pip install --no-cache-dir jupyter-rsession-proxy && \
+    pip install jupyter-server-proxy && \
+    jupyter labextension install @jupyterlab/server-proxy && \
     jupyter labextension install @techrah/text-shortcuts && \
-    cd /usr/local/src && rm -r /usr/local/src/* && \
-    ln -s /usr/lib/rstudio-server/bin/rserver /usr/local/bin/ && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
 
