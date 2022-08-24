@@ -39,6 +39,7 @@ RUN wget -q https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc \
     update-alternatives --set c++ /usr/bin/clang++ && \
     update-alternatives --set c89 /usr/bin/clang && \
     update-alternatives --set c99 /usr/bin/clang && \
+    # TODO: clean-layer.sh instead (rebuild)
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -146,7 +147,7 @@ RUN apt-get update && \
         libclang-dev \
         libpq5 \
         && \
-        clean-layer.sh
+    clean-layer.sh
 
 ENV RSTUDIO_PKG=rstudio-server-2022.07.1-554-amd64.deb
 ENV RSTUDIO_CHECKSUM=b6778c0a78d69d836d5c812342a3697a19b83c80c2d6eb7162b38dedc6ad6b56
@@ -178,8 +179,6 @@ RUN apt-get update && \
         openjdk-11-jre-headless \
         python-htseq \
         && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
     pip install --no-cache-dir \
         htseq==0.11.1 \
         && \
