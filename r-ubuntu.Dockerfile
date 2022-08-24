@@ -175,7 +175,6 @@ RUN pip install --no-cache-dir jupyter-rsession-proxy && \
     clean-layer.sh
 
 # openjdk-11-jre-headless: htbioinformatics2019, for fastcq
-# python-htseq:            htbioinformatics2019, https://htseq.readthedocs.io/en/release_0.11.1/install.html
 # libbz2-dev:              dependency for samtools
 # libncurses5-dev:         dependency for samtools
 # liblzma-dev:             dependency for samtools
@@ -185,10 +184,16 @@ RUN apt-get update && \
         libncurses5-dev \
         liblzma-dev \
         openjdk-11-jre-headless \
-        python-htseq \
+        && \
+    pip install --upgrade --no-cache-dir \
+        # upgrading because htseq complains about invalid numpy version, and
+        # current scipy version is incompatible with newer numpy
+        numpy \
+        scipy \
         && \
     pip install --no-cache-dir \
-        htseq==0.11.1 \
+        # htbioinformatics, RT#15527
+        htseq \
         && \
     clean-layer.sh
 
