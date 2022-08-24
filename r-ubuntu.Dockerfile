@@ -93,6 +93,7 @@ RUN \
 # Course setup
 #
 
+# NOTE: building this takes ~40 minutes
 RUN \
     echo "install.packages(c(" \
             # Packages needed for bayesian macheine learning course, RT#13568
@@ -122,6 +123,13 @@ RUN \
             "'RUnit'," \
             # htbioinformatics RT#17450
             "'aods3'," \
+            # compgeno2022 RT#21822
+            "'ape'," \
+            "'ggplot2'," \
+            "'reshape2'," \
+            "'HMM'," \
+            "'phangorn'," \
+            "'testit'", \
             # unknown purpose, included in the original Dockerfile
             "'nloptr'" \
         "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
@@ -227,7 +235,11 @@ RUN Rscript -e 'install.packages("BiocManager")' && \
             '"BSgenome.Hsapiens.NCBI.GRCh38", ' \
             # RT#17450 htbioinformatics
             '"BiSeq", ' \
-            '"limma" ' \
+            '"limma", ' \
+            # compgeno2022 RT#21822
+            "'DECIPHER'," \
+            "'ORFik'," \
+            "'Biostrings'" \
         '))' | Rscript - && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
