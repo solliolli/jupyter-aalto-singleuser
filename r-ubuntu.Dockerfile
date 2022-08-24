@@ -220,6 +220,7 @@ RUN conda config --append channels bioconda && \
 # https://ccb.jhu.edu/software/tophat/tutorial.shtml
 # TODO: changed https->http because of a SSL error in ubuntu as of
 # 2020-07-10, convert http->https later and see if it works
+# 2022-08-22: the site still serves insecure signatures not accepted by cURL
 RUN cd /opt && \
     wget http://ccb.jhu.edu/software/tophat/downloads/tophat-2.1.1.Linux_x86_64.tar.gz && \
     tar xf tophat-2.1.1.Linux_x86_64.tar.gz && \
@@ -267,7 +268,10 @@ RUN \
         && \
     clean-layer.sh
 
-# ELEC-A8720 - Biologisten ilmiöiden mittaaminen (Quantifying/measuring biological phenomena).
+# ELEC-A8720 - Biologisten ilmiöiden mittaaminen
+#              (Quantifying/measuring biological phenomena).
+# RT#18146
+# TODO: check if CC, CXX are needed. If not, move to above
 RUN \
     echo 'BiocManager::install(c('\
             '"biomaRt", ' \
@@ -276,7 +280,9 @@ RUN \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
 
-# plink: ELEC-A8720 - Biologisten ilmiöiden mittaaminen (Quantifying/measuring biological phenomena).
+# plink: ELEC-A8720 - Biologisten ilmiöiden mittaaminen
+#                     (Quantifying/measuring biological phenomena).
+# RT#18146
 RUN \
     mkdir /opt/plink && \
     cd /opt/plink && \
