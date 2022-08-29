@@ -303,6 +303,14 @@ RUN \
 
 # ====================================
 
+# TODO: remove when base has a new enough nbgrader
+RUN \
+    pip uninstall nbgrader -y && \
+    pip install --no-cache-dir \
+        git+https://github.com/AaltoSciComp/nbgrader@live-2022#egg=nbgrader==0.7.0-dev3+aalto && \
+    jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
+    clean-layer.sh
+
 
 # Set default R compiler to clang to save memory.
 RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
