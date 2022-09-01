@@ -51,43 +51,50 @@ RUN wget -q https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc \
 
 ARG CRAN_URL
 
+# TODO: remove when base contains this
+COPY scripts/install-r-packages.sh  /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-r-packages.sh
+
 RUN \
-    echo "install.packages(c(" \
-            "'IRkernel'," \
-            "'repr'," \
-            "'IRdisplay'," \
-            "'evaluate'," \
-            "'crayon'," \
-            "'pbdZMQ'," \
-            "'uuid'," \
-            "'digest'" \
-        "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
+    install-r-packages.sh --url ${CRAN_URL} \
+        IRkernel \
+        repr \
+        IRdisplay \
+        evaluate \
+        crayon \
+        pbdZMQ \
+        uuid \
+        digest \
+          && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh && \
     Rscript -e 'IRkernel::installspec(user = FALSE)'
 RUN jupyter kernelspec remove -f python3
 
 # Packages from jupyter r-notebook
 RUN \
-    echo "install.packages(c(" \
-            "'plyr'," \
-            "'devtools'," \
-            "'tidyverse'," \
-            "'shiny'," \
-            "'markdown'," \
-            "'forecast'," \
-            "'RSQLite'," \
-            "'reshape2'," \
-            "'nycflights13'," \
-            "'caret'," \
-            "'RCurl'," \
-            "'crayon'," \
-            "'randomForest'," \
-            "'htmltools'," \
-            "'sparklyr'," \
-            "'htmlwidgets'," \
-            "'hexbin'," \
-            "'caTools'" \
-        "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
-    fix-permissions /usr/local/lib/R/site-library
+    install-r-packages.sh --url ${CRAN_URL} \
+        plyr \
+        devtools \
+        tidyverse \
+        shiny \
+        markdown \
+        forecast \
+        RSQLite \
+        reshape2 \
+        nycflights13 \
+        caret \
+        RCurl \
+        crayon \
+        randomForest \
+        htmltools \
+        sparklyr \
+        htmlwidgets \
+        hexbin \
+        caTools \
+          && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
 
 #
 # Course setup
@@ -95,45 +102,46 @@ RUN \
 
 # NOTE: building this takes ~40 minutes
 RUN \
-    echo "install.packages(c(" \
-            # Packages needed for bayesian macheine learning course, RT#13568
-            "'bayesplot'," \
-            "'rstan'," \
-            "'rstanarm'," \
-            "'shinystan'," \
-            "'loo'," \
-            "'brms'," \
-            "'GGally'," \
-            "'MASS'," \
-            "'coda'," \
-            "'gridBase'," \
-            "'gridExtra'," \
-            "'here'," \
-            "'projpred'," \
-            # " RT#17144
-            "'StanHeaders'," \
-            "'tweenr'," \
-            "'gganimate'," \
-            "'ggforce'," \
-            "'ggrepel'," \
-            "'av'," \
-            "'magick'," \
-            # " RT#15341
-            "'markmyassignment'," \
-            "'RUnit'," \
-            # htbioinformatics RT#17450
-            "'aods3'," \
-            # compgeno2022 RT#21822
-            "'ape'," \
-            "'ggplot2'," \
-            "'reshape2'," \
-            "'HMM'," \
-            "'phangorn'," \
-            "'testit'", \
-            # unknown purpose, included in the original Dockerfile
-            "'nloptr'" \
-        "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
-    fix-permissions /usr/local/lib/R/site-library
+    install-r-packages.sh --url ${CRAN_URL} \
+        # Packages needed for bayesian macheine learning course, RT#13568
+        bayesplot \
+        rstan \
+        rstanarm \
+        shinystan \
+        loo \
+        brms \
+        GGally \
+        MASS \
+        coda \
+        gridBase \
+        gridExtra \
+        here \
+        projpred \
+        # " RT#17144
+        StanHeaders \
+        tweenr \
+        gganimate \
+        ggforce \
+        ggrepel \
+        av \
+        magick \
+        # " RT#15341
+        markmyassignment \
+        RUnit \
+        # htbioinformatics RT#17450
+        aods3 \
+        # compgeno2022 RT#21822
+        ape \
+        ggplot2 \
+        reshape2 \
+        HMM \
+        phangorn \
+        testit \
+        # unknown purpose, included in the original Dockerfile
+        nloptr \
+          && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
 
 # Try to disable Python kernel
 # https://github.com/jupyter/jupyter_client/issues/144
@@ -233,20 +241,20 @@ RUN cd /opt && \
 # Bioconductor
 
 RUN Rscript -e 'install.packages("BiocManager")' && \
-    echo 'BiocManager::install(c('\
-            # RT#15527 htbioinformatics
-            '"edgeR", ' \
-            '"GenomicRanges", ' \
-            '"rtracklayer", ' \
-            '"BSgenome.Hsapiens.NCBI.GRCh38", ' \
-            # RT#17450 htbioinformatics
-            '"BiSeq", ' \
-            '"limma", ' \
-            # compgeno2022 RT#21822
-            "'DECIPHER'," \
-            "'ORFik'," \
-            "'Biostrings'" \
-        '))' | Rscript - && \
+    install-r-packages.sh --bioconductor \
+        # RT#15527 htbioinformatics
+        edgeR \
+        GenomicRanges \
+        rtracklayer \
+        BSgenome.Hsapiens.NCBI.GRCh38 \
+        # RT#17450 htbioinformatics
+        BiSeq \
+        limma \
+        # compgeno2022 RT#21822
+        DECIPHER \
+        ORFik \
+        Biostrings \
+          && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
 
@@ -296,10 +304,19 @@ RUN \
 #
 
 # RUN \
-#     echo "install.packages(c(" \
-#             "'packagename'," \
-#         "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
-#     fix-permissions /usr/local/lib/R/site-library
+#     install-r-packages.sh --url ${CRAN_URL} \
+#         packagename \
+#           && \
+#     fix-permissions /usr/local/lib/R/site-library && \
+#     clean-layer.sh
+#
+#
+# RUN \
+#     install-r-packages.sh --bioconductor \
+#         packagename_from_bioc \
+#           && \
+#     fix-permissions /usr/local/lib/R/site-library && \
+#     clean-layer.sh
 
 # ====================================
 
@@ -325,21 +342,21 @@ RUN \
 
 # reinstalling previously failed installation, now with correct dependencies
 RUN \
-    echo "install.packages(c(" \
-            "'devtools'," \
-            "'rstanarm'," \
-            "'projpred'" \
-        "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
-    fix-permissions /usr/local/lib/R/site-library
+    install-r-packages.sh --url ${CRAN_URL} \
+        devtools \
+        rstanarm \
+        projpred \
+          && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
 
 # bayesian machine learning, RT#21752
 RUN \
-    echo "install.packages(c(" \
-            "'cmdstanr'" \
-        "), " \
-        "repos=c('https://mc-stan.org/r-packages/', getOption('repos'))," \
-        "clean=TRUE)" | Rscript - && \
-    fix-permissions /usr/local/lib/R/site-library
+    install-r-packages.sh --url 'https://mc-stan.org/r-packages/' \
+        cmdstanr \
+          && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
 
 
 # Set default R compiler to clang to save memory.
