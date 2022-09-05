@@ -312,6 +312,16 @@ RUN \
     clean-layer.sh
 
 
+# bayesian machine learning, RT#21752
+RUN \
+    echo "install.packages(c(" \
+            "'cmdstanr'" \
+        "), " \
+        "repos=c('https://mc-stan.org/r-packages/', getOption('repos'))," \
+        "clean=TRUE)" | Rscript - && \
+    fix-permissions /usr/local/lib/R/site-library
+
+
 # Set default R compiler to clang to save memory.
 RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
     echo "CXX=clang++"  >> /usr/lib/R/etc/Makevars && \
