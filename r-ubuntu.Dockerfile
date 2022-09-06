@@ -55,13 +55,14 @@ RUN wget -q https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc \
 #liblzma-dev
 
 ARG CRAN_URL
+ARG INSTALL_JOB_COUNT
 
 # TODO: remove when base contains this
 COPY scripts/install-r-packages.sh  /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-r-packages.sh
 
 RUN \
-    install-r-packages.sh --url ${CRAN_URL} \
+    install-r-packages.sh --url ${CRAN_URL} -j ${INSTALL_JOB_COUNT} \
         IRkernel \
         repr \
         IRdisplay \
@@ -78,7 +79,7 @@ RUN jupyter kernelspec remove -f python3
 
 # Packages from jupyter r-notebook
 RUN \
-    install-r-packages.sh --url ${CRAN_URL} \
+    install-r-packages.sh --url ${CRAN_URL} -j ${INSTALL_JOB_COUNT} \
         plyr \
         devtools \
         tidyverse \
@@ -111,7 +112,7 @@ RUN Rscript -e 'install.packages("BiocManager")' && \
 
 # NOTE: building this takes ~40 minutes
 RUN \
-    install-r-packages.sh --url ${CRAN_URL} \
+    install-r-packages.sh --url ${CRAN_URL} -j ${INSTALL_JOB_COUNT} \
         # bayesian data analysis course, RT#13568
         bayesplot \
         rstan \
@@ -312,7 +313,7 @@ RUN \
 #
 
 # RUN \
-#     install-r-packages.sh --url ${CRAN_URL} \
+#     install-r-packages.sh --url ${CRAN_URL} -j ${INSTALL_JOB_COUNT} \
 #         packagename \
 #           && \
 #     fix-permissions /usr/local/lib/R/site-library && \

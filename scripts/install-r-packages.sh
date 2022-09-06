@@ -3,6 +3,7 @@ set -euo pipefail
 
 _url="https://cran.r-project.org"
 _install_source=default
+_jobs=1
 
 PACKAGES=()
 
@@ -19,6 +20,15 @@ while [[ $# -gt 0 ]]; do
         exit 1
       fi
       _url="$2"
+      shift
+      shift
+      ;;
+    -j|--jobs)
+      if [[ $# -lt 2 ]]; then
+        echo "Error: --jobs requires an argument" >&2
+        exit 1
+      fi
+      _jobs="$2"
       shift
       shift
       ;;
@@ -51,7 +61,7 @@ if [ "$_install_source" = "bioconductor" ]; then
   _opts=""
 else
   _install_cmd="install.packages"
-  _opts=", clean = TRUE, repos = '$_url'"
+  _opts=", clean = TRUE, repos = '$_url', Ncpus = $_jobs"
 fi
 
 # https://stackoverflow.com/a/52638148
