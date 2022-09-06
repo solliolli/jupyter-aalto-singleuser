@@ -1,12 +1,7 @@
 ARG VER_BASE
 FROM aaltoscienceit/notebook-server-base:${VER_BASE}
 
-## R support
-
 USER root
-
-# libxml2-dev: for R package xml2, indirect dependency of devtools
-# libnode-dev: for rstan
 
 RUN wget -q https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc \
          -O /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc && \
@@ -26,22 +21,32 @@ RUN wget -q https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc \
         libcurl4-openssl-dev \
         libgit2-dev \
         libmagick++-dev \
-        libnode-dev \
         libssl-dev \
         libopenblas-dev \
         liblapack-dev \
-        libxml2-dev \
         r-base \
         # TODO: remove when base image is updated
         build-essential \
+        # for rstan
+        libnode-dev \
+        # htbioinformatics2019, for fastcq
+        openjdk-11-jre-headless \
+        # dependencies for samtools
+        libbz2-dev \
+        libncurses5-dev \
+        liblzma-dev \
+        # devtools dependencies
+        libharfbuzz-dev \
+        libfribidi-dev \
+        libxml2-dev \
+        # rstanarm dependency
+        cmake \
           && \
     update-alternatives --set cc  /usr/bin/clang && \
     update-alternatives --set c++ /usr/bin/clang++ && \
     update-alternatives --set c89 /usr/bin/clang && \
     update-alternatives --set c99 /usr/bin/clang && \
-    # TODO: clean-layer.sh instead (rebuild)
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    clean-layer.sh
 
 #libnlopt-dev --> NO, not compatible
 
@@ -96,6 +101,10 @@ RUN \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
 
+RUN Rscript -e 'install.packages("BiocManager")' && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
+
 #
 # Course setup
 #
@@ -103,7 +112,7 @@ RUN \
 # NOTE: building this takes ~40 minutes
 RUN \
     install-r-packages.sh --url ${CRAN_URL} \
-        # Packages needed for bayesian macheine learning course, RT#13568
+        # bayesian data analysis course, RT#13568
         bayesplot \
         rstan \
         rstanarm \
@@ -137,11 +146,53 @@ RUN \
         HMM \
         phangorn \
         testit \
-        # unknown purpose, included in the original Dockerfile
+        # unknown purpose, was included in the original Dockerfile
         nloptr \
           && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
+
+# Bioconductor
+RUN \
+    install-r-packages.sh --bioconductor \
+        # RT#15527 htbioinformatics
+        edgeR \
+        GenomicRanges \
+        rtracklayer \
+        BSgenome.Hsapiens.NCBI.GRCh38 \
+        # RT#17450 htbioinformatics
+        BiSeq \
+        limma \
+        # compgeno2022 RT#21822
+        DECIPHER \
+        ORFik \
+        Biostrings \
+          && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
+
+# Packages from Stan
+RUN \
+    install-r-packages.sh --url 'https://mc-stan.org/r-packages/' \
+        # bayesian data analysis, RT#21752
+        cmdstanr \
+          && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
+
+# ELEC-A8720 - Biologisten ilmiöiden mittaaminen
+#              (Quantifying/measuring biological phenomena).
+# RT#18146
+# TODO: check if CC, CXX are needed. If not, move to above
+RUN \
+    echo 'BiocManager::install(c('\
+            '"biomaRt", ' \
+            '"snpStats" ' \
+        '))' | CC=gcc CXX=g++ Rscript - && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
+
+# ====================================
 
 # Try to disable Python kernel
 # https://github.com/jupyter/jupyter_client/issues/144
@@ -182,17 +233,7 @@ RUN pip install --no-cache-dir jupyter-rsession-proxy && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
 
-# openjdk-11-jre-headless: htbioinformatics2019, for fastcq
-# libbz2-dev:              dependency for samtools
-# libncurses5-dev:         dependency for samtools
-# liblzma-dev:             dependency for samtools
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        libbz2-dev \
-        libncurses5-dev \
-        liblzma-dev \
-        openjdk-11-jre-headless \
-        && \
+RUN \
     pip install --upgrade --no-cache-dir \
         # upgrading because htseq complains about invalid numpy version, and
         # current scipy version is incompatible with newer numpy
@@ -237,27 +278,6 @@ RUN cd /opt && \
     rm tophat-2.1.1.Linux_x86_64.tar.gz && \
     fix-permissions /opt/fastcq /usr/local/bin
 
-
-# Bioconductor
-
-RUN Rscript -e 'install.packages("BiocManager")' && \
-    install-r-packages.sh --bioconductor \
-        # RT#15527 htbioinformatics
-        edgeR \
-        GenomicRanges \
-        rtracklayer \
-        BSgenome.Hsapiens.NCBI.GRCh38 \
-        # RT#17450 htbioinformatics
-        BiSeq \
-        limma \
-        # compgeno2022 RT#21822
-        DECIPHER \
-        ORFik \
-        Biostrings \
-          && \
-    fix-permissions /usr/local/lib/R/site-library && \
-    clean-layer.sh
-
 # samtools: htbioinformatics, http://www.htslib.org/download/
 # pysam:    same --^
 # macs2:    "
@@ -274,18 +294,6 @@ RUN \
         pysam \
         macs2 \
         && \
-    clean-layer.sh
-
-# ELEC-A8720 - Biologisten ilmiöiden mittaaminen
-#              (Quantifying/measuring biological phenomena).
-# RT#18146
-# TODO: check if CC, CXX are needed. If not, move to above
-RUN \
-    echo 'BiocManager::install(c('\
-            '"biomaRt", ' \
-            '"snpStats" ' \
-        '))' | CC=gcc CXX=g++ Rscript - && \
-    fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
 
 # plink: ELEC-A8720 - Biologisten ilmiöiden mittaaminen
@@ -327,37 +335,6 @@ RUN \
         git+https://github.com/AaltoSciComp/nbgrader@live-2022#egg=nbgrader==0.7.0-dev3+aalto && \
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
     clean-layer.sh
-
-
-RUN \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        # devtools dependencies
-        libharfbuzz-dev \
-        libfribidi-dev \
-        # rstanarm dependency
-        cmake \
-          && \
-    clean-layer.sh
-
-# reinstalling previously failed installation, now with correct dependencies
-RUN \
-    install-r-packages.sh --url ${CRAN_URL} \
-        devtools \
-        rstanarm \
-        projpred \
-          && \
-    fix-permissions /usr/local/lib/R/site-library && \
-    clean-layer.sh
-
-# bayesian machine learning, RT#21752
-RUN \
-    install-r-packages.sh --url 'https://mc-stan.org/r-packages/' \
-        cmdstanr \
-          && \
-    fix-permissions /usr/local/lib/R/site-library && \
-    clean-layer.sh
-
 
 # Set default R compiler to clang to save memory.
 RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
