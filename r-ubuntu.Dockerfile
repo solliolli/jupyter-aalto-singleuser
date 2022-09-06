@@ -312,6 +312,26 @@ RUN \
     clean-layer.sh
 
 
+RUN \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        # devtools dependencies
+        libharfbuzz-dev \
+        libfribidi-dev \
+        # rstanarm dependency
+        cmake \
+          && \
+    clean-layer.sh
+
+# reinstalling previously failed installation, now with correct dependencies
+RUN \
+    echo "install.packages(c(" \
+            "'devtools'," \
+            "'rstanarm'," \
+            "'projpred'" \
+        "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
+    fix-permissions /usr/local/lib/R/site-library
+
 # bayesian machine learning, RT#21752
 RUN \
     echo "install.packages(c(" \
