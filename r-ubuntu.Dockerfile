@@ -337,6 +337,20 @@ RUN \
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
     clean-layer.sh
 
+# ====================================
+
+# bayesda2022, RT#21998
+RUN \
+    echo 'remotes::install_github(' \
+            '"avehtari/BDA_course_Aalto", ' \
+            'subdir = "rpackage", ' \
+            'upgrade="never")' | CC=gcc CXX=g++ Rscript - && \
+    Rscript -e "library('aaltobda')" && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
+
+# ====================================
+
 # Set default R compiler to clang to save memory.
 RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
     echo "CXX=clang++"  >> /usr/lib/R/etc/Makevars && \
