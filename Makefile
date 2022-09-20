@@ -9,7 +9,7 @@ VER_STD=5.0.14
 # Julia
 VER_JULIA=5.0.0
 # R
-VER_R=5.0.15
+VER_R=5.0.15-bayesda2022
 # OpenCV
 VER_CV=1.8.0
 
