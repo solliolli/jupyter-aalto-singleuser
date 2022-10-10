@@ -348,6 +348,14 @@ RUN \
     Rscript -e "library('aaltobda')" && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
+# bayesdata2022, RT#22158
+RUN \
+    Rscript -e "library(cmdstanr) ; install_cmdstan()" && \
+    mv ~/.cmdstan/ /opt/cmdstan/ && \
+    fix-permissions /opt/cmdstan/ && \
+    clean-layer.sh
+"
+
 
 # ====================================
 
