@@ -52,7 +52,6 @@ RUN \
     echo Driver=/opt/software/lib/libtdsodbc.so >> /etc/odbcinst.ini && \
     echo Setup=/opt/software/lib/libtdsS.so >> /etc/odbcinst.ini
 
-
 # ========================================
 
 RUN /opt/software/bin/python -m ipykernel install --prefix=/opt/conda --display-name="Python 3"
@@ -64,6 +63,17 @@ RUN echo "import os ; os.environ['PATH'] = '/opt/software/bin:'+os.environ['PATH
 
 ENV PATH=/opt/software/bin:${PATH}
 ENV CONDA_DIR=/opt/software
+
+# ========================================
+
+# dlpython2022, RT#22328
+RUN \
+    /opt/software/bin/mamba install -y --freeze-installed \
+        jsonpickle \
+        && \
+    clean-layer.sh
+
+# ========================================
 
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
