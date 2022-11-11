@@ -78,7 +78,8 @@ RUN \
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
 COPY hooks/ scripts/ /usr/local/bin/
-RUN chmod a+rx /usr/local/bin/*.sh
+RUN chmod 755 /usr/local/bin/*.d
+RUN chmod a+rx /usr/local/bin/*.sh /usr/local/bin/*/*.sh
 
 # Save version information within the image
 ARG VER_STD
