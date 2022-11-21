@@ -73,6 +73,16 @@ RUN \
         && \
     clean-layer.sh
 
+# dhhb2022, RT#22440
+RUN \
+    /opt/software/bin/mamba install -y --freeze-installed -c conda-forge \
+        vaderSentiment \
+        && \
+    pip install --no-cache-dir \
+        liwc \
+        && \
+    clean-layer.sh
+
 # ========================================
 
 # Duplicate of base, but hooks can update frequently and are small so
