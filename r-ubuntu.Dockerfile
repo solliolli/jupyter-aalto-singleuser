@@ -308,25 +308,6 @@ RUN \
     ln -s $PWD/plink /usr/local/bin/ && \
     fix-permissions /opt/plink /usr/local/bin
 
-#
-# Last-added packages, move to above
-#
-
-# RUN \
-#     install-r-packages.sh --url ${CRAN_URL} -j ${INSTALL_JOB_COUNT} \
-#         packagename \
-#           && \
-#     fix-permissions /usr/local/lib/R/site-library && \
-#     clean-layer.sh
-#
-#
-# RUN \
-#     install-r-packages.sh --bioconductor \
-#         packagename_from_bioc \
-#           && \
-#     fix-permissions /usr/local/lib/R/site-library && \
-#     clean-layer.sh
-
 # ====================================
 
 # TODO: remove when base has a new enough nbgrader
@@ -336,6 +317,39 @@ RUN \
         git+https://github.com/AaltoSciComp/nbgrader@live-2022#egg=nbgrader==0.7.0-dev3+aalto && \
     jupyter nbextension install --sys-prefix --py nbgrader --overwrite && \
     clean-layer.sh
+
+# ====================================
+
+#
+# TODO: Last-added packages, move to above when rebuilding
+#
+
+# # coursecode, RT#00000
+# RUN \
+#     install-r-packages.sh --url ${CRAN_URL} -j ${INSTALL_JOB_COUNT} \
+#         packagename \
+#           && \
+#     fix-permissions /usr/local/lib/R/site-library && \
+#     clean-layer.sh
+#
+#
+# # coursecode, RT#00000
+# RUN \
+#     install-r-packages.sh --bioconductor \
+#         packagename_from_bioc \
+#           && \
+#     fix-permissions /usr/local/lib/R/site-library && \
+#     clean-layer.sh
+
+# bayesda2022, RT#22450
+RUN \
+    install-r-packages.sh --url ${CRAN_URL} -j ${INSTALL_JOB_COUNT} \
+        latex2exp \
+          && \
+    fix-permissions /usr/local/lib/R/site-library && \
+    clean-layer.sh
+
+# ====================================
 
 # Set default R compiler to clang to save memory.
 RUN echo "CC=clang"     >> /usr/lib/R/etc/Makevars && \
