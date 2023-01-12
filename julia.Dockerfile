@@ -27,7 +27,7 @@ RUN mkdir /etc/julia && \
 
 RUN julia -e 'import Pkg; Pkg.update()' && \
     (test $TEST_ONLY_BUILD || julia -e 'import Pkg; Pkg.add("HDF5")') && \
-    julia -e "using Pkg; pkg\"add Gadfly RDatasets IJulia InstantiateFromURL Cbc Clp ECOS ForwardDiff GLPK Ipopt JuMP Plots PyPlot DataFrames Distributions CSV BenchmarkTools Test LaTeXStrings\"; pkg\"precompile\"" && \
+    julia -e "using Pkg; pkg\"add Gadfly RDatasets IJulia InstantiateFromURL Cbc Clp ECOS ForwardDiff GLPK Ipopt JuMP Plots PyPlot DataFrames Distributions CSV BenchmarkTools Test LaTeXStrings HiGHS JLD2\"; pkg\"precompile\"" && \
     echo "Done compiling..." && \
     mv $HOME/.local/share/jupyter/kernels/julia* $CONDA_DIR/share/jupyter/kernels/ && \
     chmod -R go+rx $CONDA_DIR/share/jupyter && \
